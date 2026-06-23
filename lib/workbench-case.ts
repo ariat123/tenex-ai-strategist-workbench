@@ -1,10 +1,11 @@
 import { scenarios } from "@/data/scenarios";
 import { buildBottlenecks } from "@/lib/briefs";
 import type {
+  DiscoveryInput,
   EvidenceBackedClaim,
   EvidenceItem,
   ScenarioId,
-  ScenarioPreset,
+  ScenarioExample,
   WorkbenchCase,
 } from "@/lib/types";
 
@@ -44,7 +45,29 @@ export function claimsFromText(
   }));
 }
 
-export function caseFromScenario(scenario: ScenarioPreset): WorkbenchCase {
+const blankDiscovery: DiscoveryInput = {
+  companyName: "",
+  domain: "",
+  workflowName: "",
+  workflowOwner: "",
+  baselineMetric: "",
+  humanReviewPoint: "",
+  executiveGoal: "",
+  stakeholderNotes: "",
+  operatorNotes: "",
+  currentWorkflowSteps: [],
+  systemsInvolved: [],
+  estimatedVolume: "",
+  estimatedTimeSpent: "",
+  roughBusinessImpact: "",
+  constraints: "",
+  adoptionConcerns: "",
+  teamReadiness: "medium",
+  dataAvailability: "medium",
+  knownFailureModes: [],
+};
+
+export function caseFromScenario(scenario: ScenarioExample): WorkbenchCase {
   const discoveryEvidence = evidenceFromText(
     scenario.discoveryEvidence,
     "synthetic",
@@ -52,11 +75,11 @@ export function caseFromScenario(scenario: ScenarioPreset): WorkbenchCase {
   const evidenceIds = discoveryEvidence.map((item) => item.id);
 
   return {
-    id: `demo-${scenario.id}`,
+    id: `example-${scenario.id}`,
     scenarioId: scenario.id,
     label: scenario.label,
     summary: scenario.summary,
-    mode: "demo",
+    mode: "example",
     discovery: clone(scenario.discovery),
     workflowBottlenecks: claimsFromText(
       scenario.workflowBottlenecks ?? buildBottlenecks(scenario.discovery).slice(0, 4),
@@ -87,7 +110,22 @@ export function caseFromScenarioId(id: ScenarioId): WorkbenchCase {
 }
 
 export function defaultWorkbenchCase() {
-  return caseFromScenarioId("insurer");
+  const baseCase = caseFromScenarioId("custom");
+
+  return {
+    ...baseCase,
+    id: "live-discovery",
+    scenarioId: undefined,
+    label: "Live discovery case",
+    summary: "Paste discovery notes to structure a strategist readout.",
+    mode: "live",
+    discovery: clone(blankDiscovery),
+    workflowBottlenecks: [],
+    discoveryEvidence: [],
+    assumptionsToValidate: [],
+    rawNotes: "",
+    synthesizedAt: undefined,
+  } satisfies WorkbenchCase;
 }
 
 export function cloneWorkbenchCase(workbenchCase: WorkbenchCase): WorkbenchCase {

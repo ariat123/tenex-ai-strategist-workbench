@@ -118,7 +118,7 @@ export function FdeHandoffBrief({
           discovery.workflowOwner,
           "The workflow owner",
         )} can review pilot feedback and metric movement weekly.`,
-        "Source-system access and sample records are available during discovery validation.",
+        "Source-system access and representative records are available during discovery validation.",
         ...assumptionsToValidate.map((assumption) => assumption.text),
       ],
     },

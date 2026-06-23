@@ -32,7 +32,7 @@ export function AboutModal({ open, onClose }: AboutModalProps) {
         <p className="text-sm leading-6 text-slate-700">
           Candidate prototype built by Aria Tabatabai for the Tenex AI
           Strategist role. Based on public Tenex role language and public AI
-          transformation materials. Uses synthetic scenarios only. Not an
+          transformation materials. Includes optional illustrative cases. Not an
           internal Tenex tool.
         </p>
       </div>

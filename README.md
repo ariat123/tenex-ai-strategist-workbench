@@ -4,31 +4,39 @@ Candidate prototype built by Aria Tabatabai for the Tenex AI Strategist role.
 
 ## What This App Is
 
-Tenex AI Strategist Workbench is a production-deployed candidate prototype for turning discovery notes into a first AI pilot recommendation and implementation-ready handoff.
+Tenex AI Strategist Workbench turns messy discovery notes into a strategist readout: recommended first AI pilot, opportunity ranking, rollout plan, build handoff, and strategist brief.
 
-It is designed to feel like a lightweight internal strategy review surface: serious, editable, evidence-aware, and explainable. It is not a marketing page, a generic AI report generator, or an internal Tenex tool.
+It is designed as a lightweight internal-style workbench for one slice of the AI Strategist role: moving from discovery evidence to a bounded first workflow pilot that a strategist, deployment lead, or FDE could review.
+
+It is not an internal Tenex tool and does not claim Tenex-private process knowledge.
 
 ## What It Does
 
-- Starts with a Decision Snapshot: client/workflow, readiness, recommended pilot, bottlenecks, assumptions, not-yet scope, and next action
-- Supports synthetic demo scenarios for insurance, healthcare, private equity operations, and a custom workflow
-- Optionally synthesizes pasted discovery notes into structured strategist outputs with AI
-- Keeps generated outputs editable through a compact Discovery Review first, with deeper edits available only when needed
-- Applies transparent deterministic scoring to rank opportunities
-- Recommends a bounded first workflow pilot with explicit human review
-- Produces a build handoff brief, rollout plan, value measurement plan, and Markdown strategist brief
+- Starts on Discovery review so the user can paste raw notes first
+- Structures messy notes into editable discovery facts, bottlenecks, evidence, and assumptions
+- Ranks possible AI pilots with visible deterministic scoring
+- Recommends a first bounded workflow intervention with a human review boundary
+- Produces a rollout plan, build handoff, value measurement plan, and strategist brief
+- Keeps example cases available in a collapsed optional section
 - Saves the current workbench in browser localStorage only
+- Exports the strategist brief as copyable text or Markdown
 
 ## How It Works
 
-The app has two operating modes:
+The product loop is:
 
-- Sample scenario mode uses synthetic preset scenarios and requires no environment variables.
-- AI synthesis mode sends pasted discovery notes to a server-side Next.js route, structures them with the OpenAI Responses API, validates the model output, and then applies the app's deterministic scoring logic.
+```text
+Messy discovery notes -> structured readout -> opportunity ranking -> first pilot -> rollout plan -> build handoff -> strategist brief
+```
 
-AI helps structure messy notes. The workbench decides how to rank opportunities using visible scoring weights and editable inputs.
+AI synthesis is used only to structure messy discovery notes. The workbench then applies transparent strategist logic:
 
-Scoring is deterministic and local. Each opportunity is scored from 1 to 5, where 5 is always stronger for a first pilot:
+- AI extracts facts, evidence, assumptions, risks, metrics, and candidate opportunities.
+- The user reviews and edits the fields that affect the recommendation.
+- The app ranks opportunities with deterministic scoring.
+- The output remains editable and inspectable rather than becoming a black-box report.
+
+Scoring uses seven 1-5 dimensions, where 5 is always stronger for a first pilot:
 
 - ROI potential: 22%
 - Data readiness: 16%
@@ -38,13 +46,13 @@ Scoring is deterministic and local. Each opportunity is scored from 1 to 5, wher
 - Risk containment: 8%
 - Stakeholder urgency: 10%
 
-If a measurement or reporting layer scores highest, the recommendation can still prefer the highest-ranked workflow intervention unless the context is explicitly reporting-led.
+If a measurement or reporting layer scores highly, the recommendation can still prefer the highest-ranked workflow intervention unless the context is explicitly reporting-led.
 
 ## Live Deployment Model
 
 The final app is intended to run on Vercel.
 
-There is no database, auth provider, user account system, analytics service, storage bucket, or background worker. Sample scenarios, opportunity ranking, editing, local browser save, and Markdown export all work in the deployed app without server persistence.
+There is no database, auth provider, user account system, analytics service, storage bucket, background worker, or server-side project store. Opportunity ranking, editing, local browser save, optional example cases, Markdown export, and the strategist brief work in the deployed app without persistent server storage.
 
 AI synthesis is the only feature that needs server-side configuration.
 
@@ -62,7 +70,7 @@ Required for AI synthesis:
 OPENAI_API_KEY
 ```
 
-Recommended for public demos:
+Recommended for protecting public usage:
 
 ```text
 SYNTHESIS_ACCESS_CODE
@@ -76,22 +84,22 @@ OPENAI_MODEL
 
 Do not commit secrets to GitHub.
 
-Sample scenarios work without these variables. AI synthesis only works when `OPENAI_API_KEY` is configured. `SYNTHESIS_ACCESS_CODE` is optional but recommended for protecting public demo usage; when set, the synthesis panel asks for the matching AI demo code before the server calls OpenAI.
+AI synthesis works only when `OPENAI_API_KEY` is configured. `SYNTHESIS_ACCESS_CODE` is optional but recommended; when set, the synthesis panel asks for the matching access code before the server calls OpenAI.
 
-When `OPENAI_API_KEY` is not configured, the app still loads normally. Sample scenarios, opportunity ranking, build handoff, rollout plan, value measurement, local browser save, and Markdown export continue to work. The AI synthesis panel says that AI synthesis is not configured for this deployment.
+When `OPENAI_API_KEY` is not configured, the app still loads normally. Opportunity ranking, build handoff, rollout plan, value measurement, local browser save, Markdown export, and optional example cases continue to work. The AI synthesis panel says that AI synthesis is not configured for this deployment.
 
-## Sample Scenario Mode
+## Example Cases
 
-Sample scenario mode is the default fallback and is safe for public review.
+Example cases are intentionally secondary. They are available from the collapsed `Example cases` section in Discovery review and are useful for exploring the workbench without entering notes.
 
-It uses synthetic scenarios only:
+Included example cases:
 
 - National insurer
 - Healthcare system
 - Private equity portfolio operations
-- Custom workflow starting point
+- Custom workflow outline
 
-These scenarios are intentionally synthetic and editable. They let a reviewer understand the strategist workflow even when AI synthesis is disabled.
+These cases are illustrative and editable. They are not Tenex-internal material.
 
 ## What Is Intentionally Out Of Scope
 
@@ -107,23 +115,24 @@ These scenarios are intentionally synthetic and editable. They let a reviewer un
 - No autonomous workflow execution
 - No Tenex-private claims or confidential methodology
 
-## Demo Walkthrough
+## Walkthrough
 
 Use this structure for a 5-7 minute Loom:
 
 1. Open with the intent: this shows one slice of the AI Strategist role, turning messy discovery into a prioritized first pilot and FDE-ready build handoff.
-2. Start on the Decision Snapshot and explain why the conclusion appears first.
-3. Show the selected demo scenario and switch scenarios briefly.
-4. Open Discovery Review and explain the progressive editing model: validate the few fields that affect the recommendation first, then use advanced edits only when needed.
-5. If AI synthesis is configured, paste the sample note below and synthesize it. If not, state that sample scenario mode is intentionally still useful without AI.
-6. Open Opportunity Ranking and explain the deterministic 1-5 dimensions and weights.
-7. Open First Pilot and explain why the first recommendation is a bounded workflow intervention, not blind automation.
-8. Open Rollout Plan and show stakeholder risks, assumptions to validate, and the 30/60/90 path to usage.
-9. Open Build Handoff and show the FDE implementation brief structure.
-10. Open Strategist Brief and copy or download the Markdown strategist brief.
-11. Close with what would improve next with strategist or FDE feedback: scoring calibration, stronger evidence review, more scenario-specific validation, and integration into real implementation tooling.
+2. Start on Discovery review and explain why the app begins with raw notes instead of a dashboard.
+3. Paste the QA fixture below, enter the access code if required, and structure the discovery notes.
+4. Show that synthesis redirects to Overview so the strategist conclusion appears immediately.
+5. Explain the Decision Snapshot: workflow, readiness, recommended first pilot, bottlenecks, assumptions, human review, and next action.
+6. Return briefly to Discovery review and show the progressive editing model: validate core facts first, use advanced edits only when needed.
+7. Open Opportunity ranking and explain the deterministic 1-5 scoring dimensions and weights.
+8. Open First pilot and explain why the recommendation is a bounded workflow intervention, not blind automation.
+9. Open Rollout plan and show stakeholder risks, assumptions to validate, and the 30/60/90 path to usage.
+10. Open Build handoff and show the FDE implementation brief structure.
+11. Open Strategist brief and copy or download the Markdown artifact.
+12. Close with what would improve next with strategist or FDE feedback: scoring calibration, stronger evidence review, more workflow-specific validation, and integration into real implementation tooling.
 
-Sample messy discovery note for AI synthesis QA:
+QA fixture for AI synthesis:
 
 ```text
 Stakeholder notes from Acme Specialty Services discovery:
@@ -161,4 +170,4 @@ Do not commit `.env.local` or any secrets.
 
 ## Prototype Disclosure
 
-Candidate prototype built by Aria Tabatabai for the Tenex AI Strategist role. Based on public Tenex role language and public AI transformation materials. Uses synthetic scenarios only. Not an internal Tenex tool.
+Candidate prototype built by Aria Tabatabai for the Tenex AI Strategist role. Based on public Tenex role language and public AI transformation materials. Includes optional illustrative cases. Not an internal Tenex tool.

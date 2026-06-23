@@ -1,10 +1,10 @@
 import { Building2, CheckCircle2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import type { ScenarioId, ScenarioPreset } from "@/lib/types";
+import type { ScenarioExample, ScenarioId } from "@/lib/types";
 import { cn } from "@/lib/format";
 
 type ScenarioSelectorProps = {
-  scenarios: ScenarioPreset[];
+  scenarios: ScenarioExample[];
   selectedId: ScenarioId;
   onSelect: (id: ScenarioId) => void;
 };
@@ -46,7 +46,7 @@ export function ScenarioSelector({
               </h3>
               {scenario.id === "custom" ? (
                 <span className="mt-2 inline-flex rounded-md border border-slate-200 bg-slate-50 px-2 py-1 text-xs font-medium text-slate-600">
-                  Template-driven starting point
+                  Editable outline
                 </span>
               ) : null}
               <p className="mt-2 text-sm leading-6 text-slate-600">

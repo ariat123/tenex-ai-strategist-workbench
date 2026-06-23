@@ -1,6 +1,6 @@
 import type { ScenarioId, SectionId, WorkbenchCase } from "@/lib/types";
 
-const STORAGE_KEY = "tenex-ai-strategist-workbench:v2";
+const STORAGE_KEY = "tenex-ai-strategist-workbench:v3";
 
 export type StoredWorkbenchState = {
   activeCase: WorkbenchCase;

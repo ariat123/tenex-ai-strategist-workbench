@@ -2,7 +2,7 @@ export type ScenarioId = "insurer" | "healthcare" | "pe-ops" | "custom";
 
 export type ReadinessLevel = "low" | "medium" | "high";
 
-export type WorkbenchMode = "demo" | "ai-synthesis";
+export type WorkbenchMode = "live" | "ai-synthesis" | "example";
 
 export type SectionId =
   | "overview"
@@ -121,7 +121,7 @@ export type RolloutPhase = {
   activities: string[];
 };
 
-export type ScenarioPreset = {
+export type ScenarioExample = {
   id: ScenarioId;
   label: string;
   summary: string;

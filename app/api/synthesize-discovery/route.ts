@@ -252,7 +252,7 @@ async function handleSynthesisPost(request: Request) {
     return diagnosticErrorResponse({
       errorType: "protected",
       failureStage: "access_code",
-      message: "AI synthesis is protected for this demo. Sample scenarios still work.",
+      message: "AI synthesis is protected for this deployment. Current case preserved.",
       httpStatus: 403,
       statusCode: 403,
       modelUsed: model,
@@ -278,7 +278,7 @@ async function handleSynthesisPost(request: Request) {
       errorType: "missing_api_key",
       failureStage: "openai_request",
       message:
-        "AI synthesis is not configured for this deployment. Sample scenarios still work.",
+        "AI synthesis is not configured for this deployment. Current case preserved.",
       httpStatus: 400,
       statusCode: 400,
       modelUsed: model,

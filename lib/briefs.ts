@@ -152,7 +152,7 @@ ${risks.map((risk) => `- ${risk.risk}: ${risk.signal}`).join("\n")}
 - Operators can see why the system suggested an action.
 - The pilot writes enough activity data to measure adoption and quality.
 - ${fallbackText(discovery.workflowOwner, "The workflow owner")} can review pilot feedback and metric movement weekly.
-- Source-system access and sample records are available during discovery validation.
+- Source-system access and representative records are available during discovery validation.
 ${assumptionsToValidate.map((claim) => `- ${claim.text}`).join("\n")}
 
 ## Open questions

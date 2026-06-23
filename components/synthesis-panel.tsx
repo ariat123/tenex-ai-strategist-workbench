@@ -55,17 +55,18 @@ export function SynthesisPanel({
     <Card>
       <SectionHeader
         eyebrow="Discovery intake"
-        title="Paste messy discovery notes"
-        description="AI structures notes for review. You validate the strategist readout before using the outputs."
+        title="Start with discovery notes"
+        description="Paste messy notes from a client conversation. The workbench will structure them into a recommended AI pilot, opportunity ranking, rollout plan, build handoff, and strategist brief."
         action={
           <Button
             variant="primary"
+            size="md"
             onClick={onSynthesize}
             disabled={loading || !aiConfigured}
             className="whitespace-nowrap"
           >
             <Sparkles className="h-4 w-4" />
-            {loading ? "Structuring..." : "Structure notes"}
+            {loading ? "Structuring..." : "Structure discovery notes"}
           </Button>
         }
       />
@@ -74,8 +75,9 @@ export function SynthesisPanel({
         <div className="mb-4 flex gap-2 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm leading-6 text-amber-900">
           <AlertCircle className="mt-1 h-4 w-4 shrink-0" />
           <p>
-            AI synthesis is not configured for this deployment. Sample scenarios,
-            opportunity ranking, and strategist brief export still work.
+            AI synthesis is not configured for this deployment. The workbench
+            still supports editing, opportunity ranking, and strategist brief
+            export.
           </p>
         </div>
       ) : null}
@@ -83,55 +85,57 @@ export function SynthesisPanel({
       {aiConfigured && requiresAccessCode ? (
         <div className="mb-4 grid gap-3 rounded-md border border-slate-200 bg-slate-50 p-3 sm:grid-cols-[minmax(0,280px)_1fr] sm:items-end">
           <TextField
-            label="AI demo code"
+            label="Access code"
             value={accessCode}
             onChange={onAccessCodeChange}
-            placeholder="Enter demo code"
+            placeholder="Enter access code"
           />
           <div className="flex gap-2 text-sm leading-6 text-slate-600">
             <KeyRound className="mt-1 h-4 w-4 shrink-0 text-slate-500" />
-            <p>
-              Sample scenarios work without a code. AI synthesis may require a
-              demo code to protect API usage.
-            </p>
+            <p>Required for live AI synthesis.</p>
           </div>
         </div>
       ) : null}
 
       {aiConfigured && !requiresAccessCode ? (
         <p className="mb-4 text-sm leading-6 text-slate-600">
-          Sample scenarios work without a code. AI synthesis may require a demo
-          code to protect API usage.
+          Live AI synthesis is available for this deployment.
         </p>
       ) : null}
+
+      <div className="mb-3 rounded-md border border-slate-200 bg-slate-50 p-3">
+        <p className="text-xs font-semibold uppercase text-slate-500">
+          Input required
+        </p>
+        <p className="mt-1 text-sm leading-6 text-slate-700">
+          Paste raw discovery notes here. Include the client goal, workflow
+          steps, systems, bottlenecks, constraints, stakeholders, adoption
+          concerns, and anything that must stay human reviewed.
+        </p>
+      </div>
 
       <textarea
         value={rawNotes}
         onChange={(event) => onRawNotesChange(event.target.value)}
-        rows={9}
+        rows={12}
         placeholder="Paste stakeholder notes, operator observations, transcript excerpts, workflow notes, survey findings, system constraints, or process screenshots transcribed as text."
-        className="w-full resize-y rounded-md border border-slate-300 bg-white px-3 py-2 text-sm leading-6 text-slate-950 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
+        className="w-full resize-y rounded-md border border-slate-300 bg-white px-4 py-3 text-sm leading-6 text-slate-950 shadow-inner outline-none transition placeholder:text-slate-400 focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
       />
 
       <div className="mt-3 grid gap-2 text-sm leading-6">
-        <p className="text-slate-600">
-          {aiConfigured
-            ? "Use synthetic scenarios for demos. Use AI synthesis when you have real discovery notes, then review the fields that drive the recommendation."
-            : "Use the synthetic scenarios to review the decision snapshot, opportunity ranking, build handoff, rollout plan, and strategist brief."}
-        </p>
         {model ? (
           <p className="text-xs font-medium text-slate-500">
             Last synthesis model: {model}
           </p>
         ) : null}
         {error ? (
-          <div className="rounded-md border border-amber-200 bg-amber-50 p-3 text-amber-900">
+          <div className="rounded-md border border-amber-200 bg-amber-50 p-4 text-amber-950">
             <div className="flex gap-2">
-            <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
-            <p>{error}</p>
+              <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
+              <p className="font-medium">{error}</p>
             </div>
             {errorDetails ? (
-              <div className="mt-3 grid gap-1 border-t border-amber-200 pt-3 text-xs leading-5">
+              <div className="mt-3 grid gap-1 border-t border-amber-200 pt-3 text-xs leading-5 text-amber-900">
                 <p>
                   <span className="font-semibold">Failure stage: </span>
                   {errorDetails.failureStage ?? "not available"}

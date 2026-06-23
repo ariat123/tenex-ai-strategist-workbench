@@ -1,6 +1,6 @@
-import type { ScenarioPreset } from "@/lib/types";
+import type { ScenarioExample } from "@/lib/types";
 
-export const scenarios: ScenarioPreset[] = [
+export const scenarios: ScenarioExample[] = [
   {
     id: "insurer",
     label: "National insurer",
@@ -17,7 +17,7 @@ export const scenarios: ScenarioPreset[] = [
       "Compliance will accept reviewed recommendations with source links and event history.",
     ],
     discovery: {
-      companyName: "Northstar Mutual",
+      companyName: "Harbor Mutual",
       domain: "Insurance",
       workflowName: "Claims intake and routing",
       workflowOwner: "Claims operations manager",
@@ -174,7 +174,7 @@ export const scenarios: ScenarioPreset[] = [
         role: "FDE team",
         priority: "supporting",
         concern: "Access to representative cases and system owners.",
-        alignmentMove: "Secure sample records, API owners, and exception examples in the first 30 days.",
+        alignmentMove: "Secure representative records, API owners, and exception examples in the first 30 days.",
       },
     ],
     adoptionRisks: [
@@ -211,7 +211,7 @@ export const scenarios: ScenarioPreset[] = [
         baseline: "Routing rework rate not consistently measured",
         target: "Routing rework below 8% with tracked override reasons",
         owner: "Claims QA",
-        cadence: "Weekly sample review",
+        cadence: "Weekly representative-record review",
         confidence: "medium",
       },
       {
@@ -238,7 +238,7 @@ export const scenarios: ScenarioPreset[] = [
     summary:
       "Patient access, referral intake, scheduling triage, and internal handoff across clinical and administrative teams.",
     discoveryEvidence: [
-      "Referral coordinators spend time checking demographics, diagnosis, insurance, and attachments before routing.",
+      "Referral coordinators spend time checking patient identity fields, diagnosis, insurance, and attachments before routing.",
       "Specialty-specific rules create rework when missing information is discovered after scheduling.",
       "Clinical operations needs a clear line between administrative routing and clinical judgment.",
     ],
@@ -263,7 +263,7 @@ export const scenarios: ScenarioPreset[] = [
         "Referral coordinators review faxed and portal referrals, verify required documents, check specialty rules, and route to schedulers or clinical review.",
       currentWorkflowSteps: [
         "Referral arrives through fax, portal, or partner office email.",
-        "Coordinator checks patient demographics, insurance, diagnosis, and required attachments.",
+        "Coordinator checks patient identity fields, insurance, diagnosis, and required attachments.",
         "Coordinator identifies specialty, urgency, missing information, and eligibility rules.",
         "Complex referrals are sent to clinical review before scheduling.",
         "Patient or referring office is contacted for missing details or appointment options.",
@@ -402,7 +402,7 @@ export const scenarios: ScenarioPreset[] = [
       {
         risk: "Data access delays.",
         signal: "Fax, imaging, and EHR data owners have different approval paths.",
-        mitigation: "Use exported sample packets for discovery validation while integration is scoped.",
+        mitigation: "Use exported representative packets for discovery validation while integration is scoped.",
         owner: "IT owner",
       },
     ],
@@ -417,10 +417,10 @@ export const scenarios: ScenarioPreset[] = [
       },
       {
         name: "Quality KPI",
-        baseline: "Urgency and missing-document defects sampled manually",
-        target: "95% reviewed routing accuracy on pilot sample",
+        baseline: "Urgency and missing-document defects reviewed manually",
+        target: "95% reviewed routing accuracy on pilot records",
         owner: "Clinical operations",
-        cadence: "Weekly sample review",
+        cadence: "Weekly representative-record review",
         confidence: "medium",
       },
       {
@@ -677,7 +677,7 @@ export const scenarios: ScenarioPreset[] = [
     id: "custom",
     label: "Custom workflow",
     summary:
-      "Template-driven starting point for replacing the notes with your own discovery context.",
+      "Blank operating workflow outline for exploring the workbench structure.",
     discoveryEvidence: [
       "Use this area as a placeholder for operator observations from discovery.",
       "Capture where work waits, where judgment happens, and where exceptions break the process.",
@@ -828,7 +828,7 @@ export const scenarios: ScenarioPreset[] = [
       },
       {
         risk: "Data quality is assumed rather than tested.",
-        signal: "Sample records do not match the happy-path workflow.",
+        signal: "Representative records do not match the happy-path workflow.",
         mitigation: "Review representative examples and exceptions during the first 30 days.",
         owner: "Technical owner",
       },
