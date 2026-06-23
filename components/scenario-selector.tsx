@@ -5,7 +5,7 @@ import { cn } from "@/lib/format";
 
 type ScenarioSelectorProps = {
   scenarios: ScenarioExample[];
-  selectedId: ScenarioId;
+  selectedId?: ScenarioId;
   onSelect: (id: ScenarioId) => void;
 };
 

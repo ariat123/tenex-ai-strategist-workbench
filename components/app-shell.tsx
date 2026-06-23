@@ -555,7 +555,9 @@ export function AppShell() {
                 />
                 <ScenarioSelector
                   scenarios={scenarios}
-                  selectedId={selectedScenarioId}
+                  selectedId={
+                    activeCase.mode === "example" ? selectedScenarioId : undefined
+                  }
                   onSelect={selectScenario}
                 />
               </div>
