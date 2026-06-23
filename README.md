@@ -4,7 +4,7 @@ Candidate workbench built by Aria Tabatabai for the Tenex AI Strategist role.
 
 ## What This App Is
 
-Tenex AI Strategist Workbench turns messy discovery notes into a strategist readout: recommended first AI pilot, decision snapshot, build handoff, adoption path, and final brief.
+Tenex AI Strategist Workbench turns discovery input into a strategist readout: recommended first AI pilot, decision snapshot, build handoff, adoption path, and final brief.
 
 It is designed as a lightweight internal-style workbench for one slice of the AI Strategist role: moving from discovery evidence to a bounded first workflow pilot that a strategist, deployment lead, or FDE could review.
 
@@ -12,7 +12,8 @@ It is not an internal Tenex tool and does not claim Tenex-private process knowle
 
 ## What It Does
 
-- Starts on Discovery so the user can paste raw notes first
+- Starts on Discovery so the user can paste raw notes or prepare a focused discovery guide
+- Provides a guided discovery path for preparing questions and capturing answers during a client conversation
 - Structures messy notes into editable discovery facts, bottlenecks, evidence, and assumptions
 - Ranks possible AI pilots with visible deterministic scoring
 - Recommends a first bounded workflow intervention with a human review boundary
@@ -26,10 +27,17 @@ It is not an internal Tenex tool and does not claim Tenex-private process knowle
 The product loop is:
 
 ```text
-Messy discovery notes -> decision snapshot -> first pilot -> build handoff -> final brief
+Discovery notes or guided answers -> decision snapshot -> first pilot -> build handoff -> final brief
 ```
 
-AI synthesis is used only to structure messy discovery notes. The workbench then applies transparent strategist logic:
+The Discovery page supports two paths:
+
+- `Start from notes`: paste raw notes from a client conversation, then structure them.
+- `Prepare discovery guide`: enter light client context, use a focused question guide, capture messy answers, and send those answers into the same raw-notes synthesis flow.
+
+The discovery guide is deterministic and context-aware. It adapts question language based on industry, workflow area, stakeholder role, and business goal. It does not use web research and does not create the final readout directly.
+
+AI synthesis is used only to structure discovery notes. The workbench then applies transparent strategist logic:
 
 - AI extracts facts, evidence, assumptions, risks, metrics, and candidate opportunities.
 - The user reviews and edits the fields that affect the recommendation.
@@ -120,17 +128,19 @@ These cases are illustrative and editable. They are not Tenex-internal material.
 Use this structure for a 5-7 minute Loom:
 
 1. Open with the intent: this shows one slice of the AI Strategist role, turning messy discovery into a prioritized first pilot and FDE-ready build handoff.
-2. Start on Discovery and explain why the app begins with raw notes instead of a dashboard.
-3. Paste the QA fixture below, enter the access code if required, and structure the discovery notes.
-4. Show that synthesis redirects to Decision snapshot so the strategist conclusion appears immediately.
-5. Explain the Decision Snapshot: workflow, readiness, recommended first pilot, bottlenecks, assumptions, human review, and next action.
-6. Return briefly to Discovery only if you need to show the post-synthesis review fields: validate core facts first, use advanced edits only when needed.
-7. Open First pilot and explain why the recommendation is a bounded workflow intervention, not blind automation.
-8. Open Build handoff and show the FDE implementation brief structure.
-9. Open Final brief and copy or download the artifact.
-10. Mention Opportunity ranking and Adoption & rollout as supporting sections for transparent scoring and usage planning.
-11. If asked, open Opportunity ranking and explain the deterministic 1-5 scoring dimensions and weights.
-12. Close with what would improve next with strategist or FDE feedback: scoring calibration, stronger evidence review, more workflow-specific validation, and integration into real implementation tooling.
+2. Start on Discovery and explain the two paths: paste existing notes, or prepare a guided discovery conversation.
+3. Briefly show the guided discovery path: enter company context, review tailored question groups, and capture messy answers.
+4. Click `Use these answers as discovery notes`, or paste the QA fixture below into the notes path.
+5. Enter the access code if required and structure the discovery notes.
+6. Show that synthesis redirects to Decision snapshot so the strategist conclusion appears immediately.
+7. Explain the Decision Snapshot: workflow, readiness, recommended first pilot, bottlenecks, assumptions, human review, and next action.
+8. Return briefly to Discovery only if you need to show the post-synthesis review fields: validate core facts first, use advanced edits only when needed.
+9. Open First pilot and explain why the recommendation is a bounded workflow intervention, not blind automation.
+10. Open Build handoff and show the FDE implementation brief structure.
+11. Open Final brief and copy or download the artifact.
+12. Mention Opportunity ranking and Adoption & rollout as supporting sections for transparent scoring and usage planning.
+13. If asked, open Opportunity ranking and explain the deterministic 1-5 scoring dimensions and weights.
+14. Close with what would improve next with strategist or FDE feedback: scoring calibration, stronger evidence review, more workflow-specific validation, and integration into real implementation tooling.
 
 QA fixture for AI synthesis:
 

@@ -18,6 +18,7 @@ import { DiscoveryForm } from "@/components/discovery-form";
 import { DiscoveryReview } from "@/components/discovery-review";
 import { FdeHandoffBrief } from "@/components/fde-handoff-brief";
 import { GeneratedOutputEditor } from "@/components/generated-output-editor";
+import { GuidedDiscovery } from "@/components/guided-discovery";
 import { OpportunityScorecard } from "@/components/opportunity-scorecard";
 import { RecommendedPilot } from "@/components/recommended-pilot";
 import { ScenarioSelector } from "@/components/scenario-selector";
@@ -157,6 +158,9 @@ export function AppShell() {
   const [selectedScenarioId, setSelectedScenarioId] =
     useState<ScenarioId>("custom");
   const [rawNotes, setRawNotes] = useState("");
+  const [discoveryStartMode, setDiscoveryStartMode] = useState<
+    "notes" | "guide"
+  >("notes");
   const [activeSection, setActiveSection] = useState<SectionId>("discovery");
   const [aboutOpen, setAboutOpen] = useState(false);
   const [saveStatus, setSaveStatus] = useState("");
@@ -295,6 +299,7 @@ export function AppShell() {
     setSelectedScenarioId(id);
     setActiveCase(nextCase);
     setRawNotes("");
+    setDiscoveryStartMode("notes");
     setSynthesisError("");
     setSynthesisErrorDetails(null);
     setSynthesisWarnings([]);
@@ -320,6 +325,7 @@ export function AppShell() {
     setActiveCase(nextCase);
     setSelectedScenarioId("custom");
     setRawNotes("");
+    setDiscoveryStartMode("notes");
     setSynthesisError("");
     setSynthesisErrorDetails(null);
     setSynthesisWarnings([]);
@@ -338,6 +344,12 @@ export function AppShell() {
 
     downloadMarkdown(markdownFilename(activeCase.label), strategistBrief);
     setSaveStatus("Downloaded brief.");
+  }
+
+  function useGuidedDiscoveryNotes(notes: string) {
+    setRawNotes(notes);
+    setDiscoveryStartMode("notes");
+    setSaveStatus("Guided discovery answers copied into discovery notes.");
   }
 
   async function synthesizeDiscovery() {
@@ -543,20 +555,73 @@ export function AppShell() {
 
         {activeSection === "discovery" ? (
           <div className="grid gap-4">
-            <SynthesisPanel
-              rawNotes={rawNotes}
-              accessCode={synthesisAccessCode}
-              aiConfigured={synthesisConfigured}
-              requiresAccessCode={synthesisRequiresAccessCode}
-              onRawNotesChange={setRawNotes}
-              onAccessCodeChange={setSynthesisAccessCode}
-              onSynthesize={synthesizeDiscovery}
-              loading={synthesisLoading}
-              error={synthesisError}
-              errorDetails={synthesisErrorDetails}
-              warnings={synthesisWarnings}
-              model={synthesisModel}
-            />
+            <div className="grid gap-3 md:grid-cols-2">
+              <button
+                type="button"
+                onClick={() => setDiscoveryStartMode("notes")}
+                className={`rounded-md border p-4 text-left shadow-sm transition-colors ${
+                  discoveryStartMode === "notes"
+                    ? "border-slate-950 bg-white"
+                    : "border-slate-200 bg-white hover:border-slate-400"
+                }`}
+              >
+                <div className="flex items-start gap-3">
+                  <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-slate-200 bg-slate-50 text-slate-700">
+                    <ClipboardList className="h-4 w-4" />
+                  </span>
+                  <div>
+                    <h2 className="text-base font-semibold text-slate-950">
+                      Start from notes
+                    </h2>
+                    <p className="mt-1 text-sm leading-6 text-slate-600">
+                      Paste raw discovery notes from a client conversation.
+                    </p>
+                  </div>
+                </div>
+              </button>
+              <button
+                type="button"
+                onClick={() => setDiscoveryStartMode("guide")}
+                className={`rounded-md border p-4 text-left shadow-sm transition-colors ${
+                  discoveryStartMode === "guide"
+                    ? "border-slate-950 bg-white"
+                    : "border-slate-200 bg-white hover:border-slate-400"
+                }`}
+              >
+                <div className="flex items-start gap-3">
+                  <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-slate-200 bg-slate-50 text-slate-700">
+                    <FileText className="h-4 w-4" />
+                  </span>
+                  <div>
+                    <h2 className="text-base font-semibold text-slate-950">
+                      Prepare discovery guide
+                    </h2>
+                    <p className="mt-1 text-sm leading-6 text-slate-600">
+                      Generate a focused question guide before or during
+                      discovery, then turn the answers into a strategist readout.
+                    </p>
+                  </div>
+                </div>
+              </button>
+            </div>
+            {discoveryStartMode === "notes" ? (
+              <SynthesisPanel
+                rawNotes={rawNotes}
+                accessCode={synthesisAccessCode}
+                aiConfigured={synthesisConfigured}
+                requiresAccessCode={synthesisRequiresAccessCode}
+                onRawNotesChange={setRawNotes}
+                onAccessCodeChange={setSynthesisAccessCode}
+                onSynthesize={synthesizeDiscovery}
+                loading={synthesisLoading}
+                error={synthesisError}
+                errorDetails={synthesisErrorDetails}
+                warnings={synthesisWarnings}
+                model={synthesisModel}
+              />
+            ) : (
+              <GuidedDiscovery onUseAsNotes={useGuidedDiscoveryNotes} />
+            )}
             {hasStructuredReadout ? (
               <DiscoveryReview
                 workbenchCase={activeCase}
