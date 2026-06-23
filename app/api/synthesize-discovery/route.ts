@@ -4,6 +4,16 @@ import { normalizeSynthesisDraft } from "@/lib/synthesis-validation";
 import type { DiscoveryInput } from "@/lib/types";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+export const fetchCache = "force-no-store";
+
+const envNamesExpected = ["OPENAI_API_KEY", "SYNTHESIS_ACCESS_CODE"] as const;
+const noStoreHeaders = {
+  "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+  Pragma: "no-cache",
+  Expires: "0",
+};
 
 type SynthesisRequest = {
   rawNotes?: unknown;
@@ -21,7 +31,31 @@ function errorResponse(
   message: string,
   status: number,
 ) {
-  return Response.json({ ok: false, error: { code, message } }, { status });
+  return Response.json(
+    { ok: false, error: { code, message } },
+    { status, headers: noStoreHeaders },
+  );
+}
+
+function readServerEnv(name: string) {
+  return process.env[name]?.trim() ?? "";
+}
+
+function getEnvStatus() {
+  const openAiKeyPresent = Boolean(readServerEnv("OPENAI_API_KEY"));
+  const accessCodePresent = Boolean(readServerEnv("SYNTHESIS_ACCESS_CODE"));
+
+  return {
+    ok: true,
+    aiConfigured: openAiKeyPresent,
+    requiresAccessCode: accessCodePresent,
+    runtime,
+    envNamesExpected: [...envNamesExpected],
+    openAiKeyPresent,
+    accessCodePresent,
+    nodeEnv: readServerEnv("NODE_ENV") || "unknown",
+    vercelEnv: readServerEnv("VERCEL_ENV") || "not-vercel",
+  };
 }
 
 function extractOutputText(payload: Record<string, unknown>) {
@@ -60,11 +94,7 @@ function extractOutputText(payload: Record<string, unknown>) {
 }
 
 export function GET() {
-  return Response.json({
-    ok: true,
-    aiConfigured: Boolean(process.env.OPENAI_API_KEY),
-    requiresAccessCode: Boolean(process.env.SYNTHESIS_ACCESS_CODE),
-  });
+  return Response.json(getEnvStatus(), { headers: noStoreHeaders });
 }
 
 export async function POST(request: Request) {
@@ -78,7 +108,7 @@ export async function POST(request: Request) {
 
   const rawNotes =
     typeof body.rawNotes === "string" ? body.rawNotes.trim() : "";
-  const requiredAccessCode = process.env.SYNTHESIS_ACCESS_CODE;
+  const requiredAccessCode = readServerEnv("SYNTHESIS_ACCESS_CODE");
   const suppliedAccessCode =
     typeof body.accessCode === "string" ? body.accessCode.trim() : "";
 
@@ -98,7 +128,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const apiKey = process.env.OPENAI_API_KEY;
+  const apiKey = readServerEnv("OPENAI_API_KEY");
 
   if (!apiKey) {
     return errorResponse(
@@ -108,7 +138,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const model = process.env.OPENAI_MODEL || "gpt-5.5";
+  const model = readServerEnv("OPENAI_MODEL") || "gpt-5.5";
 
   let response: Response;
 
@@ -181,12 +211,15 @@ export async function POST(request: Request) {
       body.currentDiscovery,
     );
 
-    return Response.json({
-      ok: true,
-      workbenchCase,
-      warnings,
-      model,
-    });
+    return Response.json(
+      {
+        ok: true,
+        workbenchCase,
+        warnings,
+        model,
+      },
+      { headers: noStoreHeaders },
+    );
   } catch {
     return errorResponse(
       "invalid_model_output",

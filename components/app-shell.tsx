@@ -146,6 +146,7 @@ export function AppShell() {
       try {
         const response = await fetch("/api/synthesize-discovery", {
           method: "GET",
+          cache: "no-store",
         });
         const result = (await response.json()) as {
           aiConfigured?: boolean;
