@@ -168,6 +168,7 @@ function extractOutputText(payload: Record<string, unknown>) {
   }
 
   const output = Array.isArray(payload.output) ? payload.output : [];
+  const textParts: string[] = [];
 
   for (const item of output) {
     if (!item || typeof item !== "object") {
@@ -189,12 +190,33 @@ function extractOutputText(payload: Record<string, unknown>) {
         (maybeText.type === "output_text" || maybeText.type === "text") &&
         typeof maybeText.text === "string"
       ) {
-        return maybeText.text;
+        textParts.push(maybeText.text);
       }
     }
   }
 
-  return "";
+  return textParts.join("");
+}
+
+function openAiResponseIssueNames(payload: Record<string, unknown>) {
+  const issueNames: string[] = [];
+  const status = stringValue(payload.status);
+  const incompleteDetails = isRecord(payload.incomplete_details)
+    ? payload.incomplete_details
+    : undefined;
+  const incompleteReason = incompleteDetails
+    ? stringValue(incompleteDetails.reason)
+    : undefined;
+
+  if (status && status !== "completed") {
+    issueNames.push(`openai_status_${status}`);
+  }
+
+  if (incompleteReason) {
+    issueNames.push(`openai_incomplete_${incompleteReason}`);
+  }
+
+  return issueNames;
 }
 
 export function GET() {
@@ -290,7 +312,8 @@ async function handleSynthesisPost(request: Request) {
             ],
           },
         ],
-        max_output_tokens: 3500,
+        reasoning: { effort: "low" },
+        max_output_tokens: 5000,
         text: {
           format: {
             type: "json_schema",
@@ -354,6 +377,22 @@ async function handleSynthesisPost(request: Request) {
   }
 
   const outputText = extractOutputText(payload);
+  const openAiResponseIssues = openAiResponseIssueNames(payload);
+
+  if (openAiResponseIssues.length > 0) {
+    return diagnosticErrorResponse({
+      errorType: "invalid_model_output",
+      failureStage: "openai_response_parse",
+      message: "Synthesis failed before updating the workbench. Current case preserved.",
+      httpStatus: 502,
+      statusCode: response.status,
+      modelUsed: model,
+      validationIssues: {
+        count: openAiResponseIssues.length,
+        names: openAiResponseIssues,
+      },
+    });
+  }
 
   if (!outputText) {
     return diagnosticErrorResponse({
