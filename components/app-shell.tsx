@@ -85,7 +85,31 @@ type SynthesisResponse =
         code: string;
         message: string;
       };
+      errorType?: string;
+      failureStage?: string;
+      statusCode?: number;
+      modelUsed?: string;
+      message?: string;
+      rawOpenAIErrorName?: string;
+      rawOpenAIErrorCode?: string;
+      validationIssues?: {
+        count: number;
+        names: string[];
+      };
     };
+
+type SynthesisErrorDetails = {
+  errorType?: string;
+  failureStage?: string;
+  statusCode?: number;
+  modelUsed?: string;
+  rawOpenAIErrorName?: string;
+  rawOpenAIErrorCode?: string;
+  validationIssues?: {
+    count: number;
+    names: string[];
+  };
+};
 
 export function AppShell() {
   const [activeCase, setActiveCase] = useState<WorkbenchCase>(() =>
@@ -99,6 +123,8 @@ export function AppShell() {
   const [saveStatus, setSaveStatus] = useState("");
   const [synthesisLoading, setSynthesisLoading] = useState(false);
   const [synthesisError, setSynthesisError] = useState("");
+  const [synthesisErrorDetails, setSynthesisErrorDetails] =
+    useState<SynthesisErrorDetails | null>(null);
   const [synthesisWarnings, setSynthesisWarnings] = useState<string[]>([]);
   const [synthesisModel, setSynthesisModel] = useState("");
   const [synthesisAccessCode, setSynthesisAccessCode] = useState("");
@@ -225,6 +251,7 @@ export function AppShell() {
     setActiveCase(nextCase);
     setRawNotes("");
     setSynthesisError("");
+    setSynthesisErrorDetails(null);
     setSynthesisWarnings([]);
     setSynthesisModel("");
     setSynthesisAccessCode("");
@@ -249,6 +276,7 @@ export function AppShell() {
     setSelectedScenarioId("insurer");
     setRawNotes("");
     setSynthesisError("");
+    setSynthesisErrorDetails(null);
     setSynthesisWarnings([]);
     setSynthesisModel("");
     setSynthesisAccessCode("");
@@ -264,6 +292,7 @@ export function AppShell() {
   async function synthesizeDiscovery() {
     setSynthesisLoading(true);
     setSynthesisError("");
+    setSynthesisErrorDetails(null);
     setSynthesisWarnings([]);
 
     try {
@@ -285,7 +314,16 @@ export function AppShell() {
         if (result.error.code === "protected") {
           setSynthesisRequiresAccessCode(true);
         }
-        setSynthesisError(result.error.message);
+        setSynthesisError(result.message ?? result.error.message);
+        setSynthesisErrorDetails({
+          errorType: result.errorType ?? result.error.code,
+          failureStage: result.failureStage,
+          statusCode: result.statusCode,
+          modelUsed: result.modelUsed,
+          rawOpenAIErrorName: result.rawOpenAIErrorName,
+          rawOpenAIErrorCode: result.rawOpenAIErrorCode,
+          validationIssues: result.validationIssues,
+        });
         return;
       }
 
@@ -293,12 +331,18 @@ export function AppShell() {
       setRawNotes(result.workbenchCase.rawNotes ?? rawNotes);
       setSynthesisWarnings(result.warnings);
       setSynthesisModel(result.model);
+      setSynthesisErrorDetails(null);
       setActiveSection("overview");
       setSaveStatus("AI synthesis applied and saved locally.");
-    } catch {
+    } catch (error) {
       setSynthesisError(
-        "AI synthesis failed. Current workbench was not changed.",
+        "Synthesis failed before updating the workbench. Current case preserved.",
       );
+      setSynthesisErrorDetails({
+        errorType: "app_exception",
+        failureStage: "app_exception",
+        rawOpenAIErrorName: error instanceof Error ? error.name : undefined,
+      });
     } finally {
       setSynthesisLoading(false);
     }
@@ -448,6 +492,7 @@ export function AppShell() {
               onSynthesize={synthesizeDiscovery}
               loading={synthesisLoading}
               error={synthesisError}
+              errorDetails={synthesisErrorDetails}
               warnings={synthesisWarnings}
               model={synthesisModel}
             />

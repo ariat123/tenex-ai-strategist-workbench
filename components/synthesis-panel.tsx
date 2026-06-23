@@ -4,6 +4,19 @@ import { Card } from "@/components/ui/card";
 import { SectionHeader } from "@/components/ui/section-header";
 import { TextField } from "@/components/ui/text-field";
 
+type SynthesisErrorDetails = {
+  errorType?: string;
+  failureStage?: string;
+  statusCode?: number;
+  modelUsed?: string;
+  rawOpenAIErrorName?: string;
+  rawOpenAIErrorCode?: string;
+  validationIssues?: {
+    count: number;
+    names: string[];
+  };
+};
+
 type SynthesisPanelProps = {
   rawNotes: string;
   accessCode: string;
@@ -14,6 +27,7 @@ type SynthesisPanelProps = {
   onSynthesize: () => void;
   loading: boolean;
   error: string;
+  errorDetails: SynthesisErrorDetails | null;
   warnings: string[];
   model?: string;
 };
@@ -28,9 +42,15 @@ export function SynthesisPanel({
   onSynthesize,
   loading,
   error,
+  errorDetails,
   warnings,
   model,
 }: SynthesisPanelProps) {
+  const statusOrCode =
+    errorDetails?.statusCode ??
+    errorDetails?.rawOpenAIErrorCode ??
+    errorDetails?.errorType;
+
   return (
     <Card>
       <SectionHeader
@@ -105,9 +125,39 @@ export function SynthesisPanel({
           </p>
         ) : null}
         {error ? (
-          <div className="flex gap-2 rounded-md border border-amber-200 bg-amber-50 p-3 text-amber-900">
+          <div className="rounded-md border border-amber-200 bg-amber-50 p-3 text-amber-900">
+            <div className="flex gap-2">
             <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
             <p>{error}</p>
+            </div>
+            {errorDetails ? (
+              <div className="mt-3 grid gap-1 border-t border-amber-200 pt-3 text-xs leading-5">
+                <p>
+                  <span className="font-semibold">Failure stage: </span>
+                  {errorDetails.failureStage ?? "not available"}
+                </p>
+                <p>
+                  <span className="font-semibold">Model used: </span>
+                  {errorDetails.modelUsed ?? "not available"}
+                </p>
+                <p>
+                  <span className="font-semibold">Status/code: </span>
+                  {statusOrCode ?? "not available"}
+                </p>
+                {errorDetails.rawOpenAIErrorName ? (
+                  <p>
+                    <span className="font-semibold">OpenAI error name: </span>
+                    {errorDetails.rawOpenAIErrorName}
+                  </p>
+                ) : null}
+                {errorDetails.validationIssues?.count ? (
+                  <p>
+                    <span className="font-semibold">Validation issues: </span>
+                    {errorDetails.validationIssues.names.join(", ")}
+                  </p>
+                ) : null}
+              </div>
+            ) : null}
           </div>
         ) : null}
         {warnings.length ? (
