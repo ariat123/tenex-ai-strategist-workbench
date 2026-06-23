@@ -7,6 +7,7 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 export const fetchCache = "force-no-store";
+export const maxDuration = 60;
 
 const DEFAULT_OPENAI_MODEL = "gpt-5-mini";
 const envNamesExpected = [
@@ -267,7 +268,7 @@ async function handleSynthesisPost(request: Request) {
   try {
     response = await fetch("https://api.openai.com/v1/responses", {
       method: "POST",
-      signal: AbortSignal.timeout(45000),
+      signal: AbortSignal.timeout(55000),
       headers: {
         Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
@@ -289,7 +290,7 @@ async function handleSynthesisPost(request: Request) {
             ],
           },
         ],
-        max_output_tokens: 6000,
+        max_output_tokens: 3500,
         text: {
           format: {
             type: "json_schema",

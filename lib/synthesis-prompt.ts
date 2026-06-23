@@ -32,8 +32,10 @@ Rules:
 - Extract from the notes. Do not invent confident facts.
 - If evidence is weak, mark the item as an assumption to validate.
 - Use short, practical, operator-grade language.
+- Keep every field concise. Prefer fragments or one sentence, not paragraphs.
 - Prefer bounded workflow pilots over dashboards or generic reporting layers.
-- Include 3-4 opportunities. At least one must be pilotKind "workflow".
+- Include exactly 3 opportunities. At least one must be pilotKind "workflow".
+- Prefer 3 evidence items, 3 bottlenecks, 3 assumptions, 3 risks, and 3-4 metrics.
 - Label every opportunity with pilotKind.
 - Score dimensions from 1 to 5, where 5 is better for a first pilot.
 - Keep deterministic ranking separate from your extraction: propose scores, but the app will rank.

@@ -58,13 +58,13 @@ const discoverySchema = {
     currentWorkflowSteps: {
       type: "array",
       minItems: 3,
-      maxItems: 8,
+      maxItems: 6,
       items: { type: "string" },
     },
     systemsInvolved: {
       type: "array",
       minItems: 2,
-      maxItems: 8,
+      maxItems: 6,
       items: { type: "string" },
     },
     estimatedVolume: { type: "string" },
@@ -77,7 +77,7 @@ const discoverySchema = {
     knownFailureModes: {
       type: "array",
       minItems: 2,
-      maxItems: 8,
+      maxItems: 5,
       items: { type: "string" },
     },
   },
@@ -136,26 +136,26 @@ export const synthesisJsonSchema = {
       discovery: discoverySchema,
       workflowBottlenecks: {
         type: "array",
-        minItems: 3,
-        maxItems: 5,
+        minItems: 2,
+        maxItems: 3,
         items: evidenceBackedClaimSchema,
       },
       discoveryEvidence: {
         type: "array",
         minItems: 2,
-        maxItems: 6,
+        maxItems: 3,
         items: evidenceItemSchema,
       },
       assumptionsToValidate: {
         type: "array",
-        minItems: 3,
-        maxItems: 6,
+        minItems: 2,
+        maxItems: 3,
         items: evidenceBackedClaimSchema,
       },
       opportunities: {
         type: "array",
         minItems: 3,
-        maxItems: 4,
+        maxItems: 3,
         items: {
           type: "object",
           additionalProperties: false,
@@ -194,8 +194,8 @@ export const synthesisJsonSchema = {
       },
       stakeholders: {
         type: "array",
-        minItems: 3,
-        maxItems: 5,
+        minItems: 2,
+        maxItems: 3,
         items: {
           type: "object",
           additionalProperties: false,
@@ -213,8 +213,8 @@ export const synthesisJsonSchema = {
       },
       adoptionRisks: {
         type: "array",
-        minItems: 3,
-        maxItems: 5,
+        minItems: 2,
+        maxItems: 3,
         items: {
           type: "object",
           additionalProperties: false,
@@ -242,8 +242,8 @@ export const synthesisJsonSchema = {
       },
       valueMetrics: {
         type: "array",
-        minItems: 4,
-        maxItems: 6,
+        minItems: 3,
+        maxItems: 4,
         items: {
           type: "object",
           additionalProperties: false,
