@@ -15,6 +15,7 @@ import { AboutModal } from "@/components/about-modal";
 import { AdoptionPlan } from "@/components/adoption-plan";
 import { DecisionSnapshot } from "@/components/decision-snapshot";
 import { DiscoveryForm } from "@/components/discovery-form";
+import { DiscoveryReview } from "@/components/discovery-review";
 import { FdeHandoffBrief } from "@/components/fde-handoff-brief";
 import { GeneratedOutputEditor } from "@/components/generated-output-editor";
 import { OpportunityScorecard } from "@/components/opportunity-scorecard";
@@ -54,7 +55,7 @@ import type {
 
 const sections: TabItem<SectionId>[] = [
   { id: "overview", label: "Overview", icon: LayoutDashboard },
-  { id: "discovery", label: "Discovery", icon: ClipboardList },
+  { id: "discovery", label: "Discovery review", icon: ClipboardList },
   { id: "scoring", label: "Scoring", icon: SlidersHorizontal },
   { id: "pilot", label: "Pilot", icon: Rocket },
   { id: "adoption", label: "Adoption", icon: Handshake },
@@ -413,21 +414,45 @@ export function AppShell() {
               warnings={synthesisWarnings}
               model={synthesisModel}
             />
-            <Card>
-              <SectionHeader
-                eyebrow="Structured inputs"
-                title="Discovery notes and workflow context"
-                description="Edit the structured inputs. Recommendations, handoff, adoption plan, and brief update locally."
-              />
-              <DiscoveryForm
-                discovery={activeCase.discovery}
-                onChange={updateDiscovery}
-              />
-            </Card>
-            <GeneratedOutputEditor
+            <DiscoveryReview
               workbenchCase={activeCase}
               onChange={setActiveCase}
             />
+            <details className="rounded-md border border-slate-200 bg-white shadow-sm">
+              <summary className="cursor-pointer px-5 py-4 text-sm font-semibold text-slate-950 marker:text-slate-500">
+                Advanced: full discovery context
+                <span className="mt-1 block text-sm font-normal leading-6 text-slate-600">
+                  Edit the full workflow, notes, systems, constraints, readiness,
+                  and failure modes when the compact review is not enough.
+                </span>
+              </summary>
+              <div className="border-t border-slate-200 p-5">
+                <SectionHeader
+                  eyebrow="Full discovery context"
+                  title="All structured discovery fields"
+                  description="These details feed the recommendation, handoff, adoption plan, and export brief."
+                />
+                <DiscoveryForm
+                  discovery={activeCase.discovery}
+                  onChange={updateDiscovery}
+                />
+              </div>
+            </details>
+            <details className="rounded-md border border-slate-200 bg-white shadow-sm">
+              <summary className="cursor-pointer px-5 py-4 text-sm font-semibold text-slate-950 marker:text-slate-500">
+                Advanced: opportunities, scoring, risks, and metrics
+                <span className="mt-1 block text-sm font-normal leading-6 text-slate-600">
+                  Adjust opportunity details, scoring inputs, adoption risks, and
+                  value metrics only when the strategist readout needs deeper edits.
+                </span>
+              </summary>
+              <div className="border-t border-slate-200 p-5">
+                <GeneratedOutputEditor
+                  workbenchCase={activeCase}
+                  onChange={setActiveCase}
+                />
+              </div>
+            </details>
           </div>
         ) : null}
 

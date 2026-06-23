@@ -13,7 +13,7 @@ It is designed to feel like a lightweight internal strategy review surface: seri
 - Starts with a Decision Snapshot: client/workflow, readiness, recommended pilot, bottlenecks, assumptions, not-yet scope, and next action
 - Supports synthetic demo scenarios for insurance, healthcare, private equity operations, and a custom workflow
 - Optionally synthesizes pasted discovery notes into structured strategist outputs with AI
-- Keeps generated outputs editable: discovery fields, evidence, assumptions, risks, metrics, and opportunities
+- Keeps generated outputs editable through a compact Discovery Review first, with deeper edits available only when needed
 - Applies transparent deterministic scoring to rank opportunities
 - Recommends a bounded first workflow pilot with explicit human review
 - Produces an FDE handoff brief, adoption plan, value measurement plan, and Markdown strategist brief
@@ -114,7 +114,7 @@ Use this structure for a 5-7 minute Loom:
 1. Open with the intent: this shows one slice of the AI Strategist role, turning messy discovery into a prioritized first pilot and FDE-ready handoff.
 2. Start on the Decision Snapshot and explain why the conclusion appears first.
 3. Show the selected demo scenario and switch scenarios briefly.
-4. Open Discovery and point out workflow owner, baseline metric, human review point, constraints, adoption concerns, and failure modes.
+4. Open Discovery Review and explain the progressive editing model: validate the few fields that affect the recommendation first, then use advanced edits only when needed.
 5. If AI synthesis is configured, paste the sample note below and synthesize it. If not, state that demo mode is intentionally still useful without AI.
 6. Open Scoring and explain the deterministic 1-5 dimensions and weights.
 7. Open Pilot and explain why the first recommendation is a bounded workflow intervention, not blind automation.

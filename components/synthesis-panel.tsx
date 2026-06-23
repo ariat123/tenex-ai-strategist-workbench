@@ -34,9 +34,9 @@ export function SynthesisPanel({
   return (
     <Card>
       <SectionHeader
-        eyebrow="AI synthesis mode"
+        eyebrow="Discovery intake"
         title="Paste messy discovery notes"
-        description="AI structures notes into editable strategist outputs. The workbench still ranks opportunities with deterministic scoring."
+        description="AI structures notes for review. You validate the strategist readout before using the outputs."
         action={
           <Button
             variant="primary"
@@ -45,7 +45,7 @@ export function SynthesisPanel({
             className="whitespace-nowrap"
           >
             <Sparkles className="h-4 w-4" />
-            {loading ? "Synthesizing..." : "Synthesize discovery with AI"}
+            {loading ? "Structuring..." : "Structure notes"}
           </Button>
         }
       />
@@ -96,7 +96,7 @@ export function SynthesisPanel({
       <div className="mt-3 grid gap-2 text-sm leading-6">
         <p className="text-slate-600">
           {aiConfigured
-            ? "Use synthetic scenarios for demos. Use AI synthesis when you have real discovery notes to structure."
+            ? "Use synthetic scenarios for demos. Use AI synthesis when you have real discovery notes, then review the fields that drive the recommendation."
             : "Use the synthetic scenarios to review the decision snapshot, scoring, FDE handoff, adoption plan, and export brief."}
         </p>
         {model ? (

@@ -149,11 +149,11 @@ export function GeneratedOutputEditor({
   }
 
   return (
-    <div className="rounded-md border border-slate-200 bg-white p-5 shadow-sm">
+    <div>
       <SectionHeader
-        eyebrow="Editable generated outputs"
-        title="Tune the strategist structure"
-        description="Use this for AI synthesis output or for tightening a demo case before export."
+        eyebrow="Advanced synthesis edits"
+        title="Opportunities, scoring, risks, and metrics"
+        description="Use this only when the recommendation needs deeper adjustment than the compact discovery review."
       />
 
       <div className="grid gap-5">
