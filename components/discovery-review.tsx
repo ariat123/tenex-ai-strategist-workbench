@@ -60,9 +60,9 @@ export function DiscoveryReview({
   return (
     <div className="rounded-md border border-slate-200 bg-white p-5 shadow-sm">
       <SectionHeader
-        eyebrow="Discovery review"
+        eyebrow="Post-synthesis review"
         title="Validate the strategist readout"
-        description="Paste notes, then validate the facts that drive the recommendation."
+        description="Check the few facts that drive the recommendation before sharing or handing off."
       />
 
       <div className="grid gap-5">

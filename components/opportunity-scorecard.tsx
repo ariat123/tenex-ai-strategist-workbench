@@ -33,24 +33,34 @@ export function OpportunityScorecard({
           title="Transparent pilot prioritization"
           description="Compare possible AI pilots using transparent scoring, not black-box AI judgment. Every displayed dimension is 1-5; 5 is stronger for a first pilot."
         />
-        <div className="grid gap-2 md:grid-cols-2 xl:grid-cols-4">
-          {scoringModel.map((rule) => (
-            <div
-              key={rule.key}
-              className="rounded-md border border-slate-200 bg-slate-50 p-3"
-            >
-              <div className="flex items-center justify-between gap-3">
-                <p className="text-sm font-semibold text-slate-950">{rule.label}</p>
-                <span className="text-xs font-semibold text-slate-600">
-                  {Math.round(rule.weight * 100)}%
-                </span>
+        <details className="rounded-md border border-slate-200 bg-slate-50">
+          <summary className="cursor-pointer px-4 py-3 text-sm font-semibold text-slate-950 marker:text-slate-500">
+            How scoring works
+            <span className="ml-2 text-sm font-normal text-slate-600">
+              Deterministic weights, visible when needed.
+            </span>
+          </summary>
+          <div className="grid gap-2 border-t border-slate-200 p-3 md:grid-cols-2 xl:grid-cols-4">
+            {scoringModel.map((rule) => (
+              <div
+                key={rule.key}
+                className="rounded-md border border-slate-200 bg-white p-3"
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <p className="text-sm font-semibold text-slate-950">
+                    {rule.label}
+                  </p>
+                  <span className="text-xs font-semibold text-slate-600">
+                    {Math.round(rule.weight * 100)}%
+                  </span>
+                </div>
+                <p className="mt-1 text-xs leading-5 text-slate-600">
+                  {rule.description}
+                </p>
               </div>
-              <p className="mt-1 text-xs leading-5 text-slate-600">
-                {rule.description}
-              </p>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        </details>
       </Card>
 
       <Card>

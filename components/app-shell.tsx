@@ -54,22 +54,31 @@ import type {
 } from "@/lib/types";
 
 const sections: TabItem<SectionId>[] = [
-  { id: "overview", label: "Overview", icon: LayoutDashboard },
-  { id: "discovery", label: "Discovery review", icon: ClipboardList },
-  { id: "scoring", label: "Opportunity ranking", icon: SlidersHorizontal },
+  { id: "discovery", label: "Discovery", icon: ClipboardList },
+  { id: "overview", label: "Decision snapshot", icon: LayoutDashboard },
   { id: "pilot", label: "First pilot", icon: Rocket },
-  { id: "adoption", label: "Rollout plan", icon: Handshake },
   { id: "handoff", label: "Build handoff", icon: FileText },
-  { id: "export", label: "Strategist brief", icon: LineChart },
+  { id: "export", label: "Final brief", icon: LineChart },
+  {
+    id: "scoring",
+    label: "Opportunity ranking",
+    icon: SlidersHorizontal,
+    secondary: true,
+  },
+  {
+    id: "adoption",
+    label: "Adoption & rollout",
+    icon: Handshake,
+    secondary: true,
+  },
 ];
 
 const workbenchPath = [
-  "Discovery review",
-  "Opportunity ranking",
+  "Discovery",
+  "Decision snapshot",
   "First pilot",
-  "Rollout plan",
   "Build handoff",
-  "Strategist brief",
+  "Final brief",
 ];
 
 type SynthesisResponse =
@@ -128,7 +137,7 @@ function PendingReadout({
         description={description}
         action={
           <Button variant="primary" onClick={onStart}>
-            Go to Discovery review
+            Go to Discovery
           </Button>
         }
       />
@@ -220,7 +229,7 @@ export function AppShell() {
         setSelectedScenarioId(stored.selectedScenarioId);
         setRawNotes(stored.rawNotes);
         setActiveSection(stored.activeSection);
-        setSaveStatus("Restored local workbench state.");
+        setSaveStatus("Restored browser workbench state.");
         localStateReady.current = true;
       }, 0);
 
@@ -301,7 +310,7 @@ export function AppShell() {
       rawNotes,
       activeSection,
     });
-    setSaveStatus("Saved locally.");
+    setSaveStatus("Saved in browser.");
   }
 
   function resetWorkbench() {
@@ -328,7 +337,7 @@ export function AppShell() {
     }
 
     downloadMarkdown(markdownFilename(activeCase.label), strategistBrief);
-    setSaveStatus("Downloaded Markdown brief.");
+    setSaveStatus("Downloaded brief.");
   }
 
   async function synthesizeDiscovery() {
@@ -375,7 +384,7 @@ export function AppShell() {
       setSynthesisModel(result.model);
       setSynthesisErrorDetails(null);
       setActiveSection("overview");
-      setSaveStatus("AI synthesized case applied and saved locally.");
+      setSaveStatus("AI synthesized case applied and saved in browser.");
     } catch (error) {
       setSynthesisError(
         "Synthesis failed before updating the workbench. Current case preserved.",
@@ -450,74 +459,83 @@ export function AppShell() {
             ) : (
               <PendingReadout
                 title="No strategist readout yet"
-                description="Overview stays empty until discovery notes are structured or an example case is selected."
+                description="Decision snapshot stays empty until discovery notes are structured or an example case is selected."
                 onStart={() => setActiveSection("discovery")}
               />
             )}
-            <Card>
-              <SectionHeader
-                eyebrow="Workbench flow"
-                title="How to read this workbench"
-                description="This workbench turns messy discovery into a strategist point of view: what workflow is broken, which AI pilot should go first, what stays human reviewed, what the FDE needs to build, and how adoption/value will be measured."
-              />
-              <div className="flex flex-wrap gap-2">
-                {workbenchPath.map((step, index) => (
-                  <div key={step} className="flex items-center gap-2">
-                    <span className="rounded-md border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-semibold text-slate-700">
-                      {step}
-                    </span>
-                    {index < workbenchPath.length - 1 ? (
-                      <span className="text-xs font-semibold text-slate-400">
-                        -&gt;
-                      </span>
-                    ) : null}
-                  </div>
-                ))}
-              </div>
-            </Card>
             {hasStructuredReadout ? (
               <>
-                <Card>
-                  <SectionHeader
-                    eyebrow="Case source"
-                    title={sourceModeTitle}
-                    description={sourceModeDescription}
-                  />
-                  <div className="grid gap-3 md:grid-cols-3">
-                    <div className="rounded-md border border-slate-200 bg-slate-50 p-3">
-                      <p className="text-xs font-semibold uppercase text-slate-500">
-                        Active case
-                      </p>
-                      <p className="mt-1 text-sm font-semibold text-slate-950">
-                        {activeCase.label}
-                      </p>
-                    </div>
-                    <div className="rounded-md border border-slate-200 bg-slate-50 p-3">
-                      <p className="text-xs font-semibold uppercase text-slate-500">
-                        Data source
-                      </p>
-                      <p className="mt-1 text-sm leading-5 text-slate-700">
-                        {dataSourceLabel}
-                      </p>
-                    </div>
-                    <div className="rounded-md border border-slate-200 bg-slate-50 p-3">
-                      <div className="flex items-center gap-2">
-                        <Database className="h-4 w-4 text-slate-600" />
-                        <p className="text-xs font-semibold uppercase text-slate-500">
-                          Persistence
-                        </p>
-                      </div>
-                      <p className="mt-1 text-sm leading-5 text-slate-700">
-                        Local browser storage only.
-                      </p>
-                    </div>
-                  </div>
-                </Card>
                 <WorkflowSummary
                   discovery={activeCase.discovery}
                   discoveryEvidence={activeCase.discoveryEvidence}
                   workflowBottlenecks={activeCase.workflowBottlenecks}
                 />
+                <details className="rounded-md border border-slate-200 bg-white shadow-sm">
+                  <summary className="cursor-pointer px-5 py-4 text-sm font-semibold text-slate-950 marker:text-slate-500">
+                    Supporting context and source
+                    <span className="mt-1 block text-sm font-normal leading-6 text-slate-600">
+                      Source, browser storage, and the supporting workbench
+                      path.
+                    </span>
+                  </summary>
+                  <div className="grid gap-4 border-t border-slate-200 p-5">
+                    <div>
+                      <p className="text-xs font-semibold uppercase text-slate-500">
+                        Workbench path
+                      </p>
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        {workbenchPath.map((step, index) => (
+                          <div key={step} className="flex items-center gap-2">
+                            <span className="rounded-md border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-semibold text-slate-700">
+                              {step}
+                            </span>
+                            {index < workbenchPath.length - 1 ? (
+                              <span className="text-xs font-semibold text-slate-400">
+                                -&gt;
+                              </span>
+                            ) : null}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <SectionHeader
+                        eyebrow="Source"
+                        title={sourceModeTitle}
+                        description={sourceModeDescription}
+                      />
+                      <div className="grid gap-3 md:grid-cols-3">
+                        <div className="rounded-md border border-slate-200 bg-slate-50 p-3">
+                          <p className="text-xs font-semibold uppercase text-slate-500">
+                            Active case
+                          </p>
+                          <p className="mt-1 text-sm font-semibold text-slate-950">
+                            {activeCase.label}
+                          </p>
+                        </div>
+                        <div className="rounded-md border border-slate-200 bg-slate-50 p-3">
+                          <p className="text-xs font-semibold uppercase text-slate-500">
+                            Data source
+                          </p>
+                          <p className="mt-1 text-sm leading-5 text-slate-700">
+                            {dataSourceLabel}
+                          </p>
+                        </div>
+                        <div className="rounded-md border border-slate-200 bg-slate-50 p-3">
+                          <div className="flex items-center gap-2">
+                            <Database className="h-4 w-4 text-slate-600" />
+                            <p className="text-xs font-semibold uppercase text-slate-500">
+                              Storage
+                            </p>
+                          </div>
+                          <p className="mt-1 text-sm leading-5 text-slate-700">
+                            Saved in this browser only.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </details>
               </>
             ) : null}
           </div>
@@ -539,10 +557,12 @@ export function AppShell() {
               warnings={synthesisWarnings}
               model={synthesisModel}
             />
-            <DiscoveryReview
-              workbenchCase={activeCase}
-              onChange={setActiveCase}
-            />
+            {hasStructuredReadout ? (
+              <DiscoveryReview
+                workbenchCase={activeCase}
+                onChange={setActiveCase}
+              />
+            ) : null}
             <details className="rounded-md border border-slate-200 bg-white shadow-sm">
               <summary className="cursor-pointer px-5 py-4 text-sm font-semibold text-slate-950 marker:text-slate-500">
                 Example cases
@@ -643,7 +663,7 @@ export function AppShell() {
           ) : (
             <PendingReadout
               title="No rollout plan yet"
-              description="Rollout planning depends on the recommended pilot, stakeholders, risks, and assumptions from structured discovery."
+              description="Adoption and rollout planning depends on the recommended pilot, stakeholders, risks, and assumptions from structured discovery."
               onStart={() => setActiveSection("discovery")}
             />
           )
@@ -686,8 +706,8 @@ export function AppShell() {
             </div>
           ) : (
             <PendingReadout
-              title="No strategist brief yet"
-              description="The strategist brief is available after discovery notes have been structured and reviewed."
+              title="No final brief yet"
+              description="The final brief is available after discovery notes have been structured and reviewed."
               onStart={() => setActiveSection("discovery")}
             />
           )

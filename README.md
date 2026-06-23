@@ -4,7 +4,7 @@ Candidate workbench built by Aria Tabatabai for the Tenex AI Strategist role.
 
 ## What This App Is
 
-Tenex AI Strategist Workbench turns messy discovery notes into a strategist readout: recommended first AI pilot, opportunity ranking, rollout plan, build handoff, and strategist brief.
+Tenex AI Strategist Workbench turns messy discovery notes into a strategist readout: recommended first AI pilot, decision snapshot, build handoff, adoption path, and final brief.
 
 It is designed as a lightweight internal-style workbench for one slice of the AI Strategist role: moving from discovery evidence to a bounded first workflow pilot that a strategist, deployment lead, or FDE could review.
 
@@ -12,11 +12,11 @@ It is not an internal Tenex tool and does not claim Tenex-private process knowle
 
 ## What It Does
 
-- Starts on Discovery review so the user can paste raw notes first
+- Starts on Discovery so the user can paste raw notes first
 - Structures messy notes into editable discovery facts, bottlenecks, evidence, and assumptions
 - Ranks possible AI pilots with visible deterministic scoring
 - Recommends a first bounded workflow intervention with a human review boundary
-- Produces a rollout plan, build handoff, value measurement plan, and strategist brief
+- Produces an adoption and rollout plan, build handoff, value measurement plan, and final brief
 - Keeps example cases available in a collapsed optional section
 - Saves the current workbench in browser localStorage only
 - Exports the strategist brief as copyable text or Markdown
@@ -26,7 +26,7 @@ It is not an internal Tenex tool and does not claim Tenex-private process knowle
 The product loop is:
 
 ```text
-Messy discovery notes -> structured readout -> opportunity ranking -> first pilot -> rollout plan -> build handoff -> strategist brief
+Messy discovery notes -> decision snapshot -> first pilot -> build handoff -> final brief
 ```
 
 AI synthesis is used only to structure messy discovery notes. The workbench then applies transparent strategist logic:
@@ -52,7 +52,7 @@ If a measurement or reporting layer scores highly, the recommendation can still 
 
 The final app is intended to run on Vercel.
 
-There is no database, auth provider, user account system, analytics service, storage bucket, background worker, or server-side project store. Opportunity ranking, editing, local browser save, optional example cases, Markdown export, and the strategist brief work in the deployed app without persistent server storage.
+There is no database, auth provider, user account system, analytics service, storage bucket, background worker, or server-side project store. Opportunity ranking, editing, browser save, optional example cases, brief download, and the final strategist brief work in the deployed app without persistent server storage.
 
 AI synthesis is the only feature that needs server-side configuration.
 
@@ -86,11 +86,11 @@ Do not commit secrets to GitHub.
 
 AI synthesis works only when `OPENAI_API_KEY` is configured. `SYNTHESIS_ACCESS_CODE` is optional but recommended; when set, the synthesis panel asks for the matching access code before the server calls OpenAI.
 
-When `OPENAI_API_KEY` is not configured, the app still loads normally. Opportunity ranking, build handoff, rollout plan, value measurement, local browser save, Markdown export, and optional example cases continue to work. The AI synthesis panel says that AI synthesis is not configured for this deployment.
+When `OPENAI_API_KEY` is not configured, the app still loads normally. Opportunity ranking, build handoff, adoption and rollout planning, value measurement, browser save, brief download, and optional example cases continue to work. The AI synthesis panel says that AI synthesis is not configured for this deployment.
 
 ## Example Cases
 
-Example cases are intentionally secondary. They are available from the collapsed `Example cases` section in Discovery review and are useful for exploring the workbench without entering notes.
+Example cases are intentionally secondary. They are available from the collapsed `Example cases` section in Discovery and are useful for exploring the workbench without entering notes.
 
 Included example cases:
 
@@ -120,16 +120,16 @@ These cases are illustrative and editable. They are not Tenex-internal material.
 Use this structure for a 5-7 minute Loom:
 
 1. Open with the intent: this shows one slice of the AI Strategist role, turning messy discovery into a prioritized first pilot and FDE-ready build handoff.
-2. Start on Discovery review and explain why the app begins with raw notes instead of a dashboard.
+2. Start on Discovery and explain why the app begins with raw notes instead of a dashboard.
 3. Paste the QA fixture below, enter the access code if required, and structure the discovery notes.
-4. Show that synthesis redirects to Overview so the strategist conclusion appears immediately.
+4. Show that synthesis redirects to Decision snapshot so the strategist conclusion appears immediately.
 5. Explain the Decision Snapshot: workflow, readiness, recommended first pilot, bottlenecks, assumptions, human review, and next action.
-6. Return briefly to Discovery review and show the progressive editing model: validate core facts first, use advanced edits only when needed.
-7. Open Opportunity ranking and explain the deterministic 1-5 scoring dimensions and weights.
-8. Open First pilot and explain why the recommendation is a bounded workflow intervention, not blind automation.
-9. Open Rollout plan and show stakeholder risks, assumptions to validate, and the 30/60/90 path to usage.
-10. Open Build handoff and show the FDE implementation brief structure.
-11. Open Strategist brief and copy or download the Markdown artifact.
+6. Return briefly to Discovery only if you need to show the post-synthesis review fields: validate core facts first, use advanced edits only when needed.
+7. Open First pilot and explain why the recommendation is a bounded workflow intervention, not blind automation.
+8. Open Build handoff and show the FDE implementation brief structure.
+9. Open Final brief and copy or download the artifact.
+10. Mention Opportunity ranking and Adoption & rollout as supporting sections for transparent scoring and usage planning.
+11. If asked, open Opportunity ranking and explain the deterministic 1-5 scoring dimensions and weights.
 12. Close with what would improve next with strategist or FDE feedback: scoring calibration, stronger evidence review, more workflow-specific validation, and integration into real implementation tooling.
 
 QA fixture for AI synthesis:

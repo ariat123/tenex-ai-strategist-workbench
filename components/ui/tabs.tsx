@@ -5,6 +5,7 @@ export type TabItem<T extends string> = {
   id: T;
   label: string;
   icon?: LucideIcon;
+  secondary?: boolean;
 };
 
 type TabsProps<T extends string> = {
@@ -29,7 +30,10 @@ export function Tabs<T extends string>({ items, activeId, onChange }: TabsProps<
               "flex h-9 shrink-0 items-center gap-2 rounded-md px-3 text-sm font-medium transition-colors",
               active
                 ? "bg-slate-950 text-white"
-                : "text-slate-600 hover:bg-slate-100 hover:text-slate-950",
+                : item.secondary
+                  ? "text-slate-500 hover:bg-slate-100 hover:text-slate-950"
+                  : "text-slate-700 hover:bg-slate-100 hover:text-slate-950",
+              item.secondary && !active ? "ml-1" : "",
             )}
           >
             {Icon ? <Icon className="h-4 w-4" /> : null}

@@ -151,8 +151,8 @@ export function GeneratedOutputEditor({
   return (
     <div>
       <SectionHeader
-        eyebrow="Advanced synthesis edits"
-        title="Opportunities, scoring, risks, and metrics"
+        eyebrow="Advanced: tune generated readout"
+        title="Advanced recommendation details"
         description="Use this only when the recommendation needs deeper adjustment than the compact discovery review."
       />
 
@@ -231,7 +231,7 @@ export function GeneratedOutputEditor({
                   />
                   <label className="block">
                     <span className="mb-1.5 block text-sm font-medium text-slate-700">
-                      Pilot kind
+                      Opportunity type
                     </span>
                     <select
                       value={opportunity.pilotKind}

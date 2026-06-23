@@ -99,7 +99,7 @@ export function SynthesisPanel({
 
       {aiConfigured && !requiresAccessCode ? (
         <p className="mb-4 text-sm leading-6 text-slate-600">
-          Live AI synthesis is available for this deployment.
+          Ready to structure discovery notes.
         </p>
       ) : null}
 
@@ -135,32 +135,37 @@ export function SynthesisPanel({
               <p className="font-medium">{error}</p>
             </div>
             {errorDetails ? (
-              <div className="mt-3 grid gap-1 border-t border-amber-200 pt-3 text-xs leading-5 text-amber-900">
-                <p>
-                  <span className="font-semibold">Failure stage: </span>
-                  {errorDetails.failureStage ?? "not available"}
-                </p>
-                <p>
-                  <span className="font-semibold">Model used: </span>
-                  {errorDetails.modelUsed ?? "not available"}
-                </p>
-                <p>
-                  <span className="font-semibold">Status/code: </span>
-                  {statusOrCode ?? "not available"}
-                </p>
-                {errorDetails.rawOpenAIErrorName ? (
+              <details className="mt-3 border-t border-amber-200 pt-3">
+                <summary className="cursor-pointer text-xs font-semibold text-amber-950 marker:text-amber-700">
+                  Technical details
+                </summary>
+                <div className="mt-2 grid gap-1 text-xs leading-5 text-amber-900">
                   <p>
-                    <span className="font-semibold">OpenAI error name: </span>
-                    {errorDetails.rawOpenAIErrorName}
+                    <span className="font-semibold">Failure stage: </span>
+                    {errorDetails.failureStage ?? "not available"}
                   </p>
-                ) : null}
-                {errorDetails.validationIssues?.count ? (
                   <p>
-                    <span className="font-semibold">Validation issues: </span>
-                    {errorDetails.validationIssues.names.join(", ")}
+                    <span className="font-semibold">Model used: </span>
+                    {errorDetails.modelUsed ?? "not available"}
                   </p>
-                ) : null}
-              </div>
+                  <p>
+                    <span className="font-semibold">Status/code: </span>
+                    {statusOrCode ?? "not available"}
+                  </p>
+                  {errorDetails.rawOpenAIErrorName ? (
+                    <p>
+                      <span className="font-semibold">OpenAI error name: </span>
+                      {errorDetails.rawOpenAIErrorName}
+                    </p>
+                  ) : null}
+                  {errorDetails.validationIssues?.count ? (
+                    <p>
+                      <span className="font-semibold">Validation issues: </span>
+                      {errorDetails.validationIssues.names.join(", ")}
+                    </p>
+                  ) : null}
+                </div>
+              </details>
             ) : null}
           </div>
         ) : null}

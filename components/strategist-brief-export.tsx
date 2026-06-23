@@ -50,8 +50,8 @@ export function StrategistBriefExport({
   return (
     <Card>
       <SectionHeader
-        eyebrow="Strategist brief"
-        title="Copyable strategist brief"
+        eyebrow="Final brief"
+        title="Final strategist brief"
         description="One copyable artifact combining the recommendation, evidence, scoring, rollout, build handoff, and value plan."
         action={<CopyButton text={brief} label="Copy brief" />}
       />

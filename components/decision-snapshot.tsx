@@ -67,7 +67,7 @@ export function DecisionSnapshot({
         eyebrow="Decision snapshot"
         title="Strategist conclusion"
         description="Recommendation, risk boundary, and next action up front."
-        action={<CopyButton text={brief} label="Copy strategist brief" />}
+        action={<CopyButton text={brief} label="Copy final brief" />}
       />
 
       <div className="grid gap-4 xl:grid-cols-[1.15fr_0.85fr]">
