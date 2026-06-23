@@ -56,11 +56,20 @@ import type {
 const sections: TabItem<SectionId>[] = [
   { id: "overview", label: "Overview", icon: LayoutDashboard },
   { id: "discovery", label: "Discovery review", icon: ClipboardList },
-  { id: "scoring", label: "Scoring", icon: SlidersHorizontal },
-  { id: "pilot", label: "Pilot", icon: Rocket },
-  { id: "adoption", label: "Adoption", icon: Handshake },
-  { id: "handoff", label: "FDE handoff", icon: FileText },
-  { id: "export", label: "Export", icon: LineChart },
+  { id: "scoring", label: "Opportunity ranking", icon: SlidersHorizontal },
+  { id: "pilot", label: "First pilot", icon: Rocket },
+  { id: "adoption", label: "Rollout plan", icon: Handshake },
+  { id: "handoff", label: "Build handoff", icon: FileText },
+  { id: "export", label: "Strategist brief", icon: LineChart },
+];
+
+const workbenchPath = [
+  "Discovery review",
+  "Opportunity ranking",
+  "First pilot",
+  "Rollout plan",
+  "Build handoff",
+  "Strategist brief",
 ];
 
 type SynthesisResponse =
@@ -120,6 +129,25 @@ export function AppShell() {
       ),
     [activeCase, scoredOpportunities, recommendedPilot],
   );
+  const modeLabel =
+    activeCase.mode === "ai-synthesis"
+      ? "AI synthesized case"
+      : activeCase.scenarioId === "custom"
+        ? "Template mode"
+        : "Sample scenario mode";
+  const sourceModeTitle = modeLabel;
+  const sourceModeDescription =
+    activeCase.mode === "ai-synthesis"
+      ? "This case was synthesized from pasted discovery notes and remains fully editable."
+      : activeCase.scenarioId === "custom"
+        ? "A template-driven starting point for replacing the defaults with your own workflow."
+        : "Synthetic sample data for walkthroughs. Switch scenarios or paste notes in Discovery review.";
+  const dataSourceLabel =
+    activeCase.mode === "ai-synthesis"
+      ? "Pasted discovery notes"
+      : activeCase.scenarioId === "custom"
+        ? "Template defaults"
+        : "Synthetic sample scenario data";
 
   useEffect(() => {
     const stored = loadWorkbenchState();
@@ -289,16 +317,14 @@ export function AppShell() {
                 Tenex AI Strategist Workbench
               </h1>
               <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
-                Turn discovery notes into a prioritized AI pilot, FDE handoff,
-                adoption plan, and value brief.
+                Turn discovery notes into opportunity ranking, a first AI pilot,
+                rollout plan, build handoff, and strategist brief.
               </p>
             </div>
             <div className="grid gap-2 rounded-md border border-slate-200 bg-slate-50 p-3 text-sm text-slate-700 sm:min-w-80">
               <div>
                 <span className="font-semibold text-slate-950">Mode: </span>
-                {activeCase.mode === "demo"
-                  ? "Demo scenario"
-                  : "AI synthesis"}
+                {modeLabel}
               </div>
               <div>
                 <span className="font-semibold text-slate-950">Workflow: </span>
@@ -335,17 +361,30 @@ export function AppShell() {
             />
             <Card>
               <SectionHeader
+                eyebrow="Workbench flow"
+                title="How to read this workbench"
+                description="This workbench turns messy discovery into a strategist point of view: what workflow is broken, which AI pilot should go first, what stays human reviewed, what the FDE needs to build, and how adoption/value will be measured."
+              />
+              <div className="flex flex-wrap gap-2">
+                {workbenchPath.map((step, index) => (
+                  <div key={step} className="flex items-center gap-2">
+                    <span className="rounded-md border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-semibold text-slate-700">
+                      {step}
+                    </span>
+                    {index < workbenchPath.length - 1 ? (
+                      <span className="text-xs font-semibold text-slate-400">
+                        -&gt;
+                      </span>
+                    ) : null}
+                  </div>
+                ))}
+              </div>
+            </Card>
+            <Card>
+              <SectionHeader
                 eyebrow="Source mode"
-                title={
-                  activeCase.mode === "demo"
-                    ? "Demo scenario mode"
-                    : "AI synthesis mode"
-                }
-                description={
-                  activeCase.mode === "demo"
-                    ? "Synthetic preset data for walkthroughs. Switch scenarios or paste notes in Discovery."
-                    : "This case was synthesized from pasted notes and remains fully editable."
-                }
+                title={sourceModeTitle}
+                description={sourceModeDescription}
               />
               <div className="grid gap-3 md:grid-cols-3">
                 <div className="rounded-md border border-slate-200 bg-slate-50 p-3">
@@ -361,9 +400,7 @@ export function AppShell() {
                     Data source
                   </p>
                   <p className="mt-1 text-sm leading-5 text-slate-700">
-                    {activeCase.mode === "demo"
-                      ? "Synthetic scenario data"
-                      : "Pasted discovery notes"}
+                    {dataSourceLabel}
                   </p>
                 </div>
                 <div className="rounded-md border border-slate-200 bg-slate-50 p-3">
@@ -382,7 +419,7 @@ export function AppShell() {
             <Card>
               <SectionHeader
                 eyebrow="Scenario selection"
-                title="Change the demo context"
+                title="Change the sample context"
                 description="Synthetic presets remain available for quick walkthroughs."
               />
               <ScenarioSelector
@@ -430,7 +467,7 @@ export function AppShell() {
                 <SectionHeader
                   eyebrow="Full discovery context"
                   title="All structured discovery fields"
-                  description="These details feed the recommendation, handoff, adoption plan, and export brief."
+                  description="These details feed the recommendation, build handoff, rollout plan, and strategist brief."
                 />
                 <DiscoveryForm
                   discovery={activeCase.discovery}
@@ -494,7 +531,6 @@ export function AppShell() {
 
         {activeSection === "export" ? (
           <div className="grid gap-4">
-            <ValueMeasurementPlan metrics={activeCase.valueMetrics} />
             <StrategistBriefExport
               discovery={activeCase.discovery}
               opportunities={scoredOpportunities}
@@ -506,6 +542,7 @@ export function AppShell() {
               assumptionsToValidate={activeCase.assumptionsToValidate}
               workflowBottlenecks={activeCase.workflowBottlenecks}
             />
+            <ValueMeasurementPlan metrics={activeCase.valueMetrics} />
           </div>
         ) : null}
 

@@ -14,7 +14,7 @@ export function ValueMeasurementPlan({ metrics }: ValueMeasurementPlanProps) {
       <SectionHeader
         eyebrow="Measurement"
         title="Value measurement plan"
-        description="The pilot should capture value, adoption, quality, and operational movement from the start."
+        description="Track value, adoption, quality, and operational movement from the start."
       />
       <div className="overflow-x-auto">
         <table className="w-full min-w-[820px] text-left text-sm">

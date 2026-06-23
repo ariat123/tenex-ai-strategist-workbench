@@ -29,9 +29,9 @@ export function OpportunityScorecard({
     <div className="grid gap-4">
       <Card>
         <SectionHeader
-          eyebrow="Scoring"
-          title="Weighted opportunity scorecard"
-          description="Deterministic local score. Every displayed dimension is 1-5; 5 is stronger for a first pilot."
+          eyebrow="Opportunity ranking"
+          title="Transparent pilot prioritization"
+          description="Compare possible AI pilots using transparent scoring, not black-box AI judgment. Every displayed dimension is 1-5; 5 is stronger for a first pilot."
         />
         <div className="grid gap-2 md:grid-cols-2 xl:grid-cols-4">
           {scoringModel.map((rule) => (

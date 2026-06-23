@@ -62,7 +62,7 @@ export function DiscoveryReview({
       <SectionHeader
         eyebrow="Discovery review"
         title="Validate the strategist readout"
-        description="Correct the facts that affect the pilot recommendation before sharing the brief."
+        description="Paste notes, then validate the facts that drive the recommendation."
       />
 
       <div className="grid gap-5">

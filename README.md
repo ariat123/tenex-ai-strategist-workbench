@@ -16,14 +16,14 @@ It is designed to feel like a lightweight internal strategy review surface: seri
 - Keeps generated outputs editable through a compact Discovery Review first, with deeper edits available only when needed
 - Applies transparent deterministic scoring to rank opportunities
 - Recommends a bounded first workflow pilot with explicit human review
-- Produces an FDE handoff brief, adoption plan, value measurement plan, and Markdown strategist brief
+- Produces a build handoff brief, rollout plan, value measurement plan, and Markdown strategist brief
 - Saves the current workbench in browser localStorage only
 
 ## How It Works
 
 The app has two operating modes:
 
-- Demo mode uses synthetic preset scenarios and requires no environment variables.
+- Sample scenario mode uses synthetic preset scenarios and requires no environment variables.
 - AI synthesis mode sends pasted discovery notes to a server-side Next.js route, structures them with the OpenAI Responses API, validates the model output, and then applies the app's deterministic scoring logic.
 
 AI helps structure messy notes. The workbench decides how to rank opportunities using visible scoring weights and editable inputs.
@@ -44,7 +44,7 @@ If a measurement or reporting layer scores highest, the recommendation can still
 
 The final app is intended to run on Vercel.
 
-There is no database, auth provider, user account system, analytics service, storage bucket, or background worker. Demo scenarios, scoring, editing, local browser save, and Markdown export all work in the deployed app without server persistence.
+There is no database, auth provider, user account system, analytics service, storage bucket, or background worker. Sample scenarios, opportunity ranking, editing, local browser save, and Markdown export all work in the deployed app without server persistence.
 
 AI synthesis is the only feature that needs server-side configuration.
 
@@ -76,13 +76,13 @@ OPENAI_MODEL
 
 Do not commit secrets to GitHub.
 
-Demo mode works without these variables. AI synthesis only works when `OPENAI_API_KEY` is configured. `SYNTHESIS_ACCESS_CODE` is optional but recommended for protecting public demo usage; when set, the synthesis panel asks for the matching AI demo code before the server calls OpenAI.
+Sample scenarios work without these variables. AI synthesis only works when `OPENAI_API_KEY` is configured. `SYNTHESIS_ACCESS_CODE` is optional but recommended for protecting public demo usage; when set, the synthesis panel asks for the matching AI demo code before the server calls OpenAI.
 
-When `OPENAI_API_KEY` is not configured, the app still loads normally. Demo scenarios, scoring, FDE handoff, adoption plan, value measurement, local browser save, and Markdown export continue to work. The AI synthesis panel says that AI synthesis is not configured for this deployment.
+When `OPENAI_API_KEY` is not configured, the app still loads normally. Sample scenarios, opportunity ranking, build handoff, rollout plan, value measurement, local browser save, and Markdown export continue to work. The AI synthesis panel says that AI synthesis is not configured for this deployment.
 
-## Demo Mode
+## Sample Scenario Mode
 
-Demo mode is the default fallback and is safe for public review.
+Sample scenario mode is the default fallback and is safe for public review.
 
 It uses synthetic scenarios only:
 
@@ -111,16 +111,16 @@ These scenarios are intentionally synthetic and editable. They let a reviewer un
 
 Use this structure for a 5-7 minute Loom:
 
-1. Open with the intent: this shows one slice of the AI Strategist role, turning messy discovery into a prioritized first pilot and FDE-ready handoff.
+1. Open with the intent: this shows one slice of the AI Strategist role, turning messy discovery into a prioritized first pilot and FDE-ready build handoff.
 2. Start on the Decision Snapshot and explain why the conclusion appears first.
 3. Show the selected demo scenario and switch scenarios briefly.
 4. Open Discovery Review and explain the progressive editing model: validate the few fields that affect the recommendation first, then use advanced edits only when needed.
-5. If AI synthesis is configured, paste the sample note below and synthesize it. If not, state that demo mode is intentionally still useful without AI.
-6. Open Scoring and explain the deterministic 1-5 dimensions and weights.
-7. Open Pilot and explain why the first recommendation is a bounded workflow intervention, not blind automation.
-8. Open Adoption and show stakeholder risks, assumptions to validate, and the 30/60/90 rollout.
-9. Open FDE handoff and show the implementation brief structure.
-10. Open Export and copy or download the Markdown strategist brief.
+5. If AI synthesis is configured, paste the sample note below and synthesize it. If not, state that sample scenario mode is intentionally still useful without AI.
+6. Open Opportunity Ranking and explain the deterministic 1-5 dimensions and weights.
+7. Open First Pilot and explain why the first recommendation is a bounded workflow intervention, not blind automation.
+8. Open Rollout Plan and show stakeholder risks, assumptions to validate, and the 30/60/90 path to usage.
+9. Open Build Handoff and show the FDE implementation brief structure.
+10. Open Strategist Brief and copy or download the Markdown strategist brief.
 11. Close with what would improve next with strategist or FDE feedback: scoring calibration, stronger evidence review, more scenario-specific validation, and integration into real implementation tooling.
 
 Sample messy discovery note for AI synthesis QA:

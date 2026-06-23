@@ -115,7 +115,7 @@ export async function POST(request: Request) {
   if (requiredAccessCode && suppliedAccessCode !== requiredAccessCode) {
     return errorResponse(
       "protected",
-      "AI synthesis is protected for this demo. Demo mode still works.",
+      "AI synthesis is protected for this demo. Sample scenarios still work.",
       403,
     );
   }
@@ -133,7 +133,7 @@ export async function POST(request: Request) {
   if (!apiKey) {
     return errorResponse(
       "missing_api_key",
-      "AI synthesis is not configured for this deployment. Demo mode still works.",
+      "AI synthesis is not configured for this deployment. Sample scenarios still work.",
       400,
     );
   }

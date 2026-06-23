@@ -28,9 +28,9 @@ export function RecommendedPilot({
     <div className="grid gap-4">
       <Card>
         <SectionHeader
-          eyebrow="Recommended first pilot"
+          eyebrow="First pilot"
           title={pilot.title}
-          description={pilot.description}
+          description={`Define the first bounded workflow intervention and what not to automate yet. ${pilot.description}`}
           action={<ScoreChip score={pilot.weightedScore} showBand />}
         />
         <div className="grid gap-4 lg:grid-cols-3">

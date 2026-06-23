@@ -150,9 +150,9 @@ export function FdeHandoffBrief({
   return (
     <Card>
       <SectionHeader
-        eyebrow="Implementation handoff"
-        title="FDE handoff brief"
-        description="Implementation brief for MVP scoping and build handoff."
+        eyebrow="Build handoff"
+        title="FDE build brief"
+        description="Turn the strategist readout into a build brief an FDE can act on."
         action={<CopyButton text={brief} label="Copy handoff" />}
       />
       <div className="grid gap-3 rounded-md border border-slate-200 bg-slate-50 p-4">

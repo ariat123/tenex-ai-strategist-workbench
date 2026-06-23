@@ -54,8 +54,8 @@ export function SynthesisPanel({
         <div className="mb-4 flex gap-2 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm leading-6 text-amber-900">
           <AlertCircle className="mt-1 h-4 w-4 shrink-0" />
           <p>
-            AI synthesis is not configured for this deployment. Demo scenarios,
-            scoring, and export still work.
+            AI synthesis is not configured for this deployment. Sample scenarios,
+            opportunity ranking, and strategist brief export still work.
           </p>
         </div>
       ) : null}
@@ -71,7 +71,7 @@ export function SynthesisPanel({
           <div className="flex gap-2 text-sm leading-6 text-slate-600">
             <KeyRound className="mt-1 h-4 w-4 shrink-0 text-slate-500" />
             <p>
-              Demo scenarios work without a code. AI synthesis may require a
+              Sample scenarios work without a code. AI synthesis may require a
               demo code to protect API usage.
             </p>
           </div>
@@ -80,7 +80,7 @@ export function SynthesisPanel({
 
       {aiConfigured && !requiresAccessCode ? (
         <p className="mb-4 text-sm leading-6 text-slate-600">
-          Demo scenarios work without a code. AI synthesis may require a demo
+          Sample scenarios work without a code. AI synthesis may require a demo
           code to protect API usage.
         </p>
       ) : null}
@@ -97,7 +97,7 @@ export function SynthesisPanel({
         <p className="text-slate-600">
           {aiConfigured
             ? "Use synthetic scenarios for demos. Use AI synthesis when you have real discovery notes, then review the fields that drive the recommendation."
-            : "Use the synthetic scenarios to review the decision snapshot, scoring, FDE handoff, adoption plan, and export brief."}
+            : "Use the synthetic scenarios to review the decision snapshot, opportunity ranking, build handoff, rollout plan, and strategist brief."}
         </p>
         {model ? (
           <p className="text-xs font-medium text-slate-500">

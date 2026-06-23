@@ -31,9 +31,9 @@ export function AdoptionPlan({
     <div className="grid gap-4">
       <Card>
         <SectionHeader
-          eyebrow="Change management"
-          title="Stakeholder map"
-          description={`The pilot needs ${discovery.workflowOwner} to own feedback, baseline movement, and the required review path.`}
+          eyebrow="Rollout plan"
+          title="Stakeholder and adoption path"
+          description={`Identify stakeholders, adoption risks, assumptions, and the 30/60/90 path to usage. The pilot needs ${discovery.workflowOwner} to own feedback, baseline movement, and the required review path.`}
         />
         <div className="mb-4 grid gap-3 md:grid-cols-3">
           <div className="rounded-md border border-slate-200 bg-slate-50 p-3">
@@ -92,7 +92,7 @@ export function AdoptionPlan({
       <Card>
         <SectionHeader
           title="Assumptions to validate"
-          description="Adoption planning should expose what is not proven yet."
+          description="Rollout and adoption planning should expose what is not proven yet."
         />
         <div className="grid gap-3 md:grid-cols-3">
           {assumptionsToValidate.slice(0, 6).map((assumption) => (
@@ -110,8 +110,8 @@ export function AdoptionPlan({
 
       <Card>
         <SectionHeader
-          title="Adoption risk register"
-          description="Adoption risk is implementation scope."
+          title="Rollout and adoption risk register"
+          description="Adoption risk is implementation scope because the workflow only matters if people use it."
         />
         <div className="overflow-x-auto">
           <table className="w-full min-w-[760px] text-left text-sm">
