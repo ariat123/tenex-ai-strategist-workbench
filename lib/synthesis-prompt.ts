@@ -45,4 +45,4 @@ Rules:
 - For bottlenecks, opportunities, adoption risks, and assumptions, include evidenceIds when grounded in notes.
 - If a claim is not directly grounded, leave evidenceIds empty and fill assumptionToValidate.
 - Evidence quotes should be exact short fragments from the notes when possible. Use an empty string if no exact quote exists.
-- Do not claim Tenex-internal knowledge. This is a candidate prototype using public role context.`;
+- Do not claim Tenex-internal knowledge. This is a candidate workbench using public role context.`;

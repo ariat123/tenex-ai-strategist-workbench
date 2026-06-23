@@ -111,6 +111,36 @@ type SynthesisErrorDetails = {
   };
 };
 
+function PendingReadout({
+  title,
+  description,
+  onStart,
+}: {
+  title: string;
+  description: string;
+  onStart: () => void;
+}) {
+  return (
+    <Card>
+      <SectionHeader
+        eyebrow="Discovery required"
+        title={title}
+        description={description}
+        action={
+          <Button variant="primary" onClick={onStart}>
+            Go to Discovery review
+          </Button>
+        }
+      />
+      <div className="rounded-md border border-slate-200 bg-slate-50 p-4 text-sm leading-6 text-slate-700">
+        Paste notes and structure them before using strategist outputs. Until
+        then, this workbench will not show placeholder pilots, rankings,
+        rollout plans, or build briefs.
+      </div>
+    </Card>
+  );
+}
+
 export function AppShell() {
   const [activeCase, setActiveCase] = useState<WorkbenchCase>(() =>
     defaultWorkbenchCase(),
@@ -140,19 +170,25 @@ export function AppShell() {
   const recommendedPilot =
     selectRecommendedPilot(scoredOpportunities, activeCase.discovery) ??
     scoredOpportunities[0];
+  const hasStructuredReadout = Boolean(recommendedPilot);
   const strategistBrief = useMemo(
-    () =>
-      buildStrategistBrief(
-        activeCase.discovery,
-        scoredOpportunities,
-        activeCase.stakeholders,
-        activeCase.adoptionRisks,
-        activeCase.valueMetrics,
-        activeCase.discoveryEvidence,
-        activeCase.assumptionsToValidate,
-        activeCase.workflowBottlenecks,
-        recommendedPilot,
-      ),
+    () => {
+      if (!recommendedPilot) {
+        return "";
+      }
+
+      return buildStrategistBrief(
+          activeCase.discovery,
+          scoredOpportunities,
+          activeCase.stakeholders,
+          activeCase.adoptionRisks,
+          activeCase.valueMetrics,
+          activeCase.discoveryEvidence,
+          activeCase.assumptionsToValidate,
+          activeCase.workflowBottlenecks,
+          recommendedPilot,
+        );
+    },
     [activeCase, scoredOpportunities, recommendedPilot],
   );
   const modeLabel =
@@ -273,7 +309,7 @@ export function AppShell() {
 
     clearWorkbenchState();
     setActiveCase(nextCase);
-    setSelectedScenarioId("insurer");
+    setSelectedScenarioId("custom");
     setRawNotes("");
     setSynthesisError("");
     setSynthesisErrorDetails(null);
@@ -285,6 +321,12 @@ export function AppShell() {
   }
 
   function downloadBrief() {
+    if (!strategistBrief) {
+      setActiveSection("discovery");
+      setSaveStatus("Structure discovery notes before downloading a brief.");
+      return;
+    }
+
     downloadMarkdown(markdownFilename(activeCase.label), strategistBrief);
     setSaveStatus("Downloaded Markdown brief.");
   }
@@ -375,7 +417,7 @@ export function AppShell() {
                 </span>
               </div>
               <Button size="sm" variant="secondary" onClick={() => setAboutOpen(true)}>
-                About prototype
+                About
               </Button>
             </div>
           </div>
@@ -383,6 +425,7 @@ export function AppShell() {
 
         <StateActions
           saveStatus={saveStatus}
+          canDownload={hasStructuredReadout}
           onSave={saveNow}
           onReset={resetWorkbench}
           onDownload={downloadBrief}
@@ -392,17 +435,25 @@ export function AppShell() {
 
         {activeSection === "overview" ? (
           <div className="grid gap-4">
-            <DecisionSnapshot
-              discovery={activeCase.discovery}
-              opportunities={scoredOpportunities}
-              recommendedPilot={recommendedPilot}
-              stakeholders={activeCase.stakeholders}
-              risks={activeCase.adoptionRisks}
-              metrics={activeCase.valueMetrics}
-              discoveryEvidence={activeCase.discoveryEvidence}
-              assumptionsToValidate={activeCase.assumptionsToValidate}
-              workflowBottlenecks={activeCase.workflowBottlenecks}
-            />
+            {hasStructuredReadout && recommendedPilot ? (
+              <DecisionSnapshot
+                discovery={activeCase.discovery}
+                opportunities={scoredOpportunities}
+                recommendedPilot={recommendedPilot}
+                stakeholders={activeCase.stakeholders}
+                risks={activeCase.adoptionRisks}
+                metrics={activeCase.valueMetrics}
+                discoveryEvidence={activeCase.discoveryEvidence}
+                assumptionsToValidate={activeCase.assumptionsToValidate}
+                workflowBottlenecks={activeCase.workflowBottlenecks}
+              />
+            ) : (
+              <PendingReadout
+                title="No strategist readout yet"
+                description="Overview stays empty until discovery notes are structured or an example case is selected."
+                onStart={() => setActiveSection("discovery")}
+              />
+            )}
             <Card>
               <SectionHeader
                 eyebrow="Workbench flow"
@@ -424,47 +475,51 @@ export function AppShell() {
                 ))}
               </div>
             </Card>
-            <Card>
-              <SectionHeader
-                eyebrow="Case source"
-                title={sourceModeTitle}
-                description={sourceModeDescription}
-              />
-              <div className="grid gap-3 md:grid-cols-3">
-                <div className="rounded-md border border-slate-200 bg-slate-50 p-3">
-                  <p className="text-xs font-semibold uppercase text-slate-500">
-                    Active case
-                  </p>
-                  <p className="mt-1 text-sm font-semibold text-slate-950">
-                    {activeCase.label}
-                  </p>
-                </div>
-                <div className="rounded-md border border-slate-200 bg-slate-50 p-3">
-                  <p className="text-xs font-semibold uppercase text-slate-500">
-                    Data source
-                  </p>
-                  <p className="mt-1 text-sm leading-5 text-slate-700">
-                    {dataSourceLabel}
-                  </p>
-                </div>
-                <div className="rounded-md border border-slate-200 bg-slate-50 p-3">
-                  <div className="flex items-center gap-2">
-                    <Database className="h-4 w-4 text-slate-600" />
-                    <p className="text-xs font-semibold uppercase text-slate-500">
-                      Persistence
-                    </p>
+            {hasStructuredReadout ? (
+              <>
+                <Card>
+                  <SectionHeader
+                    eyebrow="Case source"
+                    title={sourceModeTitle}
+                    description={sourceModeDescription}
+                  />
+                  <div className="grid gap-3 md:grid-cols-3">
+                    <div className="rounded-md border border-slate-200 bg-slate-50 p-3">
+                      <p className="text-xs font-semibold uppercase text-slate-500">
+                        Active case
+                      </p>
+                      <p className="mt-1 text-sm font-semibold text-slate-950">
+                        {activeCase.label}
+                      </p>
+                    </div>
+                    <div className="rounded-md border border-slate-200 bg-slate-50 p-3">
+                      <p className="text-xs font-semibold uppercase text-slate-500">
+                        Data source
+                      </p>
+                      <p className="mt-1 text-sm leading-5 text-slate-700">
+                        {dataSourceLabel}
+                      </p>
+                    </div>
+                    <div className="rounded-md border border-slate-200 bg-slate-50 p-3">
+                      <div className="flex items-center gap-2">
+                        <Database className="h-4 w-4 text-slate-600" />
+                        <p className="text-xs font-semibold uppercase text-slate-500">
+                          Persistence
+                        </p>
+                      </div>
+                      <p className="mt-1 text-sm leading-5 text-slate-700">
+                        Local browser storage only.
+                      </p>
+                    </div>
                   </div>
-                  <p className="mt-1 text-sm leading-5 text-slate-700">
-                    Local browser storage only.
-                  </p>
-                </div>
-              </div>
-            </Card>
-            <WorkflowSummary
-              discovery={activeCase.discovery}
-              discoveryEvidence={activeCase.discoveryEvidence}
-              workflowBottlenecks={activeCase.workflowBottlenecks}
-            />
+                </Card>
+                <WorkflowSummary
+                  discovery={activeCase.discovery}
+                  discoveryEvidence={activeCase.discoveryEvidence}
+                  workflowBottlenecks={activeCase.workflowBottlenecks}
+                />
+              </>
+            ) : null}
           </div>
         ) : null}
 
@@ -544,62 +599,102 @@ export function AppShell() {
         ) : null}
 
         {activeSection === "scoring" ? (
-          <OpportunityScorecard
-            opportunities={scoredOpportunities}
-            recommendedPilot={recommendedPilot}
-          />
+          hasStructuredReadout && recommendedPilot ? (
+            <OpportunityScorecard
+              opportunities={scoredOpportunities}
+              recommendedPilot={recommendedPilot}
+            />
+          ) : (
+            <PendingReadout
+              title="No opportunity ranking yet"
+              description="Opportunity ranking appears after discovery notes have been structured into candidate pilots."
+              onStart={() => setActiveSection("discovery")}
+            />
+          )
         ) : null}
 
         {activeSection === "pilot" ? (
-          <RecommendedPilot
-            discovery={activeCase.discovery}
-            pilot={recommendedPilot}
-            workflowBottlenecks={activeCase.workflowBottlenecks}
-          />
+          hasStructuredReadout && recommendedPilot ? (
+            <RecommendedPilot
+              discovery={activeCase.discovery}
+              pilot={recommendedPilot}
+              workflowBottlenecks={activeCase.workflowBottlenecks}
+            />
+          ) : (
+            <PendingReadout
+              title="No first pilot yet"
+              description="The first pilot is generated only after the workbench has structured discovery notes."
+              onStart={() => setActiveSection("discovery")}
+            />
+          )
         ) : null}
 
         {activeSection === "adoption" ? (
-          <AdoptionPlan
-            discovery={activeCase.discovery}
-            pilot={recommendedPilot}
-            stakeholders={activeCase.stakeholders}
-            risks={activeCase.adoptionRisks}
-            assumptionsToValidate={activeCase.assumptionsToValidate}
-          />
+          hasStructuredReadout && recommendedPilot ? (
+            <AdoptionPlan
+              discovery={activeCase.discovery}
+              pilot={recommendedPilot}
+              stakeholders={activeCase.stakeholders}
+              risks={activeCase.adoptionRisks}
+              assumptionsToValidate={activeCase.assumptionsToValidate}
+            />
+          ) : (
+            <PendingReadout
+              title="No rollout plan yet"
+              description="Rollout planning depends on the recommended pilot, stakeholders, risks, and assumptions from structured discovery."
+              onStart={() => setActiveSection("discovery")}
+            />
+          )
         ) : null}
 
         {activeSection === "handoff" ? (
-          <FdeHandoffBrief
-            discovery={activeCase.discovery}
-            pilot={recommendedPilot}
-            risks={activeCase.adoptionRisks}
-            metrics={activeCase.valueMetrics}
-            assumptionsToValidate={activeCase.assumptionsToValidate}
-            discoveryEvidence={activeCase.discoveryEvidence}
-          />
+          hasStructuredReadout && recommendedPilot ? (
+            <FdeHandoffBrief
+              discovery={activeCase.discovery}
+              pilot={recommendedPilot}
+              risks={activeCase.adoptionRisks}
+              metrics={activeCase.valueMetrics}
+              assumptionsToValidate={activeCase.assumptionsToValidate}
+              discoveryEvidence={activeCase.discoveryEvidence}
+            />
+          ) : (
+            <PendingReadout
+              title="No build handoff yet"
+              description="The build handoff is created from a structured readout with a recommended pilot and review boundaries."
+              onStart={() => setActiveSection("discovery")}
+            />
+          )
         ) : null}
 
         {activeSection === "export" ? (
-          <div className="grid gap-4">
-            <StrategistBriefExport
-              discovery={activeCase.discovery}
-              opportunities={scoredOpportunities}
-              recommendedPilot={recommendedPilot}
-              stakeholders={activeCase.stakeholders}
-              risks={activeCase.adoptionRisks}
-              metrics={activeCase.valueMetrics}
-              discoveryEvidence={activeCase.discoveryEvidence}
-              assumptionsToValidate={activeCase.assumptionsToValidate}
-              workflowBottlenecks={activeCase.workflowBottlenecks}
+          hasStructuredReadout && recommendedPilot ? (
+            <div className="grid gap-4">
+              <StrategistBriefExport
+                discovery={activeCase.discovery}
+                opportunities={scoredOpportunities}
+                recommendedPilot={recommendedPilot}
+                stakeholders={activeCase.stakeholders}
+                risks={activeCase.adoptionRisks}
+                metrics={activeCase.valueMetrics}
+                discoveryEvidence={activeCase.discoveryEvidence}
+                assumptionsToValidate={activeCase.assumptionsToValidate}
+                workflowBottlenecks={activeCase.workflowBottlenecks}
+              />
+              <ValueMeasurementPlan metrics={activeCase.valueMetrics} />
+            </div>
+          ) : (
+            <PendingReadout
+              title="No strategist brief yet"
+              description="The strategist brief is available after discovery notes have been structured and reviewed."
+              onStart={() => setActiveSection("discovery")}
             />
-            <ValueMeasurementPlan metrics={activeCase.valueMetrics} />
-          </div>
+          )
         ) : null}
 
         <footer className="rounded-md border border-slate-200 bg-white px-4 py-3 text-xs leading-5 text-slate-600">
-          Candidate prototype built by Aria Tabatabai for the Tenex AI
+          Candidate workbench built by Aria Tabatabai for the Tenex AI
           Strategist role. Based on public Tenex role language and public AI
-          transformation materials. Includes optional illustrative cases. Not an
+          transformation materials. Includes optional example cases. Not an
           internal Tenex tool.
         </footer>
       </div>

@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 
 type StateActionsProps = {
   saveStatus: string;
+  canDownload: boolean;
   onSave: () => void;
   onReset: () => void;
   onDownload: () => void;
@@ -10,6 +11,7 @@ type StateActionsProps = {
 
 export function StateActions({
   saveStatus,
+  canDownload,
   onSave,
   onReset,
   onDownload,
@@ -22,7 +24,12 @@ export function StateActions({
           <Save className="h-3.5 w-3.5" />
           Save locally
         </Button>
-        <Button size="sm" variant="secondary" onClick={onDownload}>
+        <Button
+          size="sm"
+          variant="secondary"
+          onClick={onDownload}
+          disabled={!canDownload}
+        >
           <Download className="h-3.5 w-3.5" />
           Download Markdown
         </Button>

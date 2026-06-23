@@ -1,6 +1,6 @@
 # Tenex AI Strategist Workbench
 
-Candidate prototype built by Aria Tabatabai for the Tenex AI Strategist role.
+Candidate workbench built by Aria Tabatabai for the Tenex AI Strategist role.
 
 ## What This App Is
 
@@ -168,6 +168,6 @@ npm run dev
 
 Do not commit `.env.local` or any secrets.
 
-## Prototype Disclosure
+## Disclosure
 
-Candidate prototype built by Aria Tabatabai for the Tenex AI Strategist role. Based on public Tenex role language and public AI transformation materials. Includes optional illustrative cases. Not an internal Tenex tool.
+Candidate workbench built by Aria Tabatabai for the Tenex AI Strategist role. Based on public Tenex role language and public AI transformation materials. Includes optional example cases. Not an internal Tenex tool.

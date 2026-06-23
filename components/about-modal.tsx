@@ -19,7 +19,7 @@ export function AboutModal({ open, onClose }: AboutModalProps) {
         <div className="mb-4 flex items-start justify-between gap-4">
           <div>
             <p className="text-xs font-semibold uppercase text-slate-500">
-              About this prototype
+              About this workbench
             </p>
             <h2 className="mt-1 text-lg font-semibold text-slate-950">
               Tenex AI Strategist Workbench
@@ -30,9 +30,9 @@ export function AboutModal({ open, onClose }: AboutModalProps) {
           </Button>
         </div>
         <p className="text-sm leading-6 text-slate-700">
-          Candidate prototype built by Aria Tabatabai for the Tenex AI
+          Candidate workbench built by Aria Tabatabai for the Tenex AI
           Strategist role. Based on public Tenex role language and public AI
-          transformation materials. Includes optional illustrative cases. Not an
+          transformation materials. Includes optional example cases. Not an
           internal Tenex tool.
         </p>
       </div>

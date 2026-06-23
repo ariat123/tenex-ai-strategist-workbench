@@ -123,6 +123,10 @@ export function defaultWorkbenchCase() {
     workflowBottlenecks: [],
     discoveryEvidence: [],
     assumptionsToValidate: [],
+    opportunities: [],
+    stakeholders: [],
+    adoptionRisks: [],
+    valueMetrics: [],
     rawNotes: "",
     synthesizedAt: undefined,
   } satisfies WorkbenchCase;
