@@ -39,7 +39,7 @@ export function AdoptionPlan({
         <SectionHeader
           eyebrow="Adoption & rollout"
           title="Stakeholder and adoption path"
-          description={`Identify stakeholders, adoption risks, assumptions, and the 30/60/90 path to usage. The pilot needs ${discovery.workflowOwner} to own feedback, baseline movement, and the required review path.`}
+          description={`Supporting detail for usage and value proof. The pilot needs ${discovery.workflowOwner} to own feedback, baseline movement, and the required review path.`}
         />
         <div className="mb-4 grid gap-3 md:grid-cols-3">
           <div className="rounded-md border border-slate-200 bg-slate-50 p-3">

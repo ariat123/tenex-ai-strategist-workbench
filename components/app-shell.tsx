@@ -418,9 +418,9 @@ export function AppShell() {
   }
 
   return (
-    <main className="min-h-screen bg-slate-50 text-slate-950">
+    <main className="min-h-screen bg-slate-200 text-slate-950">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-5 px-4 py-5 sm:px-6 lg:px-8">
-        <header className="rounded-md border border-slate-200 bg-white p-5 shadow-sm">
+        <header className="rounded-md border border-slate-300 bg-white p-5 shadow-sm">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
             <div>
               <p className="text-xs font-semibold uppercase text-slate-500">
@@ -434,7 +434,7 @@ export function AppShell() {
                 handoff, adoption path, and final brief.
               </p>
             </div>
-            <div className="flex flex-col gap-3 rounded-md border border-slate-200 bg-slate-50 p-3 text-sm text-slate-700 sm:min-w-80">
+            <div className="flex flex-col gap-3 rounded-md border border-slate-200 bg-slate-50/80 p-3 text-sm text-slate-700 sm:min-w-80">
               <div className="flex flex-wrap gap-2">
                 <span
                   className={`rounded-full border px-3 py-1 text-xs font-semibold ${modeChipClass}`}
@@ -571,14 +571,14 @@ export function AppShell() {
 
         {activeSection === "discovery" ? (
           <div className="grid gap-4">
-            <div className="grid gap-3 md:grid-cols-2">
+            <div className="grid gap-3 md:grid-cols-[minmax(0,1.2fr)_minmax(280px,0.8fr)]">
               <button
                 type="button"
                 onClick={() => setDiscoveryStartMode("notes")}
-                className={`rounded-md border p-4 text-left shadow-sm transition-colors ${
+                className={`rounded-md border p-5 text-left shadow-sm transition-colors ${
                   discoveryStartMode === "notes"
-                    ? "border-indigo-300 bg-indigo-50/70"
-                    : "border-slate-200 bg-white hover:border-indigo-200 hover:bg-indigo-50/30"
+                    ? "border-indigo-400 bg-indigo-50/90 ring-1 ring-indigo-100"
+                    : "border-slate-300 bg-white/90 hover:border-indigo-200 hover:bg-indigo-50/30"
                 }`}
               >
                 <div className="flex items-start gap-3">
@@ -617,10 +617,10 @@ export function AppShell() {
               <button
                 type="button"
                 onClick={() => setDiscoveryStartMode("guide")}
-                className={`rounded-md border p-4 text-left shadow-sm transition-colors ${
+                className={`rounded-md border p-4 text-left transition-colors ${
                   discoveryStartMode === "guide"
-                    ? "border-violet-300 bg-violet-50/70"
-                    : "border-slate-200 bg-white hover:border-violet-200 hover:bg-violet-50/30"
+                    ? "border-violet-300 bg-violet-50/60 shadow-sm"
+                    : "border-slate-300 bg-slate-50/80 hover:border-violet-200 hover:bg-violet-50/30"
                 }`}
               >
                 <div className="flex items-start gap-3">
@@ -651,9 +651,8 @@ export function AppShell() {
                       ) : null}
                     </div>
                     <p className="mt-1 text-sm leading-6 text-slate-600">
-                      Create a focused question guide before or during
-                      discovery, capture answers, then turn them into the same
-                      strategist readout.
+                      Optional pre-call support: prepare questions, capture
+                      answers, then move them into the same notes flow.
                     </p>
                   </div>
                 </div>

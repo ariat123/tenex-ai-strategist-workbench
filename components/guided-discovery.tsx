@@ -313,7 +313,7 @@ export function GuidedDiscovery({
       <SectionHeader
         eyebrow="Guided discovery"
         title="Prepare a focused discovery guide"
-        description="Enter light client context, capture messy answers, then turn those answers into discovery notes for the same strategist readout."
+        description="Optional pre-call support. Prepare sharper questions and capture answers, then move them into the same notes flow."
         action={
           <Button
             variant="primary"

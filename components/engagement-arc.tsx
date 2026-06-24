@@ -12,9 +12,9 @@ const engagementSteps = [
 
 export function EngagementArc() {
   return (
-    <div className="overflow-x-auto rounded-md border border-slate-200 bg-white px-4 py-3 shadow-sm">
+    <div className="overflow-x-auto rounded-md border border-slate-300 bg-slate-50/80 px-4 py-2">
       <div className="flex min-w-max items-center gap-2 text-xs">
-        <span className="mr-1 font-semibold uppercase tracking-wide text-slate-500">
+        <span className="mr-1 font-semibold uppercase tracking-wide text-slate-400">
           Engagement arc
         </span>
         {engagementSteps.map((step, index) => (
@@ -22,8 +22,8 @@ export function EngagementArc() {
             <span
               className={
                 index === 0
-                  ? "rounded-full border border-indigo-200 bg-indigo-50 px-2.5 py-1 font-semibold text-indigo-800"
-                  : "rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 font-medium text-slate-600"
+                  ? "rounded-full border border-indigo-100 bg-white px-2.5 py-1 font-semibold text-indigo-700"
+                  : "rounded-full border border-slate-200 bg-white/70 px-2.5 py-1 font-medium text-slate-500"
               }
             >
               {step}

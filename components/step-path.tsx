@@ -23,7 +23,7 @@ export function StepPath({
   const activeIndex = steps.findIndex((step) => step.id === activeSection);
 
   return (
-    <div className="rounded-md border border-indigo-100 bg-white px-3 py-2 shadow-sm">
+    <div className="rounded-md border border-indigo-200 bg-white px-3 py-2 shadow-sm">
       <div className="flex flex-wrap items-center gap-2">
         {steps.map((step, index) => {
           const active = step.id === activeSection;

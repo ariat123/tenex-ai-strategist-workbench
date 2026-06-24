@@ -34,7 +34,7 @@ export function OpportunityScorecard({
         <SectionHeader
           eyebrow="Opportunity ranking"
           title="Transparent pilot prioritization"
-          description="Compare possible AI pilots using transparent scoring, not black-box AI judgment. Every displayed dimension is 1-5; 5 is stronger for a first pilot."
+          description="Supporting detail for calibration. The scorecard makes the recommendation inspectable, but the first pilot remains a bounded workflow judgment."
         />
         <details className="rounded-md border border-slate-200 bg-slate-50">
           <summary className="cursor-pointer px-4 py-3 text-sm font-semibold text-slate-950 marker:text-slate-500">
@@ -73,6 +73,10 @@ export function OpportunityScorecard({
           description={cleanGeneratedText(winner.rationale)}
           action={<ScoreChip score={winner.weightedScore} showBand />}
         />
+        <p className="mb-3 rounded-md border border-indigo-100 bg-indigo-50/50 p-3 text-sm leading-6 text-indigo-950">
+          Supporting detail for calibration and rollout; the primary
+          recommendation is in Decision snapshot.
+        </p>
         {recommendationDiffers ? (
           <div className="mb-3 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm leading-6 text-amber-900">
             The highest raw score is {rawWinnerTitle}, but the strategist

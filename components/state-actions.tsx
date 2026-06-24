@@ -17,8 +17,8 @@ export function StateActions({
   onDownload,
 }: StateActionsProps) {
   return (
-    <div className="flex flex-col gap-2 rounded-md border border-slate-200 bg-white p-3 text-xs text-slate-600 shadow-sm sm:flex-row sm:items-center sm:justify-between">
-      <span>{saveStatus || "Saved in this browser only."}</span>
+    <div className="flex flex-col gap-2 rounded-md border border-slate-300 bg-white/80 p-2.5 text-xs text-slate-500 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+      <span className="px-1">{saveStatus || "Saved in this browser only."}</span>
       <div className="flex flex-wrap gap-2">
         <Button size="sm" variant="secondary" onClick={onSave}>
           <Save className="h-3.5 w-3.5" />

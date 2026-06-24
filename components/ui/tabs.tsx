@@ -16,7 +16,7 @@ type TabsProps<T extends string> = {
 
 export function Tabs<T extends string>({ items, activeId, onChange }: TabsProps<T>) {
   return (
-    <nav className="flex gap-1 overflow-x-auto rounded-md border border-slate-200 bg-white p-1">
+    <nav className="flex gap-1 overflow-x-auto rounded-md border border-slate-300 bg-white p-1 shadow-sm">
       {items.map((item) => {
         const Icon = item.icon;
         const active = item.id === activeId;
@@ -28,12 +28,14 @@ export function Tabs<T extends string>({ items, activeId, onChange }: TabsProps<
             onClick={() => onChange(item.id)}
             className={cn(
               "flex h-9 shrink-0 items-center gap-2 rounded-md px-3 text-sm font-medium transition-colors",
-              active
-                ? "bg-indigo-600 text-white shadow-sm"
-                : item.secondary
+              active && item.secondary
+                ? "bg-slate-100 text-slate-800 ring-1 ring-slate-200"
+                : active
+                  ? "bg-indigo-600 text-white shadow-sm"
+                  : item.secondary
                   ? "text-slate-500 hover:bg-slate-100 hover:text-slate-900"
                   : "text-slate-700 hover:bg-indigo-50 hover:text-indigo-900",
-              item.secondary && !active ? "ml-1" : "",
+              item.secondary ? "ml-1 border-l border-slate-200 pl-4" : "",
             )}
           >
             {Icon ? <Icon className="h-4 w-4" /> : null}
