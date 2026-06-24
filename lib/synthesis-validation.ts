@@ -150,6 +150,7 @@ function normalizeDiscovery(value: unknown, fallback: DiscoveryInput): Discovery
     workflowOwner: text(item.workflowOwner, fallback.workflowOwner),
     baselineMetric: text(item.baselineMetric, fallback.baselineMetric),
     humanReviewPoint: text(item.humanReviewPoint, fallback.humanReviewPoint),
+    executiveMandate: text(item.executiveMandate, fallback.executiveMandate),
     executiveGoal: text(item.executiveGoal, fallback.executiveGoal),
     stakeholderNotes: text(item.stakeholderNotes, fallback.stakeholderNotes),
     operatorNotes: text(item.operatorNotes, fallback.operatorNotes),

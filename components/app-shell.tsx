@@ -16,6 +16,7 @@ import { AdoptionPlan } from "@/components/adoption-plan";
 import { DecisionSnapshot } from "@/components/decision-snapshot";
 import { DiscoveryForm } from "@/components/discovery-form";
 import { DiscoveryReview } from "@/components/discovery-review";
+import { EngagementArc } from "@/components/engagement-arc";
 import { FdeHandoffBrief } from "@/components/fde-handoff-brief";
 import { GeneratedOutputEditor } from "@/components/generated-output-editor";
 import { GuidedDiscovery } from "@/components/guided-discovery";
@@ -47,6 +48,7 @@ import {
 import {
   caseFromScenarioId,
   defaultWorkbenchCase,
+  hydrateWorkbenchCase,
 } from "@/lib/workbench-case";
 import { buildStrategistBrief } from "@/lib/briefs";
 import type {
@@ -233,7 +235,7 @@ export function AppShell() {
 
     if (stored) {
       window.setTimeout(() => {
-        setActiveCase(stored.activeCase);
+        setActiveCase(hydrateWorkbenchCase(stored.activeCase));
         setSelectedScenarioId(stored.selectedScenarioId);
         setRawNotes(stored.rawNotes);
         setActiveSection(stored.activeSection);
@@ -461,6 +463,7 @@ export function AppShell() {
         />
 
         <Tabs items={sections} activeId={activeSection} onChange={setActiveSection} />
+        <EngagementArc />
         <StepPath
           activeSection={activeSection}
           hasStructuredReadout={hasStructuredReadout}
@@ -662,8 +665,15 @@ export function AppShell() {
                 accessCode={synthesisAccessCode}
                 aiConfigured={synthesisConfigured}
                 requiresAccessCode={synthesisRequiresAccessCode}
+                executiveMandate={activeCase.discovery.executiveMandate}
                 onRawNotesChange={setRawNotes}
                 onAccessCodeChange={setSynthesisAccessCode}
+                onExecutiveMandateChange={(executiveMandate) =>
+                  updateDiscovery({
+                    ...activeCase.discovery,
+                    executiveMandate,
+                  })
+                }
                 onSynthesize={synthesizeDiscovery}
                 loading={synthesisLoading}
                 error={synthesisError}
@@ -672,7 +682,16 @@ export function AppShell() {
                 model={synthesisModel}
               />
             ) : (
-              <GuidedDiscovery onUseAsNotes={useGuidedDiscoveryNotes} />
+              <GuidedDiscovery
+                onUseAsNotes={useGuidedDiscoveryNotes}
+                executiveMandate={activeCase.discovery.executiveMandate}
+                onExecutiveMandateChange={(executiveMandate) =>
+                  updateDiscovery({
+                    ...activeCase.discovery,
+                    executiveMandate,
+                  })
+                }
+              />
             )}
             {hasStructuredReadout ? (
               <DiscoveryReview
@@ -837,7 +856,9 @@ export function AppShell() {
           Candidate workbench built by Aria Tabatabai for the Tenex AI
           Strategist role. Based on public Tenex role language and public AI
           transformation materials. Includes optional example cases. Not an
-          internal Tenex tool.
+          internal Tenex tool. It supports the middle of an AI Strategist
+          engagement: executive mandate, discovery, pilot decision, build
+          handoff, adoption path, value proof, and reusable learning.
         </footer>
       </div>
       <AboutModal open={aboutOpen} onClose={() => setAboutOpen(false)} />

@@ -98,6 +98,18 @@ export function DiscoveryReview({
 
         <div className={surfaces.inputWorkspace}>
           <TextareaField
+            label="Executive question / mandate"
+            value={discovery.executiveMandate}
+            onChange={(value) => updateDiscovery("executiveMandate", value)}
+            minRows={2}
+            hint="What is the leadership-level question this discovery should answer?"
+            placeholder="Why have prior AI pilots not changed this workflow, and what first workflow should we ship?"
+            textareaClassName={reviewInputClass}
+          />
+        </div>
+
+        <div className={surfaces.inputWorkspace}>
+          <TextareaField
             label="Required human review point"
             value={discovery.humanReviewPoint}
             onChange={(value) => updateDiscovery("humanReviewPoint", value)}

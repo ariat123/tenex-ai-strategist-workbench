@@ -52,6 +52,7 @@ const blankDiscovery: DiscoveryInput = {
   workflowOwner: "",
   baselineMetric: "",
   humanReviewPoint: "",
+  executiveMandate: "",
   executiveGoal: "",
   stakeholderNotes: "",
   operatorNotes: "",
@@ -134,6 +135,16 @@ export function defaultWorkbenchCase() {
 
 export function cloneWorkbenchCase(workbenchCase: WorkbenchCase): WorkbenchCase {
   return clone(workbenchCase);
+}
+
+export function hydrateWorkbenchCase(workbenchCase: WorkbenchCase): WorkbenchCase {
+  return {
+    ...workbenchCase,
+    discovery: {
+      ...blankDiscovery,
+      ...workbenchCase.discovery,
+    },
+  };
 }
 
 export function claimTexts(claims: EvidenceBackedClaim[]) {

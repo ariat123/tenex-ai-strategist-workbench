@@ -29,6 +29,7 @@ export type DiscoveryInput = {
   workflowOwner: string;
   baselineMetric: string;
   humanReviewPoint: string;
+  executiveMandate: string;
   executiveGoal: string;
   stakeholderNotes: string;
   operatorNotes: string;

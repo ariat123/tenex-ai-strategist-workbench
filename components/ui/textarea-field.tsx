@@ -6,6 +6,7 @@ type TextareaFieldProps = {
   onChange: (value: string) => void;
   minRows?: number;
   hint?: string;
+  placeholder?: string;
   textareaClassName?: string;
 };
 
@@ -15,6 +16,7 @@ export function TextareaField({
   onChange,
   minRows = 4,
   hint,
+  placeholder,
   textareaClassName,
 }: TextareaFieldProps) {
   return (
@@ -24,6 +26,7 @@ export function TextareaField({
         value={value}
         onChange={(event) => onChange(event.target.value)}
         rows={minRows}
+        placeholder={placeholder}
         className={cn(
           "w-full resize-y rounded-md border border-slate-300 bg-white px-3 py-2 text-sm leading-6 text-slate-950 outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100",
           textareaClassName,

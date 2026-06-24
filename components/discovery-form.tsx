@@ -54,6 +54,15 @@ export function DiscoveryForm({ discovery, onChange }: DiscoveryFormProps) {
       </div>
 
       <TextareaField
+        label="Executive question / mandate"
+        value={discovery.executiveMandate}
+        onChange={(value) => update("executiveMandate", value)}
+        minRows={3}
+        hint="What is the leadership-level question this discovery should answer?"
+        placeholder="Why have prior AI pilots not changed this workflow, and what first workflow should we ship?"
+      />
+
+      <TextareaField
         label="Executive goal"
         value={discovery.executiveGoal}
         onChange={(value) => update("executiveGoal", value)}

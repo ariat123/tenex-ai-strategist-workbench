@@ -10,6 +10,7 @@ Company: ${currentDiscovery.companyName}
 Domain: ${currentDiscovery.domain}
 Workflow: ${currentDiscovery.workflowName}
 Workflow owner: ${currentDiscovery.workflowOwner}
+Executive mandate: ${currentDiscovery.executiveMandate}
 Baseline metric: ${currentDiscovery.baselineMetric}
 Human review point: ${currentDiscovery.humanReviewPoint}`
     : "No prior structured context was supplied.";
@@ -30,6 +31,7 @@ Your job is to extract a practical AI pilot plan from messy discovery notes.
 
 Rules:
 - Extract from the notes. Do not invent confident facts.
+- Capture the leadership-level question or executive mandate the discovery should answer. If it is not explicit, derive it cautiously from the stated goal and constraints.
 - If evidence is weak, mark the item as an assumption to validate.
 - Use short, practical, operator-grade language.
 - Keep every field concise. Prefer fragments or one sentence, not paragraphs.

@@ -11,6 +11,8 @@ import { surfaces } from "@/lib/surfaces";
 
 type GuidedDiscoveryProps = {
   onUseAsNotes: (notes: string) => void;
+  executiveMandate: string;
+  onExecutiveMandateChange: (value: string) => void;
 };
 
 type GuideContext = {
@@ -257,9 +259,11 @@ function buildNotesFromGuide(
   context: GuideContext,
   guide: GuideGroup[],
   answers: Record<string, string>,
+  executiveMandate: string,
 ) {
   const lines = [
     "Guided discovery context",
+    `Executive question / mandate: ${executiveMandate || "Not specified"}`,
     `Company: ${context.companyName || "Not specified"}`,
     `Industry: ${context.industry || "Not specified"}`,
     `Workflow area: ${context.workflowArea || "Not specified"}`,
@@ -284,7 +288,11 @@ function buildNotesFromGuide(
   return lines.join("\n");
 }
 
-export function GuidedDiscovery({ onUseAsNotes }: GuidedDiscoveryProps) {
+export function GuidedDiscovery({
+  onUseAsNotes,
+  executiveMandate,
+  onExecutiveMandateChange,
+}: GuidedDiscoveryProps) {
   const [context, setContext] = useState<GuideContext>(defaultContext);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const guide = useMemo(() => buildGuide(context), [context]);
@@ -309,7 +317,11 @@ export function GuidedDiscovery({ onUseAsNotes }: GuidedDiscoveryProps) {
         action={
           <Button
             variant="primary"
-            onClick={() => onUseAsNotes(buildNotesFromGuide(context, guide, answers))}
+            onClick={() =>
+              onUseAsNotes(
+                buildNotesFromGuide(context, guide, answers, executiveMandate),
+              )
+            }
             className="whitespace-nowrap"
           >
             <ArrowRight className="h-4 w-4" />
@@ -319,6 +331,18 @@ export function GuidedDiscovery({ onUseAsNotes }: GuidedDiscoveryProps) {
       />
 
       <div className="grid gap-5">
+        <div className="rounded-md border border-violet-200 bg-white/80 p-3">
+          <TextareaField
+            label="Executive question / mandate"
+            value={executiveMandate}
+            onChange={onExecutiveMandateChange}
+            minRows={2}
+            hint="What is the leadership-level question this discovery should answer?"
+            placeholder="Why have prior AI pilots not changed this workflow, and what first workflow should we ship?"
+            textareaClassName="bg-violet-50/30 focus:border-violet-500 focus:bg-white focus:ring-violet-100"
+          />
+        </div>
+
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           <TextField
             label="Company name"
@@ -437,7 +461,11 @@ export function GuidedDiscovery({ onUseAsNotes }: GuidedDiscoveryProps) {
         <div className="flex justify-end">
           <Button
             variant="primary"
-            onClick={() => onUseAsNotes(buildNotesFromGuide(context, guide, answers))}
+            onClick={() =>
+              onUseAsNotes(
+                buildNotesFromGuide(context, guide, answers, executiveMandate),
+              )
+            }
           >
             <ArrowRight className="h-4 w-4" />
             Use answers as discovery notes

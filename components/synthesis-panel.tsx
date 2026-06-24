@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { SectionHeader } from "@/components/ui/section-header";
 import { TextField } from "@/components/ui/text-field";
+import { TextareaField } from "@/components/ui/textarea-field";
 import { surfaces } from "@/lib/surfaces";
 
 type SynthesisErrorDetails = {
@@ -23,8 +24,10 @@ type SynthesisPanelProps = {
   accessCode: string;
   aiConfigured: boolean;
   requiresAccessCode: boolean;
+  executiveMandate: string;
   onRawNotesChange: (value: string) => void;
   onAccessCodeChange: (value: string) => void;
+  onExecutiveMandateChange: (value: string) => void;
   onSynthesize: () => void;
   loading: boolean;
   error: string;
@@ -38,8 +41,10 @@ export function SynthesisPanel({
   accessCode,
   aiConfigured,
   requiresAccessCode,
+  executiveMandate,
   onRawNotesChange,
   onAccessCodeChange,
+  onExecutiveMandateChange,
   onSynthesize,
   loading,
   error,
@@ -84,6 +89,18 @@ export function SynthesisPanel({
       ) : null}
 
       <div className={surfaces.inputWorkspace}>
+        <div className="mb-4 rounded-md border border-indigo-200 bg-white/70 p-3">
+          <TextareaField
+            label="Executive question / mandate"
+            value={executiveMandate}
+            onChange={onExecutiveMandateChange}
+            minRows={2}
+            hint="What is the leadership-level question this discovery should answer?"
+            placeholder="Why have prior AI pilots not changed this workflow, and what first workflow should we ship?"
+            textareaClassName="bg-indigo-50/30 focus:border-indigo-500 focus:bg-white focus:ring-indigo-100"
+          />
+        </div>
+
         {aiConfigured && requiresAccessCode ? (
           <div className={`${surfaces.guidanceSurface} mb-4 grid gap-3 sm:grid-cols-[minmax(0,280px)_1fr] sm:items-end`}>
             <TextField

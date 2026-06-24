@@ -35,6 +35,12 @@ export function AboutModal({ open, onClose }: AboutModalProps) {
           transformation materials. Includes optional example cases. Not an
           internal Tenex tool.
         </p>
+        <p className="mt-3 text-sm leading-6 text-slate-700">
+          This workbench supports the middle of an AI Strategist engagement:
+          after the executive mandate is clear, it turns discovery into a first
+          workflow pilot, build handoff, adoption path, value proof, and
+          reusable learning.
+        </p>
       </div>
     </div>
   );

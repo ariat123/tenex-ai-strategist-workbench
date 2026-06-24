@@ -6,6 +6,8 @@ Candidate workbench built by Aria Tabatabai for the Tenex AI Strategist role.
 
 Tenex AI Strategist Workbench turns discovery input into a strategist readout: recommended first AI pilot, decision snapshot, build handoff, adoption path, and final brief.
 
+This workbench supports the middle of an AI Strategist engagement: after the executive mandate is clear, it turns discovery into a first workflow pilot, build handoff, adoption path, value proof, and reusable learning.
+
 It is designed as a lightweight internal-style workbench for one slice of the AI Strategist role: moving from discovery evidence to a bounded first workflow pilot that a strategist, deployment lead, or FDE could review.
 
 It is not an internal Tenex tool and does not claim Tenex-private process knowledge.
@@ -17,7 +19,7 @@ It is not an internal Tenex tool and does not claim Tenex-private process knowle
 - Structures messy notes into editable discovery facts, bottlenecks, evidence, and assumptions
 - Ranks possible AI pilots with visible deterministic scoring
 - Recommends a first bounded workflow intervention with a human review boundary
-- Produces an adoption path, build handoff, value measurement plan, and final brief
+- Produces an adoption path, build handoff, value proof, reusable learning, and final brief
 - Keeps example cases available in a collapsed optional section
 - Saves the current workbench in browser localStorage only
 - Exports the final brief as copyable text or a downloadable file
@@ -27,7 +29,7 @@ It is not an internal Tenex tool and does not claim Tenex-private process knowle
 The product loop is:
 
 ```text
-Discovery notes or guided answers -> decision snapshot -> first pilot -> build handoff -> final brief
+Executive mandate -> discovery notes or guided answers -> decision snapshot -> first pilot -> build handoff -> adoption path -> value proof -> reusable learning -> final brief
 ```
 
 The Discovery page supports two paths:

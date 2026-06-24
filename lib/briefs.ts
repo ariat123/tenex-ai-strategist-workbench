@@ -153,6 +153,75 @@ export function buildRolloutPlan(
   ];
 }
 
+export function buildValueProof(
+  discovery: DiscoveryInput,
+  metrics: ValueMetric[],
+) {
+  const primaryMetric = metrics[0];
+  const adoptionMetric =
+    metrics.find((metric) =>
+      /adoption|usage|override|review|acceptance|trust/i.test(metric.name),
+    ) ?? metrics[1];
+
+  return [
+    `Baseline metric: ${fallbackText(
+      discovery.baselineMetric,
+      primaryMetric?.baseline ?? "Baseline to confirm before pilot.",
+    )}`,
+    `Target movement: ${
+      primaryMetric
+        ? `${cleanGeneratedText(primaryMetric.name)} - ${cleanGeneratedText(primaryMetric.target)}`
+        : "Draft a target movement before the controlled pilot."
+    }`,
+    `Adoption signal: ${
+      adoptionMetric
+        ? `${cleanGeneratedText(adoptionMetric.name)} - ${cleanGeneratedText(adoptionMetric.target)}`
+        : "Pilot users use the reviewed workflow and provide override feedback."
+    }`,
+    "Expand / revise / stop decision: Expand only if target movement, adoption signal, and review quality are visible; revise or stop if the pilot adds work or weakens human judgment.",
+  ];
+}
+
+export function buildReusableLearning(
+  discovery: DiscoveryInput,
+  risks: AdoptionRisk[] = [],
+  assumptionsToValidate: EvidenceBackedClaim[] = [],
+) {
+  const combinedText = [
+    discovery.workflowName,
+    discovery.adoptionConcerns,
+    discovery.constraints,
+    ...discovery.knownFailureModes,
+    ...risks.flatMap((risk) => [risk.risk, risk.signal, risk.mitigation]),
+    ...assumptionsToValidate.map((assumption) => assumption.text),
+  ]
+    .join(" ")
+    .toLowerCase();
+  const signals: string[] = [];
+
+  if (/override|routing|reroute|queue|assignment/.test(combinedText)) {
+    signals.push("override and routing decision reasons");
+  }
+
+  if (/missing|attachment|completeness|follow-up|document/.test(combinedText)) {
+    signals.push("missing-information categories");
+  }
+
+  if (/exception|failure|edge|risk|escalat/.test(combinedText)) {
+    signals.push("exception patterns");
+  }
+
+  if (/adoption|trust|usage|ignore|reject|manager|operator/.test(combinedText)) {
+    signals.push("operator trust and usage patterns");
+  }
+
+  const learningSignals = signals.length
+    ? sentenceList([...new Set(signals)])
+    : "exception patterns, review outcomes, and adoption signals";
+
+  return `Track ${learningSignals} so the next workflow, client, or playbook starts with stronger exception rules, review criteria, and adoption guidance.`;
+}
+
 export function buildFdeHandoffBrief(
   discovery: DiscoveryInput,
   pilot: ScoredOpportunity,
@@ -246,12 +315,16 @@ export function buildStrategistBrief(
   const supportingOpportunities = scoredOpportunities.filter(
     (opportunity) => opportunity.id !== pilot.id,
   );
+  const executiveMandate = cleanGeneratedText(discovery.executiveMandate);
+  const executiveMandateLine = executiveMandate
+    ? `Executive question / mandate: ${executiveMandate}`
+    : "";
 
   return `# Strategist Brief
 
 ## Recommendation
 Recommended first pilot: ${pilotTitle}
-Score: ${pilot.weightedScore}/100
+${executiveMandateLine ? `${executiveMandateLine}\n` : ""}Score: ${pilot.weightedScore}/100
 Why this goes first: ${cleanGeneratedText(pilot.rationale)}
 Required human review point: ${fallbackText(discovery.humanReviewPoint)}
 What not to automate yet: ${cleanGeneratedText(pilot.notYet)}
@@ -264,7 +337,7 @@ Workflow: ${fallbackText(discovery.workflowName)}
 Workflow owner: ${fallbackText(discovery.workflowOwner)}
 Baseline metric: ${fallbackText(discovery.baselineMetric)}
 Required human review point: ${fallbackText(discovery.humanReviewPoint)}
-Executive goal: ${fallbackText(discovery.executiveGoal)}
+${executiveMandateLine ? `${executiveMandateLine}\n` : ""}Executive goal: ${fallbackText(discovery.executiveGoal)}
 
 ## Current-state summary
 ${buildCurrentStateSummary(discovery)}
@@ -320,6 +393,14 @@ ${metrics
         `- ${cleanGeneratedText(metric.name)}: baseline ${cleanGeneratedText(metric.baseline)}; target ${cleanGeneratedText(metric.target)}; owner ${cleanGeneratedText(metric.owner)}; cadence ${cleanGeneratedText(metric.cadence)}; confidence ${metric.confidence}`,
     )
     .join("\n")}
+
+## Value proof to show after pilot
+${buildValueProof(discovery, metrics)
+    .map((item) => `- ${item}`)
+    .join("\n")}
+
+## Reusable learning to capture
+${buildReusableLearning(discovery, risks, assumptionsToValidate)}
 
 ## FDE handoff focus
 Start with ${pilotTitle} as a reviewed workflow assistant. Prioritize traceability, exception handling, human approval, and measurable adoption over full autonomy.

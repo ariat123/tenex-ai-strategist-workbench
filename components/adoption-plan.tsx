@@ -1,7 +1,8 @@
 import { UsersRound } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { SectionHeader } from "@/components/ui/section-header";
-import { buildRolloutPlan } from "@/lib/briefs";
+import { buildReusableLearning, buildRolloutPlan } from "@/lib/briefs";
+import { surfaces } from "@/lib/surfaces";
 import type {
   AdoptionRisk,
   DiscoveryInput,
@@ -26,6 +27,11 @@ export function AdoptionPlan({
   assumptionsToValidate,
 }: AdoptionPlanProps) {
   const rollout = buildRolloutPlan(discovery, pilot);
+  const reusableLearning = buildReusableLearning(
+    discovery,
+    risks,
+    assumptionsToValidate,
+  );
 
   return (
     <div className="grid gap-4">
@@ -163,6 +169,16 @@ export function AdoptionPlan({
               </ul>
             </div>
           ))}
+        </div>
+      </Card>
+
+      <Card>
+        <SectionHeader
+          title="Reusable learning to capture"
+          description="What should Tenex learn from this pilot that could improve the next workflow, client, or playbook?"
+        />
+        <div className={`${surfaces.outputHighlight} p-4`}>
+          <p className="text-sm leading-6 text-indigo-950">{reusableLearning}</p>
         </div>
       </Card>
     </div>

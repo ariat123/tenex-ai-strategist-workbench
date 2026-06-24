@@ -24,6 +24,8 @@ export const scenarios: ScenarioExample[] = [
       baselineMetric: "Current intake handling time and routing rework rate",
       humanReviewPoint:
         "Intake specialist approves the routing recommendation before adjuster assignment or broker communication.",
+      executiveMandate:
+        "Which claims workflow should go first, and how can AI reduce cycle time without taking coverage, liability, settlement, or payout decisions?",
       executiveGoal:
         "Reduce new-claim cycle time while improving routing quality and broker visibility.",
       stakeholderNotes:
@@ -255,6 +257,8 @@ export const scenarios: ScenarioExample[] = [
       baselineMetric: "Referral review time, conversion rate, and missing-document rework",
       humanReviewPoint:
         "Coordinator approves routing and missing-document requests before patient outreach or clinical handoff.",
+      executiveMandate:
+        "Where can AI improve referral access without bypassing clinical review or patient-safety boundaries?",
       executiveGoal:
         "Improve referral conversion and reduce avoidable scheduling delays while preserving clinical review boundaries.",
       stakeholderNotes:
@@ -465,6 +469,8 @@ export const scenarios: ScenarioExample[] = [
         "Hours per monthly portfolio review cycle and material variances with assigned follow-up",
       humanReviewPoint:
         "Operating partner approves variance interpretation before portfolio-company follow-up or board-prep use.",
+      executiveMandate:
+        "Which portfolio operations workflow can create measurable operating leverage first?",
       executiveGoal:
         "Create a repeatable operating cadence that surfaces KPI variance, owner follow-up, and cross-portfolio playbook opportunities.",
       stakeholderNotes:
@@ -697,6 +703,8 @@ export const scenarios: ScenarioExample[] = [
         "Current cycle time, rework rate, backlog, or manual review time",
       humanReviewPoint:
         "Human approves recommendation before customer, clinical, financial, or system-of-record action.",
+      executiveMandate:
+        "Why have prior AI pilots not changed this workflow, and what first workflow should we ship?",
       executiveGoal:
         "Improve cycle time, quality, and visibility without removing necessary human judgment.",
       stakeholderNotes:
