@@ -3,6 +3,7 @@ import { CopyButton } from "@/components/ui/copy-button";
 import { SectionHeader } from "@/components/ui/section-header";
 import { buildFdeHandoffBrief } from "@/lib/briefs";
 import { fallbackText, sentenceList } from "@/lib/format";
+import { surfaces } from "@/lib/surfaces";
 import type {
   AdoptionRisk,
   DiscoveryInput,
@@ -146,6 +147,16 @@ export function FdeHandoffBrief({
       ),
     },
   ];
+  const highlightedSections = new Set([
+    "Target workflow",
+    "Human review points",
+    "MVP scope",
+  ]);
+  const warningSections = new Set([
+    "Open questions",
+    "What not to build yet",
+    "Failure modes",
+  ]);
 
   return (
     <Card>
@@ -155,11 +166,17 @@ export function FdeHandoffBrief({
         description="Turn the strategist readout into a build brief an FDE can act on."
         action={<CopyButton text={brief} label="Copy handoff" variant="primary" />}
       />
-      <div className="grid gap-3 rounded-md border border-slate-200 bg-slate-50 p-4">
+      <div className="grid gap-3 rounded-md border border-indigo-100 bg-indigo-50/30 p-4">
         {sections.map((section) => (
           <section
             key={section.title}
-            className="rounded-md border border-slate-200 bg-white p-4"
+            className={
+              highlightedSections.has(section.title)
+                ? `${surfaces.outputHighlight} p-4`
+                : warningSections.has(section.title)
+                  ? `${surfaces.warningSurface} p-4`
+                  : "rounded-md border border-slate-200 bg-white p-4"
+            }
           >
             <h3 className="text-sm font-semibold text-slate-950">
               {section.title}

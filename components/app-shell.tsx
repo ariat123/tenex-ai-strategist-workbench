@@ -34,6 +34,7 @@ import { SectionHeader } from "@/components/ui/section-header";
 import { Tabs, type TabItem } from "@/components/ui/tabs";
 import { scenarios } from "@/data/scenarios";
 import { downloadMarkdown, markdownFilename } from "@/lib/export";
+import { surfaces } from "@/lib/surfaces";
 import {
   scoreOpportunities,
   selectRecommendedPilot,
@@ -494,7 +495,7 @@ export function AppShell() {
                   discoveryEvidence={activeCase.discoveryEvidence}
                   workflowBottlenecks={activeCase.workflowBottlenecks}
                 />
-                <details className="rounded-md border border-slate-200 bg-white shadow-sm">
+                <details className={surfaces.advancedSurface}>
                   <summary className="cursor-pointer px-5 py-4 text-sm font-semibold text-slate-950 marker:text-slate-500">
                     Supporting context and source
                     <span className="mt-1 block text-sm font-normal leading-6 text-slate-600">
@@ -502,7 +503,7 @@ export function AppShell() {
                       path.
                     </span>
                   </summary>
-                  <div className="grid gap-4 border-t border-slate-200 p-5">
+                  <div className={`grid gap-4 ${surfaces.advancedPanel}`}>
                     <div>
                       <p className="text-xs font-semibold uppercase text-slate-500">
                         Workbench path
@@ -615,15 +616,15 @@ export function AppShell() {
                 onClick={() => setDiscoveryStartMode("guide")}
                 className={`rounded-md border p-4 text-left shadow-sm transition-colors ${
                   discoveryStartMode === "guide"
-                    ? "border-cyan-300 bg-cyan-50/70"
-                    : "border-slate-200 bg-white hover:border-cyan-200 hover:bg-cyan-50/30"
+                    ? "border-violet-300 bg-violet-50/70"
+                    : "border-slate-200 bg-white hover:border-violet-200 hover:bg-violet-50/30"
                 }`}
               >
                 <div className="flex items-start gap-3">
                   <span
                     className={`inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md border ${
                       discoveryStartMode === "guide"
-                        ? "border-cyan-200 bg-white text-cyan-700"
+                        ? "border-violet-200 bg-white text-violet-700"
                         : "border-slate-200 bg-slate-50 text-slate-600"
                     }`}
                   >
@@ -634,14 +635,14 @@ export function AppShell() {
                       <h2
                         className={`text-base font-semibold ${
                           discoveryStartMode === "guide"
-                            ? "text-cyan-950"
+                            ? "text-violet-950"
                             : "text-slate-950"
                         }`}
                       >
                         Prepare discovery guide
                       </h2>
                       {discoveryStartMode === "guide" ? (
-                        <span className="rounded-full bg-cyan-100 px-2 py-0.5 text-[11px] font-semibold text-cyan-700">
+                        <span className="rounded-full bg-violet-100 px-2 py-0.5 text-[11px] font-semibold text-violet-700">
                           Active
                         </span>
                       ) : null}
@@ -679,11 +680,11 @@ export function AppShell() {
                 onChange={setActiveCase}
               />
             ) : null}
-            <details className="rounded-md border border-slate-200 bg-white shadow-sm">
+            <details className={surfaces.advancedSurface}>
               <summary className="cursor-pointer px-5 py-4 text-sm font-semibold text-slate-950 marker:text-slate-500">
                 Example cases
               </summary>
-              <div className="border-t border-slate-200 p-5">
+              <div className={surfaces.advancedPanel}>
                 <SectionHeader
                   eyebrow="Optional"
                   title="Example cases"
@@ -698,7 +699,7 @@ export function AppShell() {
                 />
               </div>
             </details>
-            <details className="rounded-md border border-slate-200 bg-white shadow-sm">
+            <details className={surfaces.advancedSurface}>
               <summary className="cursor-pointer px-5 py-4 text-sm font-semibold text-slate-950 marker:text-slate-500">
                 Advanced discovery context
                 <span className="mt-1 block text-sm font-normal leading-6 text-slate-600">
@@ -706,7 +707,7 @@ export function AppShell() {
                   and failure modes when the compact review is not enough.
                 </span>
               </summary>
-              <div className="border-t border-slate-200 p-5">
+              <div className={surfaces.advancedPanel}>
                 <SectionHeader
                   eyebrow="Full discovery context"
                   title="All structured discovery fields"
@@ -718,7 +719,7 @@ export function AppShell() {
                 />
               </div>
             </details>
-            <details className="rounded-md border border-slate-200 bg-white shadow-sm">
+            <details className={surfaces.advancedSurface}>
               <summary className="cursor-pointer px-5 py-4 text-sm font-semibold text-slate-950 marker:text-slate-500">
                 Advanced recommendation details
                 <span className="mt-1 block text-sm font-normal leading-6 text-slate-600">
@@ -726,7 +727,7 @@ export function AppShell() {
                   value metrics only when the strategist readout needs deeper edits.
                 </span>
               </summary>
-              <div className="border-t border-slate-200 p-5">
+              <div className={surfaces.advancedPanel}>
                 <GeneratedOutputEditor
                   workbenchCase={activeCase}
                   onChange={setActiveCase}

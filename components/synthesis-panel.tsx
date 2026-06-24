@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { SectionHeader } from "@/components/ui/section-header";
 import { TextField } from "@/components/ui/text-field";
+import { surfaces } from "@/lib/surfaces";
 
 type SynthesisErrorDetails = {
   errorType?: string;
@@ -82,49 +83,52 @@ export function SynthesisPanel({
         </div>
       ) : null}
 
-      {aiConfigured && requiresAccessCode ? (
-        <div className="mb-4 grid gap-3 rounded-md border border-slate-200 bg-slate-50 p-3 sm:grid-cols-[minmax(0,280px)_1fr] sm:items-end">
-          <TextField
-            label="Access code"
-            value={accessCode}
-            onChange={onAccessCodeChange}
-            placeholder="Enter access code"
-          />
-          <div className="flex gap-2 text-sm leading-6 text-slate-600">
-            <KeyRound className="mt-1 h-4 w-4 shrink-0 text-slate-500" />
-            <p>Required for live AI synthesis.</p>
+      <div className={surfaces.inputWorkspace}>
+        {aiConfigured && requiresAccessCode ? (
+          <div className={`${surfaces.guidanceSurface} mb-4 grid gap-3 sm:grid-cols-[minmax(0,280px)_1fr] sm:items-end`}>
+            <TextField
+              label="Access code"
+              value={accessCode}
+              onChange={onAccessCodeChange}
+              placeholder="Enter access code"
+              inputClassName="bg-white/80"
+            />
+            <div className="flex gap-2 text-sm leading-6 text-slate-600">
+              <KeyRound className="mt-1 h-4 w-4 shrink-0 text-slate-500" />
+              <p>Required for live AI synthesis.</p>
+            </div>
           </div>
+        ) : null}
+
+        {aiConfigured && !requiresAccessCode ? (
+          <p className="mb-4 inline-flex rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-800">
+            Ready to structure discovery notes.
+          </p>
+        ) : null}
+
+        <div className={`${surfaces.requiredSurface} mb-3`}>
+          <p className="text-xs font-semibold uppercase text-amber-800">
+            Input required
+          </p>
+          <p className="mt-1 text-sm leading-6 text-amber-950">
+            Paste raw discovery notes here. Include the client goal, workflow
+            steps, systems, bottlenecks, constraints, stakeholders, adoption
+            concerns, and anything that must stay human reviewed.
+          </p>
         </div>
-      ) : null}
 
-      {aiConfigured && !requiresAccessCode ? (
-        <p className="mb-4 inline-flex rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-800">
-          Ready to structure discovery notes.
-        </p>
-      ) : null}
-
-      <div className="mb-3 rounded-md border border-slate-200 bg-slate-50 p-3">
-        <p className="text-xs font-semibold uppercase text-slate-500">
-          Input required
-        </p>
-        <p className="mt-1 text-sm leading-6 text-slate-700">
-          Paste raw discovery notes here. Include the client goal, workflow
-          steps, systems, bottlenecks, constraints, stakeholders, adoption
-          concerns, and anything that must stay human reviewed.
-        </p>
+        <textarea
+          value={rawNotes}
+          onChange={(event) => onRawNotesChange(event.target.value)}
+          rows={14}
+          placeholder="Paste stakeholder notes, operator observations, transcript excerpts, workflow notes, survey findings, system constraints, or process screenshots transcribed as text."
+          className="w-full resize-y rounded-md border border-indigo-200 bg-indigo-50/30 px-5 py-4 text-sm leading-6 text-slate-950 shadow-inner outline-none transition placeholder:text-slate-500 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-100"
+        />
       </div>
-
-      <textarea
-        value={rawNotes}
-        onChange={(event) => onRawNotesChange(event.target.value)}
-        rows={12}
-        placeholder="Paste stakeholder notes, operator observations, transcript excerpts, workflow notes, survey findings, system constraints, or process screenshots transcribed as text."
-        className="w-full resize-y rounded-md border border-slate-300 bg-white px-4 py-3 text-sm leading-6 text-slate-950 shadow-inner outline-none transition placeholder:text-slate-400 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
-      />
 
       <div className="mt-3 grid gap-2 text-sm leading-6">
         {loading ? (
-          <div className="rounded-md border border-indigo-200 bg-indigo-50 p-3 text-sm leading-6 text-indigo-900">
+          <div className={`${surfaces.outputHighlight} p-3 text-sm leading-6 text-indigo-900`}>
             Structuring notes. The current case will stay unchanged until
             synthesis succeeds.
           </div>
@@ -135,7 +139,7 @@ export function SynthesisPanel({
           </p>
         ) : null}
         {error ? (
-          <div className="rounded-md border border-red-200 bg-red-50 p-4 text-red-950">
+          <div className={`${surfaces.errorSurface} p-4 text-red-950`}>
             <div className="flex gap-2">
               <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
               <p className="font-medium">{error}</p>
@@ -176,7 +180,7 @@ export function SynthesisPanel({
           </div>
         ) : null}
         {warnings.length ? (
-          <div className="rounded-md border border-amber-200 bg-amber-50 p-3">
+          <div className={`${surfaces.warningSurface} p-3`}>
             <p className="text-xs font-semibold uppercase text-amber-800">
               Synthesis warnings
             </p>

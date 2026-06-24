@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/card";
 import { SectionHeader } from "@/components/ui/section-header";
 import { TextareaField } from "@/components/ui/textarea-field";
 import { TextField } from "@/components/ui/text-field";
+import { surfaces } from "@/lib/surfaces";
 
 type GuidedDiscoveryProps = {
   onUseAsNotes: (notes: string) => void;
@@ -300,7 +301,7 @@ export function GuidedDiscovery({ onUseAsNotes }: GuidedDiscoveryProps) {
   }
 
   return (
-    <Card className="border-cyan-200 bg-cyan-50/30">
+    <Card className={surfaces.aiSurface}>
       <SectionHeader
         eyebrow="Guided discovery"
         title="Prepare a focused discovery guide"
@@ -324,24 +325,28 @@ export function GuidedDiscovery({ onUseAsNotes }: GuidedDiscoveryProps) {
             value={context.companyName}
             onChange={(value) => updateContext("companyName", value)}
             placeholder="Acme Health"
+            inputClassName="bg-white/80 focus:border-violet-400 focus:ring-violet-100"
           />
           <TextField
             label="Industry"
             value={context.industry}
             onChange={(value) => updateContext("industry", value)}
             placeholder="Healthcare, insurance, PE..."
+            inputClassName="bg-white/80 focus:border-violet-400 focus:ring-violet-100"
           />
           <TextField
             label="Workflow area"
             value={context.workflowArea}
             onChange={(value) => updateContext("workflowArea", value)}
             placeholder="Referral intake, claims, onboarding..."
+            inputClassName="bg-white/80 focus:border-violet-400 focus:ring-violet-100"
           />
           <TextField
             label="Stakeholder role being interviewed"
             value={context.stakeholderRole}
             onChange={(value) => updateContext("stakeholderRole", value)}
             placeholder="COO, ops lead, operator..."
+            inputClassName="bg-white/80 focus:border-violet-400 focus:ring-violet-100"
           />
         </div>
 
@@ -355,7 +360,7 @@ export function GuidedDiscovery({ onUseAsNotes }: GuidedDiscoveryProps) {
               onChange={(event) =>
                 updateContext("businessGoal", event.target.value)
               }
-              className="h-10 w-full rounded-md border border-slate-300 bg-white px-3 text-sm text-slate-950 outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-100"
+              className="h-10 w-full rounded-md border border-slate-300 bg-white/80 px-3 text-sm text-slate-950 outline-none transition focus:border-violet-400 focus:ring-2 focus:ring-violet-100"
             >
               {businessGoals.map((goal) => (
                 <option key={goal} value={goal}>
@@ -370,12 +375,13 @@ export function GuidedDiscovery({ onUseAsNotes }: GuidedDiscoveryProps) {
             onChange={(value) => updateContext("optionalContext", value)}
             minRows={3}
             hint="Add any known constraints, meeting context, or existing hypotheses."
+            textareaClassName="bg-white/80 focus:border-violet-400 focus:ring-violet-100"
           />
         </div>
 
-        <div className="rounded-md border border-cyan-200 bg-white p-4">
+        <div className="rounded-md border border-violet-200 bg-white/80 p-4">
           <div className="flex items-start gap-3">
-            <ClipboardList className="mt-0.5 h-4 w-4 shrink-0 text-cyan-700" />
+            <ClipboardList className="mt-0.5 h-4 w-4 shrink-0 text-violet-700" />
             <div>
               <h3 className="text-sm font-semibold text-slate-950">
                 Capture answers loosely
@@ -393,12 +399,12 @@ export function GuidedDiscovery({ onUseAsNotes }: GuidedDiscoveryProps) {
           {guide.map((group) => (
             <section
               key={group.id}
-              className="rounded-md border border-cyan-100 bg-white p-4"
+              className={surfaces.aiSubcard}
             >
               <div className="grid gap-4 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
                 <div>
                   <div className="mb-2 flex items-center gap-2">
-                    <ListChecks className="h-4 w-4 text-cyan-700" />
+                    <ListChecks className="h-4 w-4 text-violet-700" />
                     <h3 className="text-sm font-semibold text-slate-950">
                       {group.title}
                     </h3>
@@ -408,8 +414,8 @@ export function GuidedDiscovery({ onUseAsNotes }: GuidedDiscoveryProps) {
                       <li key={question}>{question}</li>
                     ))}
                   </ul>
-                  <p className="mt-3 rounded-md border border-cyan-100 bg-cyan-50/60 p-3 text-xs leading-5 text-slate-600">
-                    <span className="font-semibold text-cyan-800">
+                  <p className="mt-3 rounded-md border border-violet-100 bg-violet-50/60 p-3 text-xs leading-5 text-slate-600">
+                    <span className="font-semibold text-violet-800">
                       Listen for:
                     </span>{" "}
                     {group.listenFor}
@@ -421,6 +427,7 @@ export function GuidedDiscovery({ onUseAsNotes }: GuidedDiscoveryProps) {
                   onChange={(value) => updateAnswer(group.id, value)}
                   minRows={8}
                   hint="Messy notes are fine. Capture fragments, quotes, metrics, and open questions."
+                  textareaClassName="border-violet-200 bg-violet-50/30 px-4 py-3 focus:border-violet-500 focus:bg-white focus:ring-violet-100"
                 />
               </div>
             </section>

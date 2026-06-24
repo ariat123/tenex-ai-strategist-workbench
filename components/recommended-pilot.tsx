@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { ScoreChip } from "@/components/ui/score-chip";
 import { SectionHeader } from "@/components/ui/section-header";
 import { buildBottlenecks } from "@/lib/briefs";
+import { surfaces } from "@/lib/surfaces";
 import type {
   DiscoveryInput,
   EvidenceBackedClaim,
@@ -34,14 +35,14 @@ export function RecommendedPilot({
           action={<ScoreChip score={pilot.weightedScore} showBand />}
         />
         <div className="grid gap-4 lg:grid-cols-3">
-          <div className="rounded-md border border-slate-200 bg-slate-50 p-4">
+          <div className={`${surfaces.outputHighlight} p-4`}>
             <div className="mb-2 flex items-center gap-2">
-              <ClipboardCheck className="h-4 w-4 text-slate-700" />
-              <h3 className="text-sm font-semibold text-slate-950">
+              <ClipboardCheck className="h-4 w-4 text-indigo-700" />
+              <h3 className="text-sm font-semibold text-indigo-950">
                 Target workflow
               </h3>
             </div>
-            <p className="text-sm leading-6 text-slate-700">
+            <p className="text-sm leading-6 text-indigo-950">
               {pilot.targetWorkflow}
             </p>
           </div>
@@ -52,14 +53,14 @@ export function RecommendedPilot({
             </div>
             <p className="text-sm leading-6 text-slate-700">{pilot.rationale}</p>
           </div>
-          <div className="rounded-md border border-slate-200 bg-slate-50 p-4">
+          <div className={`${surfaces.warningSurface} p-4`}>
             <div className="mb-2 flex items-center gap-2">
-              <ShieldAlert className="h-4 w-4 text-slate-700" />
-              <h3 className="text-sm font-semibold text-slate-950">
+              <ShieldAlert className="h-4 w-4 text-amber-700" />
+              <h3 className="text-sm font-semibold text-amber-950">
                 Not yet
               </h3>
             </div>
-            <p className="text-sm leading-6 text-slate-700">{pilot.notYet}</p>
+            <p className="text-sm leading-6 text-amber-950">{pilot.notYet}</p>
           </div>
         </div>
       </Card>

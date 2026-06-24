@@ -2,6 +2,7 @@ import { Card } from "@/components/ui/card";
 import { CopyButton } from "@/components/ui/copy-button";
 import { SectionHeader } from "@/components/ui/section-header";
 import { buildStrategistBrief } from "@/lib/briefs";
+import { surfaces } from "@/lib/surfaces";
 import type {
   AdoptionRisk,
   DiscoveryInput,
@@ -55,11 +56,13 @@ export function StrategistBriefExport({
         description="One copyable artifact combining the recommendation, evidence, scoring, rollout, build handoff, and value plan."
         action={<CopyButton text={brief} label="Copy brief" variant="primary" />}
       />
-      <textarea
-        readOnly
-        value={brief}
-        className="min-h-[640px] w-full rounded-md border border-slate-200 bg-white p-4 text-sm leading-6 text-slate-800 outline-none"
-      />
+      <div className={`${surfaces.inputWorkspace} p-3`}>
+        <textarea
+          readOnly
+          value={brief}
+          className="min-h-[640px] w-full rounded-md border border-indigo-100 bg-white/90 p-4 text-sm leading-6 text-slate-800 outline-none"
+        />
+      </div>
     </Card>
   );
 }

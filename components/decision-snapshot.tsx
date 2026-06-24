@@ -5,6 +5,7 @@ import { ScoreChip } from "@/components/ui/score-chip";
 import { SectionHeader } from "@/components/ui/section-header";
 import { buildBottlenecks, buildStrategistBrief } from "@/lib/briefs";
 import { fallbackText, readinessScore } from "@/lib/format";
+import { surfaces } from "@/lib/surfaces";
 import type {
   AdoptionRisk,
   DiscoveryInput,
@@ -72,7 +73,7 @@ export function DecisionSnapshot({
 
       <div className="grid gap-4 xl:grid-cols-[1.15fr_0.85fr]">
         <div className="grid gap-4">
-          <div className="rounded-md border border-indigo-200 bg-indigo-50/40 p-5 shadow-sm">
+          <div className={`${surfaces.outputHighlight} p-5 shadow-sm`}>
             <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
               <div>
                 <p className="text-xs font-semibold uppercase text-slate-500">
@@ -127,7 +128,7 @@ export function DecisionSnapshot({
           </div>
 
           <div className="grid gap-3 md:grid-cols-2">
-            <div className="rounded-md border border-amber-200 bg-amber-50 p-4">
+            <div className={`${surfaces.warningSurface} p-4`}>
               <div className="mb-2 flex items-center gap-2">
                 <ShieldCheck className="h-4 w-4 text-amber-700" />
                 <h3 className="text-sm font-semibold text-amber-950">
@@ -136,7 +137,7 @@ export function DecisionSnapshot({
               </div>
               <p className="text-sm leading-6 text-amber-950">{pilot.notYet}</p>
             </div>
-            <div className="rounded-md border border-indigo-200 bg-indigo-50/50 p-4">
+            <div className={`${surfaces.outputHighlight} p-4`}>
               <div className="mb-2 flex items-center gap-2">
                 <ClipboardCheck className="h-4 w-4 text-indigo-700" />
                 <h3 className="text-sm font-semibold text-indigo-950">
@@ -161,7 +162,7 @@ export function DecisionSnapshot({
               ))}
             </ul>
           </div>
-          <div className="rounded-md border border-amber-200 bg-amber-50 p-4">
+          <div className={`${surfaces.warningSurface} p-4`}>
             <h3 className="text-sm font-semibold text-amber-950">
               Assumptions to validate
             </h3>

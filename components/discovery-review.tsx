@@ -3,6 +3,7 @@ import { SectionHeader } from "@/components/ui/section-header";
 import { TextareaField } from "@/components/ui/textarea-field";
 import { TextField } from "@/components/ui/text-field";
 import { linesFromList, splitLines } from "@/lib/format";
+import { surfaces } from "@/lib/surfaces";
 import type {
   DiscoveryInput,
   EvidenceBackedClaim,
@@ -43,6 +44,8 @@ export function DiscoveryReview({
   onChange,
 }: DiscoveryReviewProps) {
   const { discovery } = workbenchCase;
+  const reviewInputClass =
+    "bg-indigo-50/30 focus:border-indigo-500 focus:bg-white focus:ring-indigo-100";
 
   function updateDiscovery<K extends keyof DiscoveryInput>(
     key: K,
@@ -66,35 +69,42 @@ export function DiscoveryReview({
       />
 
       <div className="grid gap-5">
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className={`${surfaces.inputWorkspace} grid gap-4 md:grid-cols-2`}>
           <TextField
             label="Client"
             value={discovery.companyName}
             onChange={(value) => updateDiscovery("companyName", value)}
+            inputClassName={reviewInputClass}
           />
           <TextField
             label="Workflow"
             value={discovery.workflowName}
             onChange={(value) => updateDiscovery("workflowName", value)}
+            inputClassName={reviewInputClass}
           />
           <TextField
             label="Workflow owner"
             value={discovery.workflowOwner}
             onChange={(value) => updateDiscovery("workflowOwner", value)}
+            inputClassName={reviewInputClass}
           />
           <TextField
             label="Baseline metric"
             value={discovery.baselineMetric}
             onChange={(value) => updateDiscovery("baselineMetric", value)}
+            inputClassName={reviewInputClass}
           />
         </div>
 
-        <TextareaField
-          label="Required human review point"
-          value={discovery.humanReviewPoint}
-          onChange={(value) => updateDiscovery("humanReviewPoint", value)}
-          minRows={3}
-        />
+        <div className={surfaces.inputWorkspace}>
+          <TextareaField
+            label="Required human review point"
+            value={discovery.humanReviewPoint}
+            onChange={(value) => updateDiscovery("humanReviewPoint", value)}
+            minRows={3}
+            textareaClassName={reviewInputClass}
+          />
+        </div>
 
         <div className="grid gap-4 lg:grid-cols-3">
           <TextareaField
@@ -113,6 +123,7 @@ export function DiscoveryReview({
             }
             minRows={5}
             hint="One observation per line."
+            textareaClassName={reviewInputClass}
           />
           <TextareaField
             label="Top bottlenecks"
@@ -131,6 +142,7 @@ export function DiscoveryReview({
             }
             minRows={5}
             hint="One bottleneck per line."
+            textareaClassName={reviewInputClass}
           />
           <TextareaField
             label="Assumptions to validate"
@@ -149,10 +161,11 @@ export function DiscoveryReview({
             }
             minRows={5}
             hint="One assumption per line."
+            textareaClassName="border-amber-200 bg-amber-50/40 focus:border-amber-500 focus:bg-white focus:ring-amber-100"
           />
         </div>
 
-        <div className="rounded-md border border-slate-200 bg-slate-50 p-4">
+        <div className={surfaces.guidanceSurface}>
           <div className="mb-3 flex items-center gap-2">
             <CheckCircle2 className="h-4 w-4 text-slate-700" />
             <h3 className="text-sm font-semibold text-slate-950">
