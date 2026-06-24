@@ -23,12 +23,13 @@ import { OpportunityScorecard } from "@/components/opportunity-scorecard";
 import { RecommendedPilot } from "@/components/recommended-pilot";
 import { ScenarioSelector } from "@/components/scenario-selector";
 import { StateActions } from "@/components/state-actions";
+import { StepPath } from "@/components/step-path";
 import { StrategistBriefExport } from "@/components/strategist-brief-export";
 import { SynthesisPanel } from "@/components/synthesis-panel";
 import { ValueMeasurementPlan } from "@/components/value-measurement-plan";
 import { WorkflowSummary } from "@/components/workflow-summary";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { EmptyState } from "@/components/ui/empty-state";
 import { SectionHeader } from "@/components/ui/section-header";
 import { Tabs, type TabItem } from "@/components/ui/tabs";
 import { scenarios } from "@/data/scenarios";
@@ -131,9 +132,8 @@ function PendingReadout({
   onStart: () => void;
 }) {
   return (
-    <Card>
-      <SectionHeader
-        eyebrow="Discovery required"
+    <EmptyState
+      eyebrow="Discovery required"
         title={title}
         description={description}
         action={
@@ -141,13 +141,7 @@ function PendingReadout({
             Go to Discovery
           </Button>
         }
-      />
-      <div className="rounded-md border border-slate-200 bg-slate-50 p-4 text-sm leading-6 text-slate-700">
-        Paste notes and structure them before using strategist outputs. Until
-        then, this workbench will not show placeholder pilots, rankings,
-        rollout plans, or build briefs.
-      </div>
-    </Card>
+    />
   );
 }
 
@@ -424,8 +418,8 @@ export function AppShell() {
                 Tenex AI Strategist Workbench
               </h1>
               <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
-                Turn discovery notes into opportunity ranking, a first AI pilot,
-                rollout plan, build handoff, and strategist brief.
+                Turn discovery into a decision snapshot, first AI pilot, build
+                handoff, adoption path, and final brief.
               </p>
             </div>
             <div className="flex flex-col gap-3 rounded-md border border-slate-200 bg-slate-50 p-3 text-sm text-slate-700 sm:min-w-80">
@@ -438,7 +432,7 @@ export function AppShell() {
                 </span>
               </div>
               <Button size="sm" variant="secondary" onClick={() => setAboutOpen(true)}>
-                About
+                About this workbench
               </Button>
             </div>
           </div>
@@ -453,6 +447,11 @@ export function AppShell() {
         />
 
         <Tabs items={sections} activeId={activeSection} onChange={setActiveSection} />
+        <StepPath
+          activeSection={activeSection}
+          hasStructuredReadout={hasStructuredReadout}
+          onSelect={setActiveSection}
+        />
 
         {activeSection === "overview" ? (
           <div className="grid gap-4">
@@ -470,8 +469,8 @@ export function AppShell() {
               />
             ) : (
               <PendingReadout
-                title="No strategist readout yet"
-                description="Decision snapshot stays empty until discovery notes are structured or an example case is selected."
+                title="Decision snapshot pending"
+                description="Structure discovery notes to generate the strategist readout."
                 onStart={() => setActiveSection("discovery")}
               />
             )}
@@ -574,7 +573,7 @@ export function AppShell() {
                       Start from notes
                     </h2>
                     <p className="mt-1 text-sm leading-6 text-slate-600">
-                      Paste raw discovery notes from a client conversation.
+                      Paste messy discovery notes from a client conversation and structure them into a strategist readout.
                     </p>
                   </div>
                 </div>
@@ -597,8 +596,9 @@ export function AppShell() {
                       Prepare discovery guide
                     </h2>
                     <p className="mt-1 text-sm leading-6 text-slate-600">
-                      Generate a focused question guide before or during
-                      discovery, then turn the answers into a strategist readout.
+                      Create a focused question guide before or during
+                      discovery, capture answers, then turn them into the same
+                      strategist readout.
                     </p>
                   </div>
                 </div>
@@ -649,7 +649,7 @@ export function AppShell() {
             </details>
             <details className="rounded-md border border-slate-200 bg-white shadow-sm">
               <summary className="cursor-pointer px-5 py-4 text-sm font-semibold text-slate-950 marker:text-slate-500">
-                Advanced: full discovery context
+                Advanced discovery context
                 <span className="mt-1 block text-sm font-normal leading-6 text-slate-600">
                   Edit the full workflow, notes, systems, constraints, readiness,
                   and failure modes when the compact review is not enough.
@@ -659,7 +659,7 @@ export function AppShell() {
                 <SectionHeader
                   eyebrow="Full discovery context"
                   title="All structured discovery fields"
-                  description="These details feed the recommendation, build handoff, rollout plan, and strategist brief."
+                  description="These details feed the recommendation, build handoff, adoption path, and final brief."
                 />
                 <DiscoveryForm
                   discovery={activeCase.discovery}
@@ -669,7 +669,7 @@ export function AppShell() {
             </details>
             <details className="rounded-md border border-slate-200 bg-white shadow-sm">
               <summary className="cursor-pointer px-5 py-4 text-sm font-semibold text-slate-950 marker:text-slate-500">
-                Advanced: opportunities, scoring, risks, and metrics
+                Advanced recommendation details
                 <span className="mt-1 block text-sm font-normal leading-6 text-slate-600">
                   Adjust opportunity details, scoring inputs, adoption risks, and
                   value metrics only when the strategist readout needs deeper edits.
@@ -693,8 +693,8 @@ export function AppShell() {
             />
           ) : (
             <PendingReadout
-              title="No opportunity ranking yet"
-              description="Opportunity ranking appears after discovery notes have been structured into candidate pilots."
+              title="Opportunity ranking pending"
+              description="After synthesis, this will compare candidate pilots."
               onStart={() => setActiveSection("discovery")}
             />
           )
@@ -709,8 +709,8 @@ export function AppShell() {
             />
           ) : (
             <PendingReadout
-              title="No first pilot yet"
-              description="The first pilot is generated only after the workbench has structured discovery notes."
+              title="First pilot pending"
+              description="After synthesis, this will define the first bounded AI pilot."
               onStart={() => setActiveSection("discovery")}
             />
           )
@@ -718,17 +718,20 @@ export function AppShell() {
 
         {activeSection === "adoption" ? (
           hasStructuredReadout && recommendedPilot ? (
-            <AdoptionPlan
-              discovery={activeCase.discovery}
-              pilot={recommendedPilot}
-              stakeholders={activeCase.stakeholders}
-              risks={activeCase.adoptionRisks}
-              assumptionsToValidate={activeCase.assumptionsToValidate}
-            />
+            <div className="grid gap-4">
+              <AdoptionPlan
+                discovery={activeCase.discovery}
+                pilot={recommendedPilot}
+                stakeholders={activeCase.stakeholders}
+                risks={activeCase.adoptionRisks}
+                assumptionsToValidate={activeCase.assumptionsToValidate}
+              />
+              <ValueMeasurementPlan metrics={activeCase.valueMetrics} />
+            </div>
           ) : (
             <PendingReadout
-              title="No rollout plan yet"
-              description="Adoption and rollout planning depends on the recommended pilot, stakeholders, risks, and assumptions from structured discovery."
+              title="Adoption & rollout pending"
+              description="After synthesis, this will map stakeholders, rollout risks, and value measurement."
               onStart={() => setActiveSection("discovery")}
             />
           )
@@ -746,8 +749,8 @@ export function AppShell() {
             />
           ) : (
             <PendingReadout
-              title="No build handoff yet"
-              description="The build handoff is created from a structured readout with a recommended pilot and review boundaries."
+              title="Build handoff pending"
+              description="After synthesis, this will create a build brief for the implementation team."
               onStart={() => setActiveSection("discovery")}
             />
           )
@@ -771,8 +774,8 @@ export function AppShell() {
             </div>
           ) : (
             <PendingReadout
-              title="No final brief yet"
-              description="The final brief is available after discovery notes have been structured and reviewed."
+              title="Final brief pending"
+              description="After synthesis, this will generate the final strategist brief."
               onStart={() => setActiveSection("discovery")}
             />
           )

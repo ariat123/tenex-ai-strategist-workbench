@@ -36,13 +36,6 @@ export function RecommendedPilot({
         <div className="grid gap-4 lg:grid-cols-3">
           <div className="rounded-md border border-slate-200 bg-slate-50 p-4">
             <div className="mb-2 flex items-center gap-2">
-              <Target className="h-4 w-4 text-slate-700" />
-              <h3 className="text-sm font-semibold text-slate-950">Why first</h3>
-            </div>
-            <p className="text-sm leading-6 text-slate-700">{pilot.rationale}</p>
-          </div>
-          <div className="rounded-md border border-slate-200 bg-slate-50 p-4">
-            <div className="mb-2 flex items-center gap-2">
               <ClipboardCheck className="h-4 w-4 text-slate-700" />
               <h3 className="text-sm font-semibold text-slate-950">
                 Target workflow
@@ -51,6 +44,13 @@ export function RecommendedPilot({
             <p className="text-sm leading-6 text-slate-700">
               {pilot.targetWorkflow}
             </p>
+          </div>
+          <div className="rounded-md border border-slate-200 bg-slate-50 p-4">
+            <div className="mb-2 flex items-center gap-2">
+              <Target className="h-4 w-4 text-slate-700" />
+              <h3 className="text-sm font-semibold text-slate-950">Why first</h3>
+            </div>
+            <p className="text-sm leading-6 text-slate-700">{pilot.rationale}</p>
           </div>
           <div className="rounded-md border border-slate-200 bg-slate-50 p-4">
             <div className="mb-2 flex items-center gap-2">

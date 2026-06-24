@@ -58,7 +58,7 @@ export function StrategistBriefExport({
       <textarea
         readOnly
         value={brief}
-        className="min-h-[640px] w-full rounded-md border border-slate-200 bg-slate-50 p-4 font-mono text-sm leading-6 text-slate-800 outline-none"
+        className="min-h-[640px] w-full rounded-md border border-slate-200 bg-white p-4 text-sm leading-6 text-slate-800 outline-none"
       />
     </Card>
   );

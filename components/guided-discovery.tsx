@@ -239,7 +239,7 @@ function buildGuide(context: GuideContext): GuideGroup[] {
     },
     {
       id: "fde-build-readiness",
-      title: "FDE/build readiness",
+      title: "Build readiness",
       listenFor:
         "Inputs, outputs, integrations, review workflow, permissions, edge cases, and MVP assumptions.",
       questions: [
@@ -312,7 +312,7 @@ export function GuidedDiscovery({ onUseAsNotes }: GuidedDiscoveryProps) {
             className="whitespace-nowrap"
           >
             <ArrowRight className="h-4 w-4" />
-            Use these answers as discovery notes
+            Use answers as discovery notes
           </Button>
         }
       />
@@ -433,7 +433,7 @@ export function GuidedDiscovery({ onUseAsNotes }: GuidedDiscoveryProps) {
             onClick={() => onUseAsNotes(buildNotesFromGuide(context, guide, answers))}
           >
             <ArrowRight className="h-4 w-4" />
-            Use these answers as discovery notes
+            Use answers as discovery notes
           </Button>
         </div>
       </div>

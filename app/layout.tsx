@@ -4,7 +4,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Tenex AI Strategist Workbench",
   description:
-    "Candidate workbench for turning discovery notes into opportunity ranking, a first AI pilot, rollout plan, build handoff, and strategist brief.",
+    "Candidate workbench for turning discovery into a decision snapshot, first AI pilot, build handoff, adoption path, and final brief.",
 };
 
 export default function RootLayout({

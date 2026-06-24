@@ -56,7 +56,7 @@ export function SynthesisPanel({
       <SectionHeader
         eyebrow="Discovery intake"
         title="Start with discovery notes"
-        description="Paste messy notes from a client conversation. The workbench will structure them into a recommended AI pilot, opportunity ranking, rollout plan, build handoff, and strategist brief."
+        description="Paste messy notes from a client conversation. The workbench will structure them into a recommended AI pilot, decision snapshot, build handoff, adoption path, and final brief."
         action={
           <Button
             variant="primary"
@@ -76,7 +76,7 @@ export function SynthesisPanel({
           <AlertCircle className="mt-1 h-4 w-4 shrink-0" />
           <p>
             AI synthesis is not configured for this deployment. The workbench
-            still supports editing, opportunity ranking, and strategist brief
+            still supports editing, opportunity ranking, and final brief
             export.
           </p>
         </div>
@@ -123,6 +123,12 @@ export function SynthesisPanel({
       />
 
       <div className="mt-3 grid gap-2 text-sm leading-6">
+        {loading ? (
+          <div className="rounded-md border border-slate-200 bg-slate-50 p-3 text-sm leading-6 text-slate-700">
+            Structuring notes. The current case will stay unchanged until
+            synthesis succeeds.
+          </div>
+        ) : null}
         {model ? (
           <p className="text-xs font-medium text-slate-500">
             Last synthesis model: {model}

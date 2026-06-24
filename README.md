@@ -17,10 +17,10 @@ It is not an internal Tenex tool and does not claim Tenex-private process knowle
 - Structures messy notes into editable discovery facts, bottlenecks, evidence, and assumptions
 - Ranks possible AI pilots with visible deterministic scoring
 - Recommends a first bounded workflow intervention with a human review boundary
-- Produces an adoption and rollout plan, build handoff, value measurement plan, and final brief
+- Produces an adoption path, build handoff, value measurement plan, and final brief
 - Keeps example cases available in a collapsed optional section
 - Saves the current workbench in browser localStorage only
-- Exports the strategist brief as copyable text or Markdown
+- Exports the final brief as copyable text or a downloadable file
 
 ## How It Works
 
@@ -60,7 +60,7 @@ If a measurement or reporting layer scores highly, the recommendation can still 
 
 The final app is intended to run on Vercel.
 
-There is no database, auth provider, user account system, analytics service, storage bucket, background worker, or server-side project store. Opportunity ranking, editing, browser save, optional example cases, brief download, and the final strategist brief work in the deployed app without persistent server storage.
+There is no database, auth provider, user account system, analytics service, storage bucket, background worker, or server-side project store. Opportunity ranking, editing, browser save, optional example cases, brief download, and the final brief work in the deployed app without persistent server storage.
 
 AI synthesis is the only feature that needs server-side configuration.
 
@@ -130,7 +130,7 @@ Use this structure for a 5-7 minute Loom:
 1. Open with the intent: this shows one slice of the AI Strategist role, turning messy discovery into a prioritized first pilot and FDE-ready build handoff.
 2. Start on Discovery and explain the two paths: paste existing notes, or prepare a guided discovery conversation.
 3. Briefly show the guided discovery path: enter company context, review tailored question groups, and capture messy answers.
-4. Click `Use these answers as discovery notes`, or paste the QA fixture below into the notes path.
+4. Click `Use answers as discovery notes`, or paste the QA fixture below into the notes path.
 5. Enter the access code if required and structure the discovery notes.
 6. Show that synthesis redirects to Decision snapshot so the strategist conclusion appears immediately.
 7. Explain the Decision Snapshot: workflow, readiness, recommended first pilot, bottlenecks, assumptions, human review, and next action.

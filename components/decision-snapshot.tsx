@@ -72,6 +72,21 @@ export function DecisionSnapshot({
 
       <div className="grid gap-4 xl:grid-cols-[1.15fr_0.85fr]">
         <div className="grid gap-4">
+          <div className="rounded-md border border-slate-300 bg-white p-5 shadow-sm">
+            <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+              <div>
+                <p className="text-xs font-semibold uppercase text-slate-500">
+                  Recommended first pilot
+                </p>
+                <h3 className="mt-1 text-xl font-semibold text-slate-950">
+                  {pilot.title}
+                </h3>
+              </div>
+              <ScoreChip score={pilot.weightedScore} showBand />
+            </div>
+            <p className="text-sm leading-6 text-slate-700">{pilot.rationale}</p>
+          </div>
+
           <div className="grid gap-3 md:grid-cols-3">
             <div className="rounded-md border border-slate-200 bg-slate-50 p-4">
               <p className="text-xs font-semibold uppercase text-slate-500">
@@ -109,21 +124,6 @@ export function DecisionSnapshot({
                 Baseline: {fallbackText(discovery.baselineMetric)}
               </p>
             </div>
-          </div>
-
-          <div className="rounded-md border border-slate-200 bg-white p-4">
-            <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
-              <div>
-                <p className="text-xs font-semibold uppercase text-slate-500">
-                  Recommended first pilot
-                </p>
-                <h3 className="mt-1 text-lg font-semibold text-slate-950">
-                  {pilot.title}
-                </h3>
-              </div>
-              <ScoreChip score={pilot.weightedScore} showBand />
-            </div>
-            <p className="text-sm leading-6 text-slate-700">{pilot.rationale}</p>
           </div>
 
           <div className="grid gap-3 md:grid-cols-2">
