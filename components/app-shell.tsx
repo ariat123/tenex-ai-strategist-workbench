@@ -11,7 +11,6 @@ import {
   SlidersHorizontal,
 } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { AboutModal } from "@/components/about-modal";
 import { AdoptionPlan } from "@/components/adoption-plan";
 import { DecisionSnapshot } from "@/components/decision-snapshot";
 import { DiscoveryForm } from "@/components/discovery-form";
@@ -159,7 +158,6 @@ export function AppShell() {
     "notes" | "guide"
   >("notes");
   const [activeSection, setActiveSection] = useState<SectionId>("discovery");
-  const [aboutOpen, setAboutOpen] = useState(false);
   const [saveStatus, setSaveStatus] = useState("");
   const [synthesisLoading, setSynthesisLoading] = useState(false);
   const [synthesisError, setSynthesisError] = useState("");
@@ -205,7 +203,7 @@ export function AppShell() {
     activeCase.mode === "ai-synthesis"
       ? "AI synthesized case"
       : activeCase.mode === "example"
-        ? "Example case"
+        ? "Reference case"
         : "Live discovery case";
   const modeChipClass =
     activeCase.mode === "ai-synthesis"
@@ -221,13 +219,13 @@ export function AppShell() {
     activeCase.mode === "ai-synthesis"
       ? "This case was synthesized from pasted discovery notes and remains fully editable."
       : activeCase.mode === "example"
-        ? "This optional example case is editable and useful for exploring the workbench structure."
+        ? "This reference case is editable and useful for exploring the workbench structure."
         : "Start by pasting discovery notes, then review the structured strategist readout.";
   const dataSourceLabel =
     activeCase.mode === "ai-synthesis"
       ? "Pasted discovery notes"
       : activeCase.mode === "example"
-        ? "Optional example case"
+        ? "Reference case"
         : "Live discovery input";
 
   useEffect(() => {
@@ -424,10 +422,10 @@ export function AppShell() {
           <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
             <div>
               <p className="text-xs font-semibold uppercase text-slate-500">
-                Candidate workbench
+                Pilot strategy workbench
               </p>
               <h1 className="mt-1 text-2xl font-semibold text-slate-950 sm:text-3xl">
-                Tenex AI Strategist Workbench
+                PilotPath
               </h1>
               <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
                 Turn discovery into a decision snapshot, first AI pilot, build
@@ -447,9 +445,9 @@ export function AppShell() {
                   {activeCase.discovery.workflowName || "Workflow not specified"}
                 </span>
               </div>
-              <Button size="sm" variant="secondary" onClick={() => setAboutOpen(true)}>
-                About this workbench
-              </Button>
+              <p className="text-xs leading-5 text-slate-500">
+                Saved locally in this browser. No workspace setup required.
+              </p>
             </div>
           </div>
         </header>
@@ -700,13 +698,13 @@ export function AppShell() {
             ) : null}
             <details className={surfaces.advancedSurface}>
               <summary className="cursor-pointer px-5 py-4 text-sm font-semibold text-slate-950 marker:text-slate-500">
-                Example cases
+                Reference cases
               </summary>
               <div className={surfaces.advancedPanel}>
                 <SectionHeader
-                  eyebrow="Optional"
-                  title="Example cases"
-                  description="Optional. Use these only to explore the workbench without entering your own notes."
+                  eyebrow="Reference"
+                  title="Reference cases"
+                  description="Use a reference case to explore the workbench structure without entering new notes."
                 />
                 <ScenarioSelector
                   scenarios={scenarios}
@@ -764,7 +762,7 @@ export function AppShell() {
           ) : (
             <PendingReadout
               title="Opportunity ranking pending"
-              description="After synthesis, this will compare candidate pilots."
+              description="After synthesis, this will compare possible pilots."
               onStart={() => setActiveSection("discovery")}
             />
           )
@@ -850,17 +848,7 @@ export function AppShell() {
             />
           )
         ) : null}
-
-        <footer className="rounded-md border border-slate-200 bg-white px-4 py-3 text-xs leading-5 text-slate-600">
-          Candidate workbench built by Aria Tabatabai for the Tenex AI
-          Strategist role. Based on public Tenex role language and public AI
-          transformation materials. Includes optional example cases. Not an
-          internal Tenex tool. It supports the middle of an AI Strategist
-          engagement: executive mandate, discovery, pilot decision, build
-          handoff, adoption path, value proof, and reusable learning.
-        </footer>
       </div>
-      <AboutModal open={aboutOpen} onClose={() => setAboutOpen(false)} />
     </main>
   );
 }

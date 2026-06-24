@@ -1,16 +1,12 @@
-# Tenex AI Strategist Workbench
-
-Candidate workbench built by Aria Tabatabai for the Tenex AI Strategist role.
+# PilotPath
 
 ## What This App Is
 
-Tenex AI Strategist Workbench turns discovery input into a strategist readout: recommended first AI pilot, decision snapshot, build handoff, adoption path, and final brief.
+PilotPath turns discovery input into a strategist readout: recommended first AI pilot, decision snapshot, build handoff, adoption path, and final brief.
 
 This workbench supports the middle of an AI Strategist engagement: after the executive mandate is clear, it turns discovery into a first workflow pilot, build handoff, adoption path, value proof, and reusable learning.
 
-It is designed as a lightweight internal-style workbench for one slice of the AI Strategist role: moving from discovery evidence to a bounded first workflow pilot that a strategist, deployment lead, or FDE could review.
-
-It is not an internal Tenex tool and does not claim Tenex-private process knowledge.
+It is designed as a lightweight internal-style workbench for moving from discovery evidence to a bounded first workflow pilot that a strategist, deployment lead, or FDE could review.
 
 ## What It Does
 
@@ -20,7 +16,7 @@ It is not an internal Tenex tool and does not claim Tenex-private process knowle
 - Ranks possible AI pilots with visible deterministic scoring
 - Recommends a first bounded workflow intervention with a human review boundary
 - Produces an adoption path, build handoff, value proof, reusable learning, and final brief
-- Keeps example cases available in a collapsed optional section
+- Keeps reference cases available in a collapsed secondary section
 - Saves the current workbench in browser localStorage only
 - Exports the final brief as copyable text or a downloadable file
 
@@ -41,7 +37,7 @@ The discovery guide is deterministic and context-aware. It adapts question langu
 
 AI synthesis is used only to structure discovery notes. The workbench then applies transparent strategist logic:
 
-- AI extracts facts, evidence, assumptions, risks, metrics, and candidate opportunities.
+- AI extracts facts, evidence, assumptions, risks, metrics, and possible opportunities.
 - The user reviews and edits the fields that affect the recommendation.
 - The app ranks opportunities with deterministic scoring.
 - The output remains editable and inspectable rather than becoming a black-box report.
@@ -62,7 +58,7 @@ If a measurement or reporting layer scores highly, the recommendation can still 
 
 The final app is intended to run on Vercel.
 
-There is no database, auth provider, user account system, analytics service, storage bucket, background worker, or server-side project store. Opportunity ranking, editing, browser save, optional example cases, brief download, and the final brief work in the deployed app without persistent server storage.
+There is no database, auth provider, user account system, analytics service, storage bucket, background worker, or server-side project store. Opportunity ranking, editing, browser save, reference cases, brief download, and the final brief work in the deployed app without persistent server storage.
 
 AI synthesis is the only feature that needs server-side configuration.
 
@@ -96,20 +92,20 @@ Do not commit secrets to GitHub.
 
 AI synthesis works only when `OPENAI_API_KEY` is configured. `SYNTHESIS_ACCESS_CODE` is optional but recommended; when set, the synthesis panel asks for the matching access code before the server calls OpenAI.
 
-When `OPENAI_API_KEY` is not configured, the app still loads normally. Opportunity ranking, build handoff, adoption and rollout planning, value measurement, browser save, brief download, and optional example cases continue to work. The AI synthesis panel says that AI synthesis is not configured for this deployment.
+When `OPENAI_API_KEY` is not configured, the app still loads normally. Opportunity ranking, build handoff, adoption and rollout planning, value measurement, browser save, brief download, and reference cases continue to work. The AI synthesis panel says that AI synthesis is not configured for this deployment.
 
-## Example Cases
+## Reference Cases
 
-Example cases are intentionally secondary. They are available from the collapsed `Example cases` section in Discovery and are useful for exploring the workbench without entering notes.
+Reference cases are intentionally secondary. They are available from the collapsed `Reference cases` section in Discovery and are useful for exploring the workbench without entering notes.
 
-Included example cases:
+Included reference cases:
 
 - National insurer
 - Healthcare system
 - Private equity portfolio operations
 - Custom workflow outline
 
-These cases are illustrative and editable. They are not Tenex-internal material.
+These cases are illustrative and editable.
 
 ## What Is Intentionally Out Of Scope
 
@@ -123,13 +119,13 @@ These cases are illustrative and editable. They are not Tenex-internal material.
 - No background jobs
 - No complex project management workflow
 - No autonomous workflow execution
-- No Tenex-private claims or confidential methodology
+- No claims of private customer methodology unless supplied in discovery notes
 
 ## Walkthrough
 
 Use this structure for a 5-7 minute Loom:
 
-1. Open with the intent: this shows one slice of the AI Strategist role, turning messy discovery into a prioritized first pilot and FDE-ready build handoff.
+1. Open with the intent: PilotPath turns messy discovery into a prioritized first pilot and FDE-ready build handoff.
 2. Start on Discovery and explain the two paths: paste existing notes, or prepare a guided discovery conversation.
 3. Briefly show the guided discovery path: enter company context, review tailored question groups, and capture messy answers.
 4. Click `Use answers as discovery notes`, or paste the QA fixture below into the notes path.
@@ -179,7 +175,3 @@ npm run dev
 ```
 
 Do not commit `.env.local` or any secrets.
-
-## Disclosure
-
-Candidate workbench built by Aria Tabatabai for the Tenex AI Strategist role. Based on public Tenex role language and public AI transformation materials. Includes optional example cases. Not an internal Tenex tool.

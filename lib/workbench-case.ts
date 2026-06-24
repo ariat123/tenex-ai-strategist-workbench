@@ -105,7 +105,7 @@ export function caseFromScenario(scenario: ScenarioExample): WorkbenchCase {
 
 export function caseFromScenarioId(id: ScenarioId): WorkbenchCase {
   const scenario =
-    scenarios.find((candidate) => candidate.id === id) ?? scenarios[0];
+    scenarios.find((item) => item.id === id) ?? scenarios[0];
 
   return caseFromScenario(scenario);
 }

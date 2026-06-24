@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Tenex AI Strategist Workbench",
+  title: "PilotPath",
   description:
-    "Candidate workbench for turning discovery into a decision snapshot, first AI pilot, build handoff, adoption path, and final brief.",
+    "Discovery-to-pilot strategy workbench for turning messy notes into a decision snapshot, first pilot, build handoff, adoption path, and final brief.",
 };
 
 export default function RootLayout({

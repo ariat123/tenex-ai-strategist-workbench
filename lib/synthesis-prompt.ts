@@ -25,7 +25,7 @@ ${rawNotes}
 Synthesize these notes into a strategist workbench case.`;
 }
 
-export const synthesisSystemPrompt = `You are helping build a candidate AI Strategist workbench.
+export const synthesisSystemPrompt = `You are helping power an AI strategy workbench.
 
 Your job is to extract a practical AI pilot plan from messy discovery notes.
 
@@ -50,4 +50,4 @@ Rules:
 - If a claim is not directly grounded, leave evidenceIds empty and fill assumptionToValidate.
 - Evidence quotes should be exact short fragments from the notes when possible. Use an empty string if no exact quote exists.
 - Do not use the word "demo" in generated client-facing artifacts.
-- Do not claim Tenex-internal knowledge. This is a candidate workbench using public role context.`;
+- Do not claim customer-internal or company-internal methodology unless it is explicitly present in the notes.`;
