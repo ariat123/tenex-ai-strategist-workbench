@@ -35,8 +35,10 @@ Rules:
 - Keep every field concise. Prefer fragments or one sentence, not paragraphs.
 - Prefer bounded workflow pilots over dashboards or generic reporting layers.
 - Include exactly 3 opportunities. At least one must be pilotKind "workflow".
+- Do not split first-pilot subfunctions into separate opportunities that outrank the parent workflow pilot. Missing-info checks, routing suggestions, evidence explanations, and reviewed follow-up drafting usually belong inside the workflow pilot MVP scope.
+- Prefer plain business titles such as "Claims intake triage assistant" over generated labels such as "Guided intake triage assistant (workflow)".
 - Prefer 3 evidence items, 3 bottlenecks, 3 assumptions, 3 risks, and 3-4 metrics.
-- Label every opportunity with pilotKind.
+- Label every opportunity with pilotKind. Use "measurement" only for dashboards, KPI tracking, reporting, visibility layers, or scorecards. Use "workflow" for triage, routing, completeness checking, reviewed recommendations, explanation, and intake assistance.
 - Score dimensions from 1 to 5, where 5 is better for a first pilot.
 - Keep deterministic ranking separate from your extraction: propose scores, but the app will rank.
 - Always include required human review points.
@@ -45,4 +47,5 @@ Rules:
 - For bottlenecks, opportunities, adoption risks, and assumptions, include evidenceIds when grounded in notes.
 - If a claim is not directly grounded, leave evidenceIds empty and fill assumptionToValidate.
 - Evidence quotes should be exact short fragments from the notes when possible. Use an empty string if no exact quote exists.
+- Do not use the word "demo" in generated client-facing artifacts.
 - Do not claim Tenex-internal knowledge. This is a candidate workbench using public role context.`;

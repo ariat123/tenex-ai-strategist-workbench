@@ -121,7 +121,7 @@ function isReportingContext(discovery: DiscoveryInput) {
 }
 
 function isWorkflowIntervention(opportunity: ScoredOpportunity) {
-  return opportunity.pilotKind === "workflow" || opportunity.pilotKind === "follow-up";
+  return opportunity.pilotKind === "workflow";
 }
 
 export function selectRecommendedPilot(
@@ -134,11 +134,12 @@ export function selectRecommendedPilot(
     return undefined;
   }
 
-  if (
-    (winner.pilotKind === "measurement" || winner.pilotKind === "reporting") &&
-    !isReportingContext(discovery)
-  ) {
-    return opportunities.find(isWorkflowIntervention) ?? winner;
+  if (!isReportingContext(discovery)) {
+    const workflow = opportunities.find(isWorkflowIntervention);
+
+    if (workflow && winner.pilotKind !== "workflow") {
+      return workflow;
+    }
   }
 
   return winner;

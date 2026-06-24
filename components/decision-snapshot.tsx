@@ -3,7 +3,12 @@ import { Card } from "@/components/ui/card";
 import { CopyButton } from "@/components/ui/copy-button";
 import { ScoreChip } from "@/components/ui/score-chip";
 import { SectionHeader } from "@/components/ui/section-header";
-import { buildBottlenecks, buildStrategistBrief } from "@/lib/briefs";
+import {
+  buildBottlenecks,
+  buildNextStrategistAction,
+  buildStrategistBrief,
+} from "@/lib/briefs";
+import { cleanGeneratedText, cleanOpportunityTitle } from "@/lib/artifact-copy";
 import { fallbackText, readinessScore } from "@/lib/format";
 import { surfaces } from "@/lib/surfaces";
 import type {
@@ -40,6 +45,7 @@ export function DecisionSnapshot({
   workflowBottlenecks,
 }: DecisionSnapshotProps) {
   const pilot = recommendedPilot;
+  const pilotTitle = cleanOpportunityTitle(pilot.title, discovery);
   const brief = buildStrategistBrief(
     discovery,
     opportunities,
@@ -54,13 +60,7 @@ export function DecisionSnapshot({
   const bottlenecks = workflowBottlenecks.length
     ? workflowBottlenecks.slice(0, 3).map((item) => item.text)
     : buildBottlenecks(discovery).slice(0, 3);
-  const nextAction = `Validate ${fallbackText(
-    discovery.baselineMetric,
-    "the baseline metric",
-  )} with ${fallbackText(
-    discovery.workflowOwner,
-    "the workflow owner",
-  )}, then lock MVP scope and review rules for ${pilot.title}.`;
+  const nextAction = buildNextStrategistAction(discovery, pilot);
 
   return (
     <Card className="border-slate-300">
@@ -80,12 +80,14 @@ export function DecisionSnapshot({
                   Recommended first pilot
                 </p>
                 <h3 className="mt-1 text-xl font-semibold text-slate-950">
-                  {pilot.title}
+                  {pilotTitle}
                 </h3>
               </div>
               <ScoreChip score={pilot.weightedScore} showBand />
             </div>
-            <p className="text-sm leading-6 text-slate-700">{pilot.rationale}</p>
+            <p className="text-sm leading-6 text-slate-700">
+              {cleanGeneratedText(pilot.rationale)}
+            </p>
           </div>
 
           <div className="grid gap-3 md:grid-cols-3">

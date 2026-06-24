@@ -2,6 +2,7 @@ import { ClipboardCheck, ShieldAlert, Target } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { ScoreChip } from "@/components/ui/score-chip";
 import { SectionHeader } from "@/components/ui/section-header";
+import { cleanGeneratedText, cleanOpportunityTitle } from "@/lib/artifact-copy";
 import { buildBottlenecks } from "@/lib/briefs";
 import { surfaces } from "@/lib/surfaces";
 import type {
@@ -24,14 +25,15 @@ export function RecommendedPilot({
   const discoveryChecks = workflowBottlenecks.length
     ? workflowBottlenecks.map((item) => item.text)
     : buildBottlenecks(discovery);
+  const pilotTitle = cleanOpportunityTitle(pilot.title, discovery);
 
   return (
     <div className="grid gap-4">
       <Card>
         <SectionHeader
           eyebrow="First pilot"
-          title={pilot.title}
-          description={`Define the first bounded workflow intervention and what not to automate yet. ${pilot.description}`}
+          title={pilotTitle}
+          description={`Define the first bounded workflow intervention and what not to automate yet. ${cleanGeneratedText(pilot.description)}`}
           action={<ScoreChip score={pilot.weightedScore} showBand />}
         />
         <div className="grid gap-4 lg:grid-cols-3">
@@ -51,7 +53,9 @@ export function RecommendedPilot({
               <Target className="h-4 w-4 text-slate-700" />
               <h3 className="text-sm font-semibold text-slate-950">Why first</h3>
             </div>
-            <p className="text-sm leading-6 text-slate-700">{pilot.rationale}</p>
+            <p className="text-sm leading-6 text-slate-700">
+              {cleanGeneratedText(pilot.rationale)}
+            </p>
           </div>
           <div className={`${surfaces.warningSurface} p-4`}>
             <div className="mb-2 flex items-center gap-2">
@@ -60,7 +64,9 @@ export function RecommendedPilot({
                 Not yet
               </h3>
             </div>
-            <p className="text-sm leading-6 text-amber-950">{pilot.notYet}</p>
+            <p className="text-sm leading-6 text-amber-950">
+              {cleanGeneratedText(pilot.notYet)}
+            </p>
           </div>
         </div>
       </Card>

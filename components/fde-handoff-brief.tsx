@@ -1,6 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { CopyButton } from "@/components/ui/copy-button";
 import { SectionHeader } from "@/components/ui/section-header";
+import { cleanGeneratedText } from "@/lib/artifact-copy";
 import { buildFdeHandoffBrief } from "@/lib/briefs";
 import { fallbackText, sentenceList } from "@/lib/format";
 import { surfaces } from "@/lib/surfaces";
@@ -71,7 +72,7 @@ export function FdeHandoffBrief({
       body: discovery.systemsInvolved,
     },
     {
-      title: "Inputs and data sources",
+      title: "Inputs and systems",
       body: [
         "Discovery notes from stakeholders and operators",
         `Workflow records from ${sentenceList(
@@ -102,12 +103,11 @@ export function FdeHandoffBrief({
       ],
     },
     {
-      title: "Edge cases",
-      body: discovery.knownFailureModes,
-    },
-    {
-      title: "Failure modes",
-      body: risks.map((risk) => `${risk.risk}: ${risk.signal}`),
+      title: "Edge cases and failure modes",
+      body: [
+        ...discovery.knownFailureModes,
+        ...risks.map((risk) => `${risk.risk}: ${risk.signal}`),
+      ],
     },
     {
       title: "Build assumptions",
@@ -124,7 +124,7 @@ export function FdeHandoffBrief({
       ],
     },
     {
-      title: "Open questions",
+      title: "Open questions before build",
       body: [
         "Which system is the source of truth for status and ownership?",
         "What case types are explicitly out of bounds for MVP?",
@@ -133,12 +133,12 @@ export function FdeHandoffBrief({
       ],
     },
     {
-      title: "MVP scope",
-      body: [pilot.description],
+      title: "MVP behavior",
+      body: [cleanGeneratedText(pilot.description)],
     },
     {
-      title: "What not to build yet",
-      body: [pilot.notYet],
+      title: "Explicit non-goals",
+      body: [cleanGeneratedText(pilot.notYet)],
     },
     {
       title: "Success metrics",
@@ -150,12 +150,12 @@ export function FdeHandoffBrief({
   const highlightedSections = new Set([
     "Target workflow",
     "Human review points",
-    "MVP scope",
+    "MVP behavior",
   ]);
   const warningSections = new Set([
-    "Open questions",
-    "What not to build yet",
-    "Failure modes",
+    "Open questions before build",
+    "Explicit non-goals",
+    "Edge cases and failure modes",
   ]);
 
   return (

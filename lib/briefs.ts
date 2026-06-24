@@ -9,21 +9,85 @@ import type {
   ValueMetric,
 } from "@/lib/types";
 import { fallbackText, sentenceList } from "@/lib/format";
+import {
+  cleanGeneratedText,
+  cleanOpportunityTitle,
+  sentence,
+} from "@/lib/artifact-copy";
+
+function cleanList(items: string[]) {
+  return items.map(cleanGeneratedText).filter(Boolean);
+}
+
+function markdownList(items: string[], fallback = "Not specified yet") {
+  const cleaned = cleanList(items);
+
+  return cleaned.length ? cleaned.map((item) => `- ${item}`).join("\n") : `- ${fallback}`;
+}
+
+function domainPhrase(discovery: DiscoveryInput) {
+  const domain = cleanGeneratedText(discovery.domain);
+  const workflow = cleanGeneratedText(discovery.workflowName);
+  const domainWords = domain.toLowerCase().split(/\W+/).filter((word) => word.length > 3);
+  const workflowWords = new Set(
+    workflow.toLowerCase().split(/\W+/).filter((word) => word.length > 3),
+  );
+  const overlaps = domainWords.some(
+    (word) =>
+      workflowWords.has(word) ||
+      workflowWords.has(word.replace(/s$/, "")) ||
+      workflowWords.has(`${word}s`),
+  );
+
+  if (!domain || workflow.toLowerCase().includes(domain.toLowerCase()) || overlaps) {
+    return "";
+  }
+
+  return ` in ${domain}`;
+}
+
+export function buildNextStrategistAction(
+  discovery: DiscoveryInput,
+  pilot: ScoredOpportunity,
+) {
+  const pilotTitle = cleanOpportunityTitle(pilot.title, discovery);
+
+  return `Validate ${fallbackText(
+    discovery.baselineMetric,
+    "the baseline metric",
+  )} with ${fallbackText(
+    discovery.workflowOwner,
+    "the workflow owner",
+  )}, then lock MVP scope and review rules for ${pilotTitle}.`;
+}
 
 export function buildCurrentStateSummary(discovery: DiscoveryInput) {
-  return `${fallbackText(discovery.companyName, "The client")} is evaluating ${fallbackText(
-    discovery.workflowName,
-    "a priority workflow",
-  )} in ${fallbackText(discovery.domain, "its operating environment")}. The current motion runs through ${sentenceList(
-    discovery.systemsInvolved,
-    "multiple systems",
-  )} and is constrained by ${fallbackText(
-    discovery.constraints,
-    "unclear ownership, fragmented data, and manual exception handling",
-  )}. The executive goal is ${fallbackText(
+  const company = fallbackText(discovery.companyName, "The client");
+  const workflow = fallbackText(discovery.workflowName, "the target workflow");
+  const systems = sentenceList(discovery.systemsInvolved, "multiple systems");
+  const baseline = fallbackText(discovery.baselineMetric);
+  const goal = fallbackText(
     discovery.executiveGoal,
-    "to improve cycle time, quality, and operating visibility",
-  )}. ${fallbackText(
+    "improve cycle time, quality, and operating visibility",
+  );
+  const constraints = fallbackText(
+    discovery.constraints,
+    "human review, clear system boundaries, and measurable value",
+  );
+
+  return [
+    sentence(`${company} needs to improve ${workflow}${domainPhrase(discovery)}`),
+    sentence(`Work currently runs through ${systems}`),
+    sentence(`The measurable baseline is ${baseline}, and the goal is ${goal}`),
+    sentence(`Pilot boundaries: ${constraints}`),
+  ].join(" ");
+}
+
+function buildProblemStatement(discovery: DiscoveryInput) {
+  return `${fallbackText(discovery.companyName, "The client")} needs a focused pilot for ${fallbackText(
+    discovery.workflowName,
+    "the target workflow",
+  )}. The workflow creates delay, rework, or inconsistent decisions before work reaches the right owner. ${fallbackText(
     discovery.workflowOwner,
     "The workflow owner",
   )} owns the baseline metric: ${fallbackText(discovery.baselineMetric)}.`;
@@ -100,29 +164,26 @@ export function buildFdeHandoffBrief(
   return `# FDE Handoff Brief
 
 ## Problem statement
-${fallbackText(discovery.companyName, "The client")} needs a focused pilot for ${fallbackText(
-    discovery.workflowName,
-    "the target workflow",
-  )}. The current process creates delay, inconsistent triage, and limited operating visibility. ${fallbackText(
-    discovery.workflowOwner,
-    "The workflow owner",
-  )} owns the operating baseline: ${fallbackText(discovery.baselineMetric)}.
+${buildProblemStatement(discovery)}
+
+## MVP behavior
+${cleanGeneratedText(pilot.description)}
 
 ## Discovery evidence
-${discoveryEvidence
-    .map((item) => `- ${item.text}${item.quote ? ` (source: "${item.quote}")` : ""}`)
-    .join("\n")}
+${markdownList(
+    discoveryEvidence.map(
+      (item) => `${item.text}${item.quote ? ` (source: "${item.quote}")` : ""}`,
+    ),
+  )}
 
 ## Current workflow
 ${discovery.currentWorkflowSteps.map((step, index) => `${index + 1}. ${step}`).join("\n")}
 
-## Target workflow
+## Target workflow and systems
 ${pilot.targetWorkflow}
-
-## Systems involved
 ${discovery.systemsInvolved.map((system) => `- ${system}`).join("\n")}
 
-## Inputs and data sources
+## Inputs and systems
 - Discovery notes from stakeholders and operators
 - Workflow records from ${sentenceList(discovery.systemsInvolved, "source systems")}
 - Exception and failure-mode examples
@@ -141,13 +202,13 @@ ${discovery.systemsInvolved.map((system) => `- ${system}`).join("\n")}
 - Customer, patient, broker, or portfolio-company-facing outputs
 - Any case matching known failure modes
 
-## Edge cases
-${discovery.knownFailureModes.map((mode) => `- ${mode}`).join("\n")}
+## Explicit non-goals
+${markdownList([pilot.notYet, discovery.constraints])}
 
-## Failure modes
-${risks.map((risk) => `- ${risk.risk}: ${risk.signal}`).join("\n")}
+## Edge cases and failure modes
+${markdownList([...discovery.knownFailureModes, ...risks.map((risk) => `${risk.risk}: ${risk.signal}`)])}
 
-## Build assumptions
+## Build assumptions to validate
 - V1 uses deterministic business rules and review workflows before deeper automation.
 - Operators can see why the system suggested an action.
 - The pilot writes enough activity data to measure adoption and quality.
@@ -155,17 +216,11 @@ ${risks.map((risk) => `- ${risk.risk}: ${risk.signal}`).join("\n")}
 - Source-system access and representative records are available during discovery validation.
 ${assumptionsToValidate.map((claim) => `- ${claim.text}`).join("\n")}
 
-## Open questions
+## Open questions before build
 - Which system is the source of truth for status and ownership?
 - What case types are explicitly out of bounds for MVP?
 - Who can approve the first controlled rollout cohort?
 - Which metric will determine whether to expand at day 90?
-
-## MVP scope
-${pilot.description}
-
-## What not to build yet
-${pilot.notYet}
 
 ## Success metrics
 ${metrics.map((metric) => `- ${metric.name}: ${metric.baseline} -> ${metric.target}`).join("\n")}
@@ -184,11 +239,23 @@ export function buildStrategistBrief(
   recommendedPilot?: ScoredOpportunity,
 ) {
   const pilot = recommendedPilot ?? scoredOpportunities[0];
+  const pilotTitle = cleanOpportunityTitle(pilot.title, discovery);
   const bottlenecks = workflowBottlenecks.length
     ? workflowBottlenecks.map((item) => item.text)
     : buildBottlenecks(discovery);
+  const supportingOpportunities = scoredOpportunities.filter(
+    (opportunity) => opportunity.id !== pilot.id,
+  );
 
   return `# Strategist Brief
+
+## Recommendation
+Recommended first pilot: ${pilotTitle}
+Score: ${pilot.weightedScore}/100
+Why this goes first: ${cleanGeneratedText(pilot.rationale)}
+Required human review point: ${fallbackText(discovery.humanReviewPoint)}
+What not to automate yet: ${cleanGeneratedText(pilot.notYet)}
+Next strategist action: ${buildNextStrategistAction(discovery, pilot)}
 
 ## Client and workflow
 Client: ${fallbackText(discovery.companyName)}
@@ -203,53 +270,58 @@ Executive goal: ${fallbackText(discovery.executiveGoal)}
 ${buildCurrentStateSummary(discovery)}
 
 ## Discovery evidence
-${discoveryEvidence
-    .map((item) => `- ${item.text}${item.quote ? ` (source: "${item.quote}")` : ""}`)
-    .join("\n")}
+${markdownList(
+    discoveryEvidence.map(
+      (item) => `${item.text}${item.quote ? ` (source: "${item.quote}")` : ""}`,
+    ),
+  )}
 
 ## Assumptions to validate
-${assumptionsToValidate.map((item) => `- ${item.text}`).join("\n")}
+${markdownList(assumptionsToValidate.map((item) => item.text))}
 
 ## Top bottlenecks
-${bottlenecks.map((item) => `- ${item}`).join("\n")}
+${markdownList(bottlenecks)}
 
-## Ranked AI opportunities
-${scoredOpportunities
-    .map(
-      (opportunity, index) =>
-        `${index + 1}. ${opportunity.title} - ${opportunity.weightedScore}/100 (${opportunity.explanation})`,
-    )
-    .join("\n")}
+## Recommended pilot scope
+Target workflow: ${cleanGeneratedText(pilot.targetWorkflow)}
+MVP behavior: ${cleanGeneratedText(pilot.description)}
+Non-goals: ${cleanGeneratedText(pilot.notYet)}
 
-## Recommended first pilot
-${pilot.title}
-Score: ${pilot.weightedScore}/100
-Why first: ${pilot.rationale}
-Target workflow: ${pilot.targetWorkflow}
-What not to automate yet: ${pilot.notYet}
+## Supporting opportunities considered
+${supportingOpportunities.length
+    ? supportingOpportunities
+        .map(
+          (opportunity) =>
+            `- ${cleanOpportunityTitle(opportunity.title, discovery)}: ${opportunity.weightedScore}/100 (${opportunity.explanation})`,
+        )
+        .join("\n")
+    : "- No additional opportunities were ranked above the recommended pilot."}
 
 ## Stakeholder map
 ${stakeholders
     .map(
       (stakeholder) =>
-        `- ${stakeholder.role}: ${stakeholder.concern}. Alignment move: ${stakeholder.alignmentMove}`,
+        `- ${cleanGeneratedText(stakeholder.role)}: ${cleanGeneratedText(stakeholder.concern)}. Alignment move: ${cleanGeneratedText(stakeholder.alignmentMove)}`,
     )
     .join("\n")}
 
 ## Adoption risk register
 ${risks
-    .map((risk) => `- ${risk.risk}: ${risk.mitigation} (${risk.owner})`)
+    .map(
+      (risk) =>
+        `- ${cleanGeneratedText(risk.risk)}: ${cleanGeneratedText(risk.mitigation)} (${cleanGeneratedText(risk.owner)})`,
+    )
     .join("\n")}
 
 ## Value measurement plan
 ${metrics
     .map(
       (metric) =>
-        `- ${metric.name}: baseline ${metric.baseline}; target ${metric.target}; owner ${metric.owner}; cadence ${metric.cadence}; confidence ${metric.confidence}`,
+        `- ${cleanGeneratedText(metric.name)}: baseline ${cleanGeneratedText(metric.baseline)}; target ${cleanGeneratedText(metric.target)}; owner ${cleanGeneratedText(metric.owner)}; cadence ${cleanGeneratedText(metric.cadence)}; confidence ${metric.confidence}`,
     )
     .join("\n")}
 
 ## FDE handoff focus
-Start with ${pilot.title} as a reviewed workflow assistant. Prioritize traceability, exception handling, and measurable adoption over full autonomy.
+Start with ${pilotTitle} as a reviewed workflow assistant. Prioritize traceability, exception handling, human approval, and measurable adoption over full autonomy.
 `;
 }

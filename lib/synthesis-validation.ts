@@ -1,4 +1,9 @@
 import { scoreOpportunities } from "@/lib/scoring";
+import {
+  cleanGeneratedText,
+  cleanOpportunityTitle,
+  normalizePilotKindFromText,
+} from "@/lib/artifact-copy";
 import { caseFromScenarioId } from "@/lib/workbench-case";
 import type {
   AdoptionRisk,
@@ -33,7 +38,9 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 }
 
 function text(value: unknown, fallback: string) {
-  return typeof value === "string" && value.trim() ? value.trim() : fallback;
+  return cleanGeneratedText(
+    typeof value === "string" && value.trim() ? value : fallback,
+  );
 }
 
 function stringArray(value: unknown, fallback: string[], limit = 8) {
@@ -43,7 +50,7 @@ function stringArray(value: unknown, fallback: string[], limit = 8) {
 
   const items = value
     .filter((item): item is string => typeof item === "string")
-    .map((item) => item.trim())
+    .map(cleanGeneratedText)
     .filter(Boolean)
     .slice(0, limit);
 
@@ -178,18 +185,26 @@ function normalizeOpportunity(
   value: unknown,
   index: number,
   fallback: Opportunity,
+  discovery: DiscoveryInput,
 ): Opportunity {
   const item = isRecord(value) ? value : {};
   const evidenceIds = stringArray(item.evidenceIds, [], 3);
   const assumptionToValidate = text(item.assumptionToValidate, "");
-  const title = text(item.title, fallback.title);
+  const title = cleanOpportunityTitle(text(item.title, fallback.title), discovery);
+  const description = text(item.description, fallback.description);
+  const targetWorkflow = text(item.targetWorkflow, fallback.targetWorkflow);
+  const kind = normalizePilotKindFromText(
+    pilotKind(item.pilotKind),
+    title,
+    description,
+  );
 
   return {
     id: normalizeId(item.id, `opportunity-${index + 1}`),
     title,
-    description: text(item.description, fallback.description),
-    targetWorkflow: text(item.targetWorkflow, fallback.targetWorkflow),
-    pilotKind: pilotKind(item.pilotKind),
+    description,
+    targetWorkflow,
+    pilotKind: kind,
     evidenceIds,
     assumptionToValidate:
       evidenceIds.length || assumptionToValidate
@@ -314,7 +329,8 @@ export function normalizeSynthesisDraft(
   let opportunities = normalizeArray(
     draft.opportunities,
     fallbackCase.opportunities,
-    normalizeOpportunity,
+    (item, index, fallback) =>
+      normalizeOpportunity(item, index, fallback, discovery),
     4,
   );
 

@@ -9,6 +9,7 @@ import {
   scoringModel,
   topDimensionDrivers,
 } from "@/lib/scoring";
+import { cleanGeneratedText, cleanOpportunityTitle } from "@/lib/artifact-copy";
 import type { ScoredOpportunity } from "@/lib/types";
 
 type OpportunityScorecardProps = {
@@ -24,6 +25,8 @@ export function OpportunityScorecard({
   const rawWinner = opportunities[0];
   const drivers = topDimensionDrivers(winner);
   const recommendationDiffers = rawWinner.id !== winner.id;
+  const winnerTitle = cleanOpportunityTitle(winner.title);
+  const rawWinnerTitle = cleanOpportunityTitle(rawWinner.title);
 
   return (
     <div className="grid gap-4">
@@ -66,25 +69,26 @@ export function OpportunityScorecard({
       <Card>
         <SectionHeader
           eyebrow="Why this is recommended"
-          title={winner.title}
-          description={winner.rationale}
+          title={winnerTitle}
+          description={cleanGeneratedText(winner.rationale)}
           action={<ScoreChip score={winner.weightedScore} showBand />}
         />
         {recommendationDiffers ? (
           <div className="mb-3 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm leading-6 text-amber-900">
-            The highest raw score is {rawWinner.title}, but the recommended first
-            pilot prefers a workflow intervention over a measurement or reporting
-            layer for this context.
+            The highest raw score is {rawWinnerTitle}, but the strategist
+            recommendation starts with the bounded workflow pilot. Supporting
+            helpers can be folded into MVP scope instead of becoming a separate
+            first pilot.
           </div>
         ) : null}
         <div className="grid gap-3 lg:grid-cols-3">
           <div className="rounded-md border border-slate-200 bg-slate-50 p-4">
             <p className="text-xs font-semibold uppercase text-slate-500">
-              Why it ranked first
+              Why this pilot is recommended
             </p>
             <p className="mt-2 text-sm leading-6 text-slate-700">
-              {winner.explanation}. This is a workflow intervention with a clear
-              human review boundary, not just a measurement layer.
+              {winner.explanation}. The recommendation prioritizes a bounded
+              workflow intervention with a clear human review boundary.
             </p>
           </div>
           <div className="rounded-md border border-slate-200 bg-slate-50 p-4">
@@ -137,7 +141,7 @@ export function OpportunityScorecard({
                   <td className="py-4 pr-4 text-slate-600">{index + 1}</td>
                   <td className="py-4 pr-4">
                     <p className="font-semibold text-slate-950">
-                      {opportunity.title}
+                      {cleanOpportunityTitle(opportunity.title)}
                     </p>
                     <p className="mt-1 max-w-md leading-6 text-slate-600">
                       {opportunity.description}
