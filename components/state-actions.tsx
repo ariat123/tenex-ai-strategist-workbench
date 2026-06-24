@@ -26,7 +26,7 @@ export function StateActions({
         </Button>
         <Button
           size="sm"
-          variant="secondary"
+          variant={canDownload ? "primary" : "secondary"}
           onClick={onDownload}
           disabled={!canDownload}
         >

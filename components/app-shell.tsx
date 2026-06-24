@@ -204,6 +204,15 @@ export function AppShell() {
       : activeCase.mode === "example"
         ? "Example case"
         : "Live discovery case";
+  const modeChipClass =
+    activeCase.mode === "ai-synthesis"
+      ? "border-emerald-200 bg-emerald-50 text-emerald-800"
+      : activeCase.mode === "example"
+        ? "border-slate-200 bg-slate-100 text-slate-700"
+        : "border-indigo-200 bg-indigo-50 text-indigo-800";
+  const workflowChipClass = activeCase.discovery.workflowName
+    ? "border-slate-200 bg-white text-slate-700"
+    : "border-amber-200 bg-amber-50 text-amber-800";
   const sourceModeTitle = modeLabel;
   const sourceModeDescription =
     activeCase.mode === "ai-synthesis"
@@ -424,10 +433,14 @@ export function AppShell() {
             </div>
             <div className="flex flex-col gap-3 rounded-md border border-slate-200 bg-slate-50 p-3 text-sm text-slate-700 sm:min-w-80">
               <div className="flex flex-wrap gap-2">
-                <span className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-700">
+                <span
+                  className={`rounded-full border px-3 py-1 text-xs font-semibold ${modeChipClass}`}
+                >
                   {modeLabel}
                 </span>
-                <span className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-medium text-slate-600">
+                <span
+                  className={`rounded-full border px-3 py-1 text-xs font-medium ${workflowChipClass}`}
+                >
                   {activeCase.discovery.workflowName || "Workflow not specified"}
                 </span>
               </div>
@@ -560,18 +573,37 @@ export function AppShell() {
                 onClick={() => setDiscoveryStartMode("notes")}
                 className={`rounded-md border p-4 text-left shadow-sm transition-colors ${
                   discoveryStartMode === "notes"
-                    ? "border-slate-950 bg-white"
-                    : "border-slate-200 bg-white hover:border-slate-400"
+                    ? "border-indigo-300 bg-indigo-50/70"
+                    : "border-slate-200 bg-white hover:border-indigo-200 hover:bg-indigo-50/30"
                 }`}
               >
                 <div className="flex items-start gap-3">
-                  <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-slate-200 bg-slate-50 text-slate-700">
+                  <span
+                    className={`inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md border ${
+                      discoveryStartMode === "notes"
+                        ? "border-indigo-200 bg-white text-indigo-700"
+                        : "border-slate-200 bg-slate-50 text-slate-600"
+                    }`}
+                  >
                     <ClipboardList className="h-4 w-4" />
                   </span>
                   <div>
-                    <h2 className="text-base font-semibold text-slate-950">
-                      Start from notes
-                    </h2>
+                    <div className="flex items-center gap-2">
+                      <h2
+                        className={`text-base font-semibold ${
+                          discoveryStartMode === "notes"
+                            ? "text-indigo-950"
+                            : "text-slate-950"
+                        }`}
+                      >
+                        Start from notes
+                      </h2>
+                      {discoveryStartMode === "notes" ? (
+                        <span className="rounded-full bg-indigo-100 px-2 py-0.5 text-[11px] font-semibold text-indigo-700">
+                          Active
+                        </span>
+                      ) : null}
+                    </div>
                     <p className="mt-1 text-sm leading-6 text-slate-600">
                       Paste messy discovery notes from a client conversation and structure them into a strategist readout.
                     </p>
@@ -583,18 +615,37 @@ export function AppShell() {
                 onClick={() => setDiscoveryStartMode("guide")}
                 className={`rounded-md border p-4 text-left shadow-sm transition-colors ${
                   discoveryStartMode === "guide"
-                    ? "border-slate-950 bg-white"
-                    : "border-slate-200 bg-white hover:border-slate-400"
+                    ? "border-cyan-300 bg-cyan-50/70"
+                    : "border-slate-200 bg-white hover:border-cyan-200 hover:bg-cyan-50/30"
                 }`}
               >
                 <div className="flex items-start gap-3">
-                  <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-slate-200 bg-slate-50 text-slate-700">
+                  <span
+                    className={`inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md border ${
+                      discoveryStartMode === "guide"
+                        ? "border-cyan-200 bg-white text-cyan-700"
+                        : "border-slate-200 bg-slate-50 text-slate-600"
+                    }`}
+                  >
                     <FileText className="h-4 w-4" />
                   </span>
                   <div>
-                    <h2 className="text-base font-semibold text-slate-950">
-                      Prepare discovery guide
-                    </h2>
+                    <div className="flex items-center gap-2">
+                      <h2
+                        className={`text-base font-semibold ${
+                          discoveryStartMode === "guide"
+                            ? "text-cyan-950"
+                            : "text-slate-950"
+                        }`}
+                      >
+                        Prepare discovery guide
+                      </h2>
+                      {discoveryStartMode === "guide" ? (
+                        <span className="rounded-full bg-cyan-100 px-2 py-0.5 text-[11px] font-semibold text-cyan-700">
+                          Active
+                        </span>
+                      ) : null}
+                    </div>
                     <p className="mt-1 text-sm leading-6 text-slate-600">
                       Create a focused question guide before or during
                       discovery, capture answers, then turn them into the same

@@ -98,9 +98,9 @@ export function AdoptionPlan({
           {assumptionsToValidate.slice(0, 6).map((assumption) => (
             <div
               key={assumption.id}
-              className="rounded-md border border-slate-200 bg-slate-50 p-4"
+              className="rounded-md border border-amber-200 bg-amber-50 p-4"
             >
-              <p className="text-sm leading-6 text-slate-700">
+              <p className="text-sm leading-6 text-amber-950">
                 {assumption.text}
               </p>
             </div>
@@ -113,10 +113,10 @@ export function AdoptionPlan({
           title="Rollout and adoption risk register"
           description="Adoption risk is implementation scope because the workflow only matters if people use it."
         />
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto rounded-md border border-amber-100">
           <table className="w-full min-w-[760px] text-left text-sm">
             <thead>
-              <tr className="border-b border-slate-200 text-xs uppercase text-slate-500">
+              <tr className="border-b border-amber-100 bg-amber-50 text-xs uppercase text-amber-800">
                 <th className="py-3 pr-4 font-semibold">Risk</th>
                 <th className="py-3 pr-4 font-semibold">Signal</th>
                 <th className="py-3 pr-4 font-semibold">Mitigation</th>

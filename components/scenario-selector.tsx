@@ -29,8 +29,8 @@ export function ScenarioSelector({
             <Card
               as="div"
               className={cn(
-                "h-full p-4 transition-colors hover:border-slate-400",
-                selected ? "border-slate-950 ring-2 ring-slate-200" : "",
+                "h-full p-4 transition-colors hover:border-indigo-200",
+                selected ? "border-indigo-300 bg-indigo-50/50 ring-2 ring-indigo-100" : "",
               )}
             >
               <div className="mb-3 flex items-center justify-between">
@@ -38,7 +38,7 @@ export function ScenarioSelector({
                   <Building2 className="h-4 w-4" />
                 </span>
                 {selected ? (
-                  <CheckCircle2 className="h-5 w-5 text-slate-950" />
+                  <CheckCircle2 className="h-5 w-5 text-indigo-700" />
                 ) : null}
               </div>
               <h3 className="text-sm font-semibold text-slate-950">

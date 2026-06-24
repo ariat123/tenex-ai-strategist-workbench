@@ -98,7 +98,7 @@ export function SynthesisPanel({
       ) : null}
 
       {aiConfigured && !requiresAccessCode ? (
-        <p className="mb-4 text-sm leading-6 text-slate-600">
+        <p className="mb-4 inline-flex rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-800">
           Ready to structure discovery notes.
         </p>
       ) : null}
@@ -119,12 +119,12 @@ export function SynthesisPanel({
         onChange={(event) => onRawNotesChange(event.target.value)}
         rows={12}
         placeholder="Paste stakeholder notes, operator observations, transcript excerpts, workflow notes, survey findings, system constraints, or process screenshots transcribed as text."
-        className="w-full resize-y rounded-md border border-slate-300 bg-white px-4 py-3 text-sm leading-6 text-slate-950 shadow-inner outline-none transition placeholder:text-slate-400 focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
+        className="w-full resize-y rounded-md border border-slate-300 bg-white px-4 py-3 text-sm leading-6 text-slate-950 shadow-inner outline-none transition placeholder:text-slate-400 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
       />
 
       <div className="mt-3 grid gap-2 text-sm leading-6">
         {loading ? (
-          <div className="rounded-md border border-slate-200 bg-slate-50 p-3 text-sm leading-6 text-slate-700">
+          <div className="rounded-md border border-indigo-200 bg-indigo-50 p-3 text-sm leading-6 text-indigo-900">
             Structuring notes. The current case will stay unchanged until
             synthesis succeeds.
           </div>
@@ -135,17 +135,17 @@ export function SynthesisPanel({
           </p>
         ) : null}
         {error ? (
-          <div className="rounded-md border border-amber-200 bg-amber-50 p-4 text-amber-950">
+          <div className="rounded-md border border-red-200 bg-red-50 p-4 text-red-950">
             <div className="flex gap-2">
               <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
               <p className="font-medium">{error}</p>
             </div>
             {errorDetails ? (
-              <details className="mt-3 border-t border-amber-200 pt-3">
-                <summary className="cursor-pointer text-xs font-semibold text-amber-950 marker:text-amber-700">
+              <details className="mt-3 border-t border-red-200 pt-3">
+                <summary className="cursor-pointer text-xs font-semibold text-red-950 marker:text-red-700">
                   Technical details
                 </summary>
-                <div className="mt-2 grid gap-1 text-xs leading-5 text-amber-900">
+                <div className="mt-2 grid gap-1 text-xs leading-5 text-red-900">
                   <p>
                     <span className="font-semibold">Failure stage: </span>
                     {errorDetails.failureStage ?? "not available"}
@@ -176,11 +176,11 @@ export function SynthesisPanel({
           </div>
         ) : null}
         {warnings.length ? (
-          <div className="rounded-md border border-slate-200 bg-slate-50 p-3">
-            <p className="text-xs font-semibold uppercase text-slate-500">
+          <div className="rounded-md border border-amber-200 bg-amber-50 p-3">
+            <p className="text-xs font-semibold uppercase text-amber-800">
               Synthesis warnings
             </p>
-            <ul className="mt-2 space-y-1 text-slate-700">
+            <ul className="mt-2 space-y-1 text-amber-900">
               {warnings.map((warning) => (
                 <li key={warning}>{warning}</li>
               ))}

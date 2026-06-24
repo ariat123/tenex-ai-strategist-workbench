@@ -300,7 +300,7 @@ export function GuidedDiscovery({ onUseAsNotes }: GuidedDiscoveryProps) {
   }
 
   return (
-    <Card>
+    <Card className="border-cyan-200 bg-cyan-50/30">
       <SectionHeader
         eyebrow="Guided discovery"
         title="Prepare a focused discovery guide"
@@ -355,7 +355,7 @@ export function GuidedDiscovery({ onUseAsNotes }: GuidedDiscoveryProps) {
               onChange={(event) =>
                 updateContext("businessGoal", event.target.value)
               }
-              className="h-10 w-full rounded-md border border-slate-300 bg-white px-3 text-sm text-slate-950 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
+              className="h-10 w-full rounded-md border border-slate-300 bg-white px-3 text-sm text-slate-950 outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-100"
             >
               {businessGoals.map((goal) => (
                 <option key={goal} value={goal}>
@@ -373,9 +373,9 @@ export function GuidedDiscovery({ onUseAsNotes }: GuidedDiscoveryProps) {
           />
         </div>
 
-        <div className="rounded-md border border-slate-200 bg-slate-50 p-4">
+        <div className="rounded-md border border-cyan-200 bg-white p-4">
           <div className="flex items-start gap-3">
-            <ClipboardList className="mt-0.5 h-4 w-4 shrink-0 text-slate-700" />
+            <ClipboardList className="mt-0.5 h-4 w-4 shrink-0 text-cyan-700" />
             <div>
               <h3 className="text-sm font-semibold text-slate-950">
                 Capture answers loosely
@@ -393,12 +393,12 @@ export function GuidedDiscovery({ onUseAsNotes }: GuidedDiscoveryProps) {
           {guide.map((group) => (
             <section
               key={group.id}
-              className="rounded-md border border-slate-200 bg-slate-50 p-4"
+              className="rounded-md border border-cyan-100 bg-white p-4"
             >
               <div className="grid gap-4 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
                 <div>
                   <div className="mb-2 flex items-center gap-2">
-                    <ListChecks className="h-4 w-4 text-slate-700" />
+                    <ListChecks className="h-4 w-4 text-cyan-700" />
                     <h3 className="text-sm font-semibold text-slate-950">
                       {group.title}
                     </h3>
@@ -408,8 +408,8 @@ export function GuidedDiscovery({ onUseAsNotes }: GuidedDiscoveryProps) {
                       <li key={question}>{question}</li>
                     ))}
                   </ul>
-                  <p className="mt-3 rounded-md border border-slate-200 bg-white p-3 text-xs leading-5 text-slate-600">
-                    <span className="font-semibold text-slate-700">
+                  <p className="mt-3 rounded-md border border-cyan-100 bg-cyan-50/60 p-3 text-xs leading-5 text-slate-600">
+                    <span className="font-semibold text-cyan-800">
                       Listen for:
                     </span>{" "}
                     {group.listenFor}

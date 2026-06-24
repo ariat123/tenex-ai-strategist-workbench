@@ -7,9 +7,14 @@ import { Button } from "@/components/ui/button";
 type CopyButtonProps = {
   text: string;
   label?: string;
+  variant?: "primary" | "secondary";
 };
 
-export function CopyButton({ text, label = "Copy" }: CopyButtonProps) {
+export function CopyButton({
+  text,
+  label = "Copy",
+  variant = "secondary",
+}: CopyButtonProps) {
   const [copied, setCopied] = useState(false);
 
   async function handleCopy() {
@@ -19,7 +24,7 @@ export function CopyButton({ text, label = "Copy" }: CopyButtonProps) {
   }
 
   return (
-    <Button onClick={handleCopy} size="sm" variant={copied ? "primary" : "secondary"}>
+    <Button onClick={handleCopy} size="sm" variant={copied ? "primary" : variant}>
       {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
       {copied ? "Copied" : label}
     </Button>

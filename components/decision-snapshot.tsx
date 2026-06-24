@@ -67,12 +67,12 @@ export function DecisionSnapshot({
         eyebrow="Decision snapshot"
         title="Strategist conclusion"
         description="Recommendation, risk boundary, and next action up front."
-        action={<CopyButton text={brief} label="Copy final brief" />}
+        action={<CopyButton text={brief} label="Copy final brief" variant="primary" />}
       />
 
       <div className="grid gap-4 xl:grid-cols-[1.15fr_0.85fr]">
         <div className="grid gap-4">
-          <div className="rounded-md border border-slate-300 bg-white p-5 shadow-sm">
+          <div className="rounded-md border border-indigo-200 bg-indigo-50/40 p-5 shadow-sm">
             <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
               <div>
                 <p className="text-xs font-semibold uppercase text-slate-500">
@@ -127,23 +127,23 @@ export function DecisionSnapshot({
           </div>
 
           <div className="grid gap-3 md:grid-cols-2">
-            <div className="rounded-md border border-slate-200 bg-slate-50 p-4">
+            <div className="rounded-md border border-amber-200 bg-amber-50 p-4">
               <div className="mb-2 flex items-center gap-2">
-                <ShieldCheck className="h-4 w-4 text-slate-700" />
-                <h3 className="text-sm font-semibold text-slate-950">
+                <ShieldCheck className="h-4 w-4 text-amber-700" />
+                <h3 className="text-sm font-semibold text-amber-950">
                   What not to automate yet
                 </h3>
               </div>
-              <p className="text-sm leading-6 text-slate-700">{pilot.notYet}</p>
+              <p className="text-sm leading-6 text-amber-950">{pilot.notYet}</p>
             </div>
-            <div className="rounded-md border border-slate-200 bg-slate-50 p-4">
+            <div className="rounded-md border border-indigo-200 bg-indigo-50/50 p-4">
               <div className="mb-2 flex items-center gap-2">
-                <ClipboardCheck className="h-4 w-4 text-slate-700" />
-                <h3 className="text-sm font-semibold text-slate-950">
+                <ClipboardCheck className="h-4 w-4 text-indigo-700" />
+                <h3 className="text-sm font-semibold text-indigo-950">
                   Required human review
                 </h3>
               </div>
-              <p className="text-sm leading-6 text-slate-700">
+              <p className="text-sm leading-6 text-indigo-950">
                 {fallbackText(discovery.humanReviewPoint)}
               </p>
             </div>
@@ -161,17 +161,17 @@ export function DecisionSnapshot({
               ))}
             </ul>
           </div>
-          <div className="rounded-md border border-slate-200 bg-slate-50 p-4">
-            <h3 className="text-sm font-semibold text-slate-950">
+          <div className="rounded-md border border-amber-200 bg-amber-50 p-4">
+            <h3 className="text-sm font-semibold text-amber-950">
               Assumptions to validate
             </h3>
-            <ul className="mt-3 space-y-2 text-sm leading-6 text-slate-700">
+            <ul className="mt-3 space-y-2 text-sm leading-6 text-amber-950">
               {assumptionsToValidate.map((assumption) => (
                 <li key={assumption.id}>{assumption.text}</li>
               ))}
             </ul>
           </div>
-          <div className="rounded-md border border-slate-900 bg-slate-950 p-4 text-white">
+          <div className="rounded-md border border-indigo-700 bg-indigo-700 p-4 text-white shadow-sm">
             <div className="mb-2 flex items-center gap-2">
               <ArrowRight className="h-4 w-4" />
               <h3 className="text-sm font-semibold">

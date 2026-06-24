@@ -16,10 +16,10 @@ export function EmptyState({
   action,
 }: EmptyStateProps) {
   return (
-    <Card className="border-dashed bg-white">
+    <Card className="border-dashed border-indigo-200 bg-indigo-50/40">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="flex gap-3">
-          <span className="mt-1 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-slate-200 bg-slate-50 text-slate-600">
+          <span className="mt-1 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-indigo-200 bg-white text-indigo-600">
             <ClipboardList className="h-4 w-4" />
           </span>
           <div>

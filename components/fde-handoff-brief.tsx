@@ -153,7 +153,7 @@ export function FdeHandoffBrief({
         eyebrow="Build handoff"
         title="FDE build brief"
         description="Turn the strategist readout into a build brief an FDE can act on."
-        action={<CopyButton text={brief} label="Copy handoff" />}
+        action={<CopyButton text={brief} label="Copy handoff" variant="primary" />}
       />
       <div className="grid gap-3 rounded-md border border-slate-200 bg-slate-50 p-4">
         {sections.map((section) => (

@@ -29,10 +29,10 @@ export function Tabs<T extends string>({ items, activeId, onChange }: TabsProps<
             className={cn(
               "flex h-9 shrink-0 items-center gap-2 rounded-md px-3 text-sm font-medium transition-colors",
               active
-                ? "bg-slate-950 text-white"
+                ? "bg-indigo-600 text-white shadow-sm"
                 : item.secondary
-                  ? "text-slate-500 hover:bg-slate-100 hover:text-slate-950"
-                  : "text-slate-700 hover:bg-slate-100 hover:text-slate-950",
+                  ? "text-slate-500 hover:bg-slate-100 hover:text-slate-900"
+                  : "text-slate-700 hover:bg-indigo-50 hover:text-indigo-900",
               item.secondary && !active ? "ml-1" : "",
             )}
           >

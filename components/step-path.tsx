@@ -20,12 +20,16 @@ export function StepPath({
   hasStructuredReadout,
   onSelect,
 }: StepPathProps) {
+  const activeIndex = steps.findIndex((step) => step.id === activeSection);
+
   return (
-    <div className="rounded-md border border-slate-200 bg-white px-3 py-2 shadow-sm">
+    <div className="rounded-md border border-indigo-100 bg-white px-3 py-2 shadow-sm">
       <div className="flex flex-wrap items-center gap-2">
         {steps.map((step, index) => {
           const active = step.id === activeSection;
           const available = step.id === "discovery" || hasStructuredReadout;
+          const completed =
+            hasStructuredReadout && activeIndex >= 0 && index < activeIndex;
 
           return (
             <div key={step.id} className="flex items-center gap-2">
@@ -35,13 +39,15 @@ export function StepPath({
                 onClick={() => onSelect(step.id)}
                 className={`inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-semibold transition-colors disabled:cursor-not-allowed ${
                   active
-                    ? "bg-slate-950 text-white"
+                    ? "bg-indigo-600 text-white shadow-sm"
+                    : completed
+                      ? "bg-emerald-50 text-emerald-700"
                     : available
-                      ? "text-slate-700 hover:bg-slate-100"
+                      ? "text-slate-600 hover:bg-indigo-50 hover:text-indigo-800"
                       : "text-slate-400"
                 }`}
               >
-                {available && step.id !== "discovery" ? (
+                {completed ? (
                   <CheckCircle2 className="h-3.5 w-3.5" />
                 ) : null}
                 <span className="hidden sm:inline">{step.label}</span>
