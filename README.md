@@ -8,6 +8,10 @@ This workbench supports the middle of an AI Strategist engagement: after the exe
 
 It is designed as a lightweight internal-style workbench for moving from discovery evidence to a bounded first workflow pilot that a strategist, deployment lead, or FDE could review.
 
+## Candidate Context
+
+PilotPath is a candidate artifact for evaluating one AI Strategist workflow slice. It is not an internal Tenex tool and does not use Tenex-private data, claims, or confidential methodology.
+
 ## What It Does
 
 - Starts on Discovery so the user can paste raw notes or prepare a focused discovery guide
