@@ -15,6 +15,7 @@ PilotPath is a candidate artifact for evaluating one AI Strategist workflow slic
 ## What It Does
 
 - Starts on Discovery so the user can paste raw notes or prepare a focused discovery guide
+- Includes a header-level `How to use` guide for reviewers
 - Provides a guided discovery path for preparing questions and capturing answers during a client conversation
 - Structures messy notes into editable discovery facts, bottlenecks, evidence, and assumptions
 - Ranks possible AI pilots with visible deterministic scoring
@@ -110,6 +111,12 @@ Included reference cases:
 - Custom workflow outline
 
 These cases are illustrative and editable.
+
+## In-App Reviewer Guide
+
+The header includes a `How to use` guide. It explains what PilotPath is, the fast path from notes to final brief, the guided discovery path, what reviewers should look for in the output, and a collapsed regional insurance carrier test case.
+
+The guide does not include any access code value. If a reviewer received an access code, they should enter it in the Access code field on Discovery.
 
 ## What Is Intentionally Out Of Scope
 

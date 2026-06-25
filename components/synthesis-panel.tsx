@@ -112,7 +112,10 @@ export function SynthesisPanel({
             />
             <div className="flex gap-2 text-sm leading-6 text-slate-600">
               <KeyRound className="mt-1 h-4 w-4 shrink-0 text-slate-500" />
-              <p>Required for live AI synthesis.</p>
+              <p>
+                Required for live AI synthesis. Use the access code from the
+                email if you received one.
+              </p>
             </div>
           </div>
         ) : null}

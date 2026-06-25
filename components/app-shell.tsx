@@ -5,6 +5,7 @@ import {
   Database,
   FileText,
   Handshake,
+  HelpCircle,
   LayoutDashboard,
   LineChart,
   Rocket,
@@ -21,6 +22,7 @@ import { GeneratedOutputEditor } from "@/components/generated-output-editor";
 import { GuidedDiscovery } from "@/components/guided-discovery";
 import { OpportunityScorecard } from "@/components/opportunity-scorecard";
 import { RecommendedPilot } from "@/components/recommended-pilot";
+import { ReviewerGuide } from "@/components/reviewer-guide";
 import { ScenarioSelector } from "@/components/scenario-selector";
 import { StateActions } from "@/components/state-actions";
 import { StepPath } from "@/components/step-path";
@@ -169,6 +171,7 @@ export function AppShell() {
   const [synthesisConfigured, setSynthesisConfigured] = useState(true);
   const [synthesisRequiresAccessCode, setSynthesisRequiresAccessCode] =
     useState(false);
+  const [guideOpen, setGuideOpen] = useState(false);
   const localStateReady = useRef(false);
 
   const scoredOpportunities = useMemo(
@@ -448,9 +451,19 @@ export function AppShell() {
               <p className="text-xs leading-5 text-slate-500">
                 Saved locally in this browser. No workspace setup required.
               </p>
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => setGuideOpen(true)}
+                className="w-full justify-center"
+              >
+                <HelpCircle className="h-4 w-4" />
+                How to use
+              </Button>
             </div>
           </div>
         </header>
+        <ReviewerGuide open={guideOpen} onClose={() => setGuideOpen(false)} />
 
         <StateActions
           saveStatus={saveStatus}
