@@ -452,10 +452,10 @@ export function AppShell() {
                 Saved locally in this browser. No workspace setup required.
               </p>
               <Button
-                variant="secondary"
+                variant="primary"
                 size="sm"
                 onClick={() => setGuideOpen(true)}
-                className="w-full justify-center"
+                className="w-full justify-center border-violet-600 bg-violet-600 font-bold text-white shadow-sm hover:border-violet-700 hover:bg-violet-700"
               >
                 <HelpCircle className="h-4 w-4" />
                 How to use
